@@ -180,6 +180,31 @@ textarea { min-height: 96px; resize: vertical; }
 .actions .right { display: flex; gap: 10px; margin-left: auto; }
 .err { color: var(--late); font-weight: 800; }
 
+/* Taburi */
+.tabs { display: flex; gap: 8px; background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 6px; box-shadow: var(--shadow); width: fit-content; max-width: 100%; }
+.tab { border: 0; background: transparent; color: var(--muted); font-family: var(--f-display); font-weight: 700; font-size: 20px; padding: 8px 22px; border-radius: 12px; cursor: pointer; min-height: 48px; }
+.tab[aria-selected="true"] { background: var(--pen); color: var(--pen-ink); }
+
+/* Materii */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 14px; }
+.tile {
+  --h: 220; text-align: left; border: 0; cursor: pointer; border-radius: 18px; padding: 18px; min-height: 130px;
+  background: hsl(var(--h) var(--chip-s) var(--chip-l)); color: var(--chip-ink);
+  display: grid; align-content: space-between; gap: 12px; box-shadow: var(--shadow);
+}
+.tile .name { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1.05; }
+.tile .info { font-weight: 700; font-size: 15px; display: grid; gap: 2px; }
+.tile .badge { justify-self: start; background: var(--sheet); color: var(--ink); border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: 14px; }
+
+.detail { display: grid; gap: 16px; }
+.detail-head { --h: 220; border-radius: 20px; padding: 20px; background: hsl(var(--h) var(--chip-s) var(--chip-l)); color: var(--chip-ink); display: grid; gap: 6px; }
+.detail-head h2 { font-family: var(--f-display); font-weight: 800; font-size: clamp(30px, 5vw, 40px); margin: 0; line-height: 1; }
+.detail-head .info { font-weight: 700; }
+.back { justify-self: start; border: 0; background: transparent; color: var(--pen); font-weight: 800; font-size: 17px; cursor: pointer; padding: 6px 0; }
+.lessons { display: grid; gap: 10px; }
+.lesson { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 12px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+.lesson .n { font-family: var(--f-display); font-weight: 800; font-size: 20px; color: var(--pen); min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+
 .viewer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.85); display: grid; place-items: center; padding: 20px; cursor: zoom-out; }
 .viewer img { max-width: 100%; max-height: 100%; border-radius: 8px; }
 
@@ -194,9 +219,38 @@ textarea { min-height: 96px; resize: vertical; }
     <div class="tomorrow" id="tomorrow"></div>
   </header>
 
+  <nav class="tabs" role="tablist" aria-label="Secțiuni">
+    <button class="tab" role="tab" id="tabTeme" type="button" aria-selected="true">Teme</button>
+    <button class="tab" role="tab" id="tabMaterii" type="button" aria-selected="false">Materii</button>
+  </nav>
+
   <div class="warn" id="storeWarn" hidden>Temele nu se pot salva în acest browser (poate e o fereastră privată). Ce adaugi acum se pierde la închidere.</div>
 
-  <div class="cols">
+  <div id="viewMaterii" hidden>
+    <div class="tiles" id="tiles"></div>
+  </div>
+
+  <div id="viewMaterie" class="detail" hidden>
+    <button class="back" type="button" id="backBtn">← Toate materiile</button>
+    <div class="detail-head" id="dHead">
+      <h2 id="dName"></h2>
+      <div class="info" id="dHours"></div>
+      <div class="info" id="dNext"></div>
+    </div>
+    <div class="cols">
+      <section class="list main" aria-labelledby="hLessons">
+        <div class="list-head"><h2 id="hLessons">Lecții</h2></div>
+        <div class="sub">În ordinea din școală</div>
+        <div class="lessons" id="dLessons"></div>
+      </section>
+      <section class="list" aria-labelledby="hDTeme">
+        <div class="list-head"><h2 id="hDTeme">Teme</h2></div>
+        <div class="items" id="dTeme"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="cols" id="viewTeme">
     <div class="col">
       <section class="list main" aria-labelledby="hNext">
         <div class="list-head">
@@ -293,12 +347,18 @@ textarea { min-height: 96px; resize: vertical; }
   };
   // 1 = luni ... 5 = vineri
   const ORAR = {
-    1: ["Matematică", "Franceză", "Istorie"],
+    1: ["Matematică", "Matematică", "Franceză", "Istorie"],
     2: ["Franceză", "Engleză", "Română", "Informatică", "Ed. Muzicală"],
-    3: ["Română", "Geografie", "Religie"],
+    3: ["Română", "Română", "Geografie", "Religie"],
     4: ["Matematică", "Istorie", "Română", "Engleză", "Ed. Tehnologică", "Ed. Plastică"],
     5: ["Biologie", "Matematică", "Dirigenție", "Ed. Socială"]
   };
+  // Materiile din meniu (cu lecții interactive)
+  const MAIN = ["Română", "Matematică", "Engleză", "Franceză", "Istorie", "Geografie", "Biologie", "Informatică", "Ed. Socială"];
+  // Lecțiile se adaugă aici, în ordinea din școală: { titlu: "...", data: "2026-09-08" }
+  const LECTII = {};
+  MAIN.forEach(m => { if (!LECTII[m]) LECTII[m] = []; });
+  const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
   const START = "2026-09-07", END = "2027-06-18";
   const VACANTE = [
     ["2026-10-24", "2026-11-01", "Vacanța de toamnă"],
@@ -334,7 +394,8 @@ textarea { min-height: 96px; resize: vertical; }
     return nextSchoolDay(given);
   };
   const longDate = s => { const d = parse(s); return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`; };
-  const shortDate = s => { const d = parse(s); return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()].slice(0, 3)}.`; };
+  const LUNI_SCURT = ["ian.", "feb.", "mar.", "apr.", "mai", "iun.", "iul.", "aug.", "sept.", "oct.", "nov.", "dec."];
+  const shortDate = s => { const d = parse(s); return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI_SCURT[d.getMonth()]}`; };
   const dayWord = (s, today) => {
     if (s === addDays(today, 1)) return "mâine";
     const diff = (parse(s) - parse(today)) / 864e5;
@@ -415,7 +476,7 @@ textarea { min-height: 96px; resize: vertical; }
     const lbl = document.createElement("span");
     lbl.className = "lbl";
     lbl.textContent = (next === addDays(today, 1) ? "Mâine ai" : `${ZILE[parse(next).getDay()][0].toUpperCase() + ZILE[parse(next).getDay()].slice(1)} ai`) + ":";
-    t.append(lbl, ...ORAR[parse(next).getDay()].map(chip));
+    t.append(lbl, ...[...new Set(ORAR[parse(next).getDay()])].map(chip));
   }
 
   function itemEl(it, today, opts = {}) {
@@ -483,9 +544,130 @@ textarea { min-height: 96px; resize: vertical; }
     arr.forEach(it => box.append(itemEl(it, today, opts)));
   }
 
+  // ---------- Navigare: Teme / Materii / o materie ----------
+  let view = "teme", currentSubj = null;
+  function go(v, subj) {
+    view = v; currentSubj = subj || null;
+    const token = v === "materie" ? slug(subj) : v;
+    try { if (location.hash !== "#" + token) history.replaceState(null, "", "#" + token); } catch {}
+    render();
+    window.scrollTo(0, 0);
+  }
+  function fromHash() {
+    const h = (location.hash || "").slice(1);
+    const s = MAIN.find(m => slug(m) === h);
+    if (s) { view = "materie"; currentSubj = s; }
+    else if (h === "materii") view = "materii";
+    else view = "teme";
+  }
+  $("tabTeme").addEventListener("click", () => go("teme"));
+  $("tabMaterii").addEventListener("click", () => go("materii"));
+  $("backBtn").addEventListener("click", () => go("materii"));
+  window.addEventListener("hashchange", () => { fromHash(); render(); });
+
+  function hoursOf(subj) {
+    const parts = [];
+    for (let d = 1; d <= 5; d++) {
+      const n = ORAR[d].filter(x => x === subj).length;
+      if (n) parts.push(ZILE[d] + (n > 1 ? ` (${n} ore)` : ""));
+    }
+    return parts.join(", ");
+  }
+  function nextClassLabel(subj, today) {
+    const d = dueFor(subj, today);
+    return d ? dayWord(d, today) : null;
+  }
+
+  function renderMaterii(today) {
+    const box = $("tiles");
+    box.replaceChildren();
+    MAIN.forEach(m => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "tile";
+      b.style.setProperty("--h", SUBJ[m]);
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = m;
+      const info = document.createElement("div");
+      info.className = "info";
+      const nx = nextClassLabel(m, today);
+      const l1 = document.createElement("span");
+      l1.textContent = nx ? "Următoarea oră: " + nx : "";
+      const n = LECTII[m].length;
+      const l2 = document.createElement("span");
+      l2.textContent = n ? `${n} ${n === 1 ? "lecție" : "lecții"}` : "Lecțiile vin în curând";
+      info.append(l1, l2);
+      b.append(name, info);
+      const open = items.filter(i => i.subj === m && !i.done).length;
+      if (open) {
+        const bd = document.createElement("span");
+        bd.className = "badge";
+        bd.textContent = open === 1 ? "1 temă de făcut" : `${open} teme de făcut`;
+        b.append(bd);
+      }
+      b.addEventListener("click", () => go("materie", m));
+      box.append(b);
+    });
+  }
+
+  function renderMaterie(today) {
+    const m = currentSubj;
+    $("dHead").style.setProperty("--h", SUBJ[m]);
+    $("dName").textContent = m;
+    $("dHours").textContent = "Ore: " + hoursOf(m);
+    const nx = nextClassLabel(m, today);
+    $("dNext").textContent = nx ? "Următoarea oră: " + nx : "";
+
+    const lb = $("dLessons");
+    lb.replaceChildren();
+    if (!LECTII[m].length) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "Lecțiile apar aici în curând, pe măsură ce le pregătim după caietul și manualul tău.";
+      lb.append(p);
+    }
+    LECTII[m].forEach((l, i) => {
+      const r = document.createElement("div");
+      r.className = "lesson";
+      const n = document.createElement("span");
+      n.className = "n";
+      n.textContent = i + 1;
+      const t = document.createElement("div");
+      t.textContent = l.titlu;
+      r.append(n, t);
+      lb.append(r);
+    });
+
+    const tb = $("dTeme");
+    tb.replaceChildren();
+    const open = items.filter(i => i.subj === m && !i.done).sort((a, b) => a.due.localeCompare(b.due));
+    const done = items.filter(i => i.subj === m && i.done).sort((a, b) => b.due.localeCompare(a.due)).slice(0, 5);
+    if (!open.length && !done.length) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = `Nicio temă la ${m} deocamdată.`;
+      tb.append(p);
+    }
+    open.forEach(it => tb.append(itemEl(it, today, it.due <= today ? { late: true } : { showDue: true })));
+    done.forEach(it => tb.append(itemEl(it, today, { showDue: true })));
+  }
+
   function render() {
     const today = todayIso();
     renderHeader(today);
+    $("viewTeme").hidden = view !== "teme";
+    $("viewMaterii").hidden = view !== "materii";
+    $("viewMaterie").hidden = view !== "materie";
+    $("tabTeme").setAttribute("aria-selected", view === "teme" ? "true" : "false");
+    $("tabMaterii").setAttribute("aria-selected", view !== "teme" ? "true" : "false");
+    $("addBtn").textContent = view === "materie" ? `+ Temă la ${currentSubj}` : "+ Temă nouă";
+    if (view === "materii") renderMaterii(today);
+    if (view === "materie") renderMaterie(today);
+    renderTeme(today);
+  }
+
+  function renderTeme(today) {
     const next = nextSchoolDay(today);
 
     const forNext = items.filter(i => i.due === next).sort(undoneFirst);
@@ -548,9 +730,9 @@ textarea { min-height: 96px; resize: vertical; }
     $("photoLbl").textContent = src ? "Altă poză" : "Fă o poză la caiet";
   }
 
-  async function openForm(it) {
+  async function openForm(it, preset) {
     editing = it || null;
-    chosen = it ? it.subj : null;
+    chosen = it ? it.subj : (preset || null);
     pendingPhoto = undefined;
     delArmed = false;
     dueTouched = !!it;
@@ -566,12 +748,13 @@ textarea { min-height: 96px; resize: vertical; }
     $("fPhoto").value = "";
     setPreview(it && it.photoId ? await photoUrl(it.photoId) : null);
     markSubj();
+    if (!it && chosen) autoDue();
     $("overlay").hidden = false;
     (it ? $("fText") : grid.querySelector(".subj")).focus();
   }
   const closeForm = () => { $("overlay").hidden = true; $("addBtn").focus(); };
 
-  $("addBtn").addEventListener("click", () => openForm(null));
+  $("addBtn").addEventListener("click", () => openForm(null, view === "materie" ? currentSubj : null));
   $("cancelBtn").addEventListener("click", closeForm);
   $("overlay").addEventListener("click", e => { if (e.target === $("overlay")) closeForm(); });
   document.addEventListener("keydown", e => {
@@ -653,6 +836,7 @@ textarea { min-height: 96px; resize: vertical; }
     try { db = await openDB(); } catch { db = null; $("storeWarn").hidden = false; }
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
     try { items = await store.all(); } catch { items = []; }
+    fromHash();
     render();
     // reîmprospătare la miezul nopții / când tableta revine din standby
     document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
