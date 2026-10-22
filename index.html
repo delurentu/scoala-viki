@@ -205,6 +205,59 @@ textarea { min-height: 96px; resize: vertical; }
 .lesson { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 12px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
 .lesson .n { font-family: var(--f-display); font-weight: 800; font-size: 20px; color: var(--pen); min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
 
+.lesson { cursor: pointer; }
+.lesson .st { justify-self: end; font-weight: 800; font-size: 14px; color: var(--ok); }
+.lesson { grid-template-columns: auto 1fr auto; }
+.manual { justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--sheet); color: var(--ink); text-decoration: none; font-weight: 800; padding: 10px 16px; border-radius: 12px; margin-top: 6px; }
+
+/* Lecție */
+.lx { display: grid; gap: 16px; max-width: 820px; }
+.lx-steps { display: flex; gap: 6px; flex-wrap: wrap; }
+.lx-step { border: 2px solid var(--line); background: var(--sheet); color: var(--muted); border-radius: 999px; padding: 6px 14px; font-weight: 800; font-size: 15px; cursor: pointer; }
+.lx-step[aria-current="step"] { background: var(--pen); border-color: var(--pen); color: var(--pen-ink); }
+.lx-step.seen:not([aria-current="step"]) { border-color: var(--pen); color: var(--pen); }
+.card { background: var(--sheet); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); display: grid; gap: 10px; }
+.card h3 { font-family: var(--f-display); font-weight: 700; font-size: 24px; margin: 0; line-height: 1.15; }
+.card p { margin: 0; max-width: 62ch; }
+.big { font-family: var(--f-display); font-weight: 700; font-size: 30px; line-height: 1.2; }
+sup { font-size: .62em; line-height: 0; }
+.parts { display: flex; flex-wrap: wrap; gap: 10px; }
+.part { background: var(--paper); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
+.part b { color: var(--pen); }
+.rules { display: grid; gap: 8px; }
+.rule { display: grid; grid-template-columns: minmax(90px, auto) 1fr; gap: 12px; align-items: baseline; background: var(--paper); border-radius: 12px; padding: 10px 12px; }
+.rule .f { font-family: var(--f-display); font-weight: 800; font-size: 22px; color: var(--pen); }
+.sq { display: grid; grid-template-columns: repeat(4, 28px); gap: 3px; }
+.sq span { width: 28px; height: 28px; border-radius: 5px; background: hsl(220 var(--chip-s) var(--chip-l)); border: 1px solid var(--line); }
+.row { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
+.card .sub { color: var(--muted); font-weight: 700; font-size: 15px; }
+.lesson { border: 1px solid var(--line); width: 100%; }
+.ex-steps { display: grid; gap: 8px; }
+.ex-step { background: var(--paper); border-radius: 12px; padding: 10px 14px; font-weight: 700; font-size: 19px; }
+.ex-step.final { background: var(--ok-bg); color: var(--ok); font-family: var(--f-display); font-size: 24px; }
+.q { font-weight: 800; font-size: 20px; }
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
+.opt { border: 3px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 14px; padding: 14px; font-weight: 800; font-size: 22px; cursor: pointer; min-height: 60px; font-family: var(--f-display); }
+.opt.good { border-color: var(--ok); background: var(--ok-bg); }
+.opt.bad { border-color: var(--late); background: var(--late-bg); }
+.opt.sel { border-color: var(--pen); }
+.opt:disabled { cursor: default; }
+.numrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.numrow input { width: 140px; font: inherit; font-family: var(--f-display); font-weight: 800; font-size: 26px; padding: 8px 12px; border: 3px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); }
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.match .colm { display: grid; gap: 10px; }
+.fb { border-radius: 12px; padding: 12px 14px; font-weight: 700; }
+.fb.ok { background: var(--ok-bg); color: var(--ok); }
+.fb.no { background: var(--late-bg); color: var(--late); }
+.fb b { display: block; font-size: 18px; margin-bottom: 2px; }
+.lx-nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.score { font-family: var(--f-display); font-weight: 800; font-size: 34px; color: var(--ok); }
+.recap { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; font-weight: 700; font-size: 19px; }
+details.parent { background: var(--sheet); border: 1px dashed var(--line); border-radius: 18px; padding: 14px 18px; }
+details.parent summary { cursor: pointer; font-family: var(--f-display); font-weight: 700; font-size: 20px; }
+details.parent h4 { margin: 14px 0 6px; font-size: 16px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
 .viewer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.85); display: grid; place-items: center; padding: 20px; cursor: zoom-out; }
 .viewer img { max-width: 100%; max-height: 100%; border-radius: 8px; }
 
@@ -236,6 +289,7 @@ textarea { min-height: 96px; resize: vertical; }
       <h2 id="dName"></h2>
       <div class="info" id="dHours"></div>
       <div class="info" id="dNext"></div>
+      <a class="manual" id="dManual" target="_blank" rel="noopener" hidden>📘 Manualul meu</a>
     </div>
     <div class="cols">
       <section class="list main" aria-labelledby="hLessons">
@@ -249,6 +303,8 @@ textarea { min-height: 96px; resize: vertical; }
       </section>
     </div>
   </div>
+
+  <div id="viewLectie" class="lx" hidden></div>
 
   <div class="cols" id="viewTeme">
     <div class="col">
@@ -356,7 +412,100 @@ textarea { min-height: 96px; resize: vertical; }
   // Materiile din meniu (cu lecții interactive)
   const MAIN = ["Română", "Matematică", "Engleză", "Franceză", "Istorie", "Geografie", "Biologie", "Informatică", "Ed. Socială"];
   // Lecțiile se adaugă aici, în ordinea din școală: { titlu: "...", data: "2026-09-08" }
-  const LECTII = {};
+  const MANUALE = {
+    "Matematică": "https://manuale.edu.ro/manuale/Clasa%20a%20V-a/Matematica/UEFSQUxFTEEgNDU/A1255.pdf"
+  };
+  const LECTII = {
+    "Matematică": [
+      {
+        id: "puteri-1",
+        titlu: "Puterea unui număr natural",
+        sub: "Baza, exponentul, pătratul, cubul și puterile speciale",
+        invata: [
+          { h: "Ce este o putere?", html: `
+            <p>Când înmulțim <b>același număr</b> cu el însuși de mai multe ori, scriem mai scurt, ca putere:</p>
+            <div class="big">2 · 2 · 2 · 2 · 2 = 2<sup>5</sup> = 32</div>
+            <div class="parts">
+              <span class="part"><b>2</b> = baza: numărul care se înmulțește</span>
+              <span class="part"><b>5</b> = exponentul: de câte ori apare baza</span>
+            </div>
+            <p>Se citește „doi la puterea a cincea”. Atenție: 2<sup>5</sup> <b>nu</b> înseamnă 2 · 5.</p>` },
+          { h: "Pătratul și cubul", html: `
+            <div class="row">
+              <div class="sq" aria-label="Un pătrat de 4 pe 4 pătrățele">${"<span></span>".repeat(16)}</div>
+              <div style="display:grid;gap:8px;min-width:0">
+                <p><b>a<sup>2</sup></b> se citește „a la pătrat”. Un pătrat cu latura de 4 pătrățele are 4<sup>2</sup> = 4 · 4 = <b>16</b> pătrățele.</p>
+                <p><b>a<sup>3</sup></b> se citește „a la cub”. Un cub cu latura 3 e făcut din 3<sup>3</sup> = 3 · 3 · 3 = <b>27</b> de cubulețe.</p>
+              </div>
+            </div>` },
+          { h: "Puteri speciale", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">a<sup>1</sup> = a</span><span>Exponentul 1 lasă numărul neschimbat: 7<sup>1</sup> = 7.</span></div>
+              <div class="rule"><span class="f">a<sup>0</sup> = 1</span><span>Orice număr diferit de 0, la puterea 0, dă 1: 9<sup>0</sup> = 1. (0<sup>0</sup> nu are sens.)</span></div>
+              <div class="rule"><span class="f">1<sup>n</sup> = 1</span><span>1 înmulțit cu 1 rămâne 1: 1<sup>8</sup> = 1.</span></div>
+              <div class="rule"><span class="f">0<sup>n</sup> = 0</span><span>Pentru n diferit de 0: 0<sup>4</sup> = 0.</span></div>
+              <div class="rule"><span class="f">10<sup>n</sup></span><span>1 urmat de n zerouri: 10<sup>3</sup> = 1 000.</span></div>
+            </div>` },
+          { h: "Din sport", html: `
+            <p>La un turneu eliminatoriu, după fiecare tur rămân jumătate dintre echipe. Dacă pornesc <b>16 = 2<sup>4</sup></b> echipe, turneul are <b>4 tururi</b>: 16 → 8 → 4 → 2 → 1 câștigătoare.</p>` }
+        ],
+        exemple: [
+          { titlu: "Calculează 3<sup>4</sup>", pasi: [
+            "Baza e 3, exponentul e 4: îl înmulțim pe 3 cu el însuși de 4 ori → 3 · 3 · 3 · 3",
+            "3 · 3 = 9",
+            "9 · 3 = 27",
+            "27 · 3 = 81",
+            "3<sup>4</sup> = 81"
+          ] },
+          { titlu: "Calculează 2 + 3<sup>2</sup>", pasi: [
+            "Puterile se calculează primele, înaintea înmulțirii și adunării",
+            "3<sup>2</sup> = 3 · 3 = 9",
+            "2 + 9 = 11",
+            "2 + 3<sup>2</sup> = 11"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "În 2<sup>5</sup>, care este <b>baza</b>?", opt: ["2", "5", "10", "32"], ok: 0,
+            ex: "Baza este numărul care se înmulțește: 2. Exponentul 5 arată de câte ori." },
+          { tip: "numar", q: "Scrie ca putere: 3 · 3 · 3 · 3 = 3<sup>?</sup>", ok: 4,
+            ex: "Numărul 3 apare de 4 ori, deci exponentul este 4: 3<sup>4</sup>." },
+          { tip: "numar", q: "Calculează: 2<sup>4</sup> = ?", ok: 16,
+            ex: "2<sup>4</sup> = 2 · 2 · 2 · 2 = 16. Greșeala frecventă e 2 · 4 = 8." },
+          { tip: "potrivire", q: "Potrivește fiecare putere cu rezultatul ei.", perechi: [
+              ["5<sup>2</sup>", "25"], ["4<sup>3</sup>", "64"], ["7<sup>1</sup>", "7"], ["9<sup>0</sup>", "1"], ["10<sup>3</sup>", "1000"]
+            ],
+            ex: "5<sup>2</sup> = 25, 4<sup>3</sup> = 64, 7<sup>1</sup> = 7, 9<sup>0</sup> = 1, 10<sup>3</sup> = 1000." },
+          { tip: "alege", q: "Care este mai mare: 2<sup>3</sup> sau 3<sup>2</sup>?", opt: ["2<sup>3</sup>", "3<sup>2</sup>", "Sunt egale"], ok: 1,
+            ex: "2<sup>3</sup> = 8 și 3<sup>2</sup> = 9, deci 3<sup>2</sup> este mai mare." }
+        ],
+        recap: [
+          "a<sup>n</sup> înseamnă a înmulțit cu el însuși de n ori. Baza se înmulțește, exponentul numără.",
+          "a<sup>2</sup> e „la pătrat”, a<sup>3</sup> e „la cub”.",
+          "a<sup>1</sup> = a, a<sup>0</sup> = 1, 1<sup>n</sup> = 1, iar 10<sup>n</sup> e 1 urmat de n zerouri."
+        ],
+        parinte: {
+          stie: [
+            "Să recunoască baza și exponentul și să scrie o înmulțire repetată ca putere.",
+            "Să calculeze puteri mici (până la aproximativ 10<sup>3</sup>, 2<sup>6</sup>, 3<sup>4</sup>).",
+            "Puterile speciale: exponent 1, exponent 0, baza 1, baza 0, baza 10.",
+            "Că puterile se calculează înaintea înmulțirii și adunării."
+          ],
+          greseli: [
+            "Înmulțește baza cu exponentul: 2<sup>4</sup> = 8 în loc de 16.",
+            "Crede că a<sup>0</sup> = 0. Corect: a<sup>0</sup> = 1.",
+            "Inversează baza cu exponentul: 2<sup>3</sup> și 3<sup>2</sup> nu sunt egale (8 și 9).",
+            "Face adunarea înaintea puterii: 2 + 3<sup>2</sup> = 25 în loc de 11."
+          ],
+          intrebari: [
+            "„Ce înseamnă 3 la puterea a 4-a? Scrie-mi-o ca înmulțire.”",
+            "„Cât face 5<sup>0</sup>? Dar 0<sup>5</sup>?”",
+            "„Câte zerouri are 10<sup>6</sup>?”",
+            "„Dacă la un turneu sunt 32 de echipe, câte tururi are? Scrie 32 ca putere a lui 2.”"
+          ]
+        }
+      }
+    ]
+  };
   MAIN.forEach(m => { if (!LECTII[m]) LECTII[m] = []; });
   const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
   const START = "2026-09-07", END = "2027-06-18";
@@ -545,25 +694,235 @@ textarea { min-height: 96px; resize: vertical; }
   }
 
   // ---------- Navigare: Teme / Materii / o materie ----------
-  let view = "teme", currentSubj = null;
-  function go(v, subj) {
-    view = v; currentSubj = subj || null;
-    const token = v === "materie" ? slug(subj) : v;
+  let view = "teme", currentSubj = null, currentLesson = null, lxBuilt = null;
+  function go(v, subj, lesson) {
+    view = v; currentSubj = subj || null; currentLesson = lesson || null;
+    if (v === "lectie") lxBuilt = null;
+    const token = v === "materie" ? slug(subj) : v === "lectie" ? lesson.id : v;
     try { if (location.hash !== "#" + token) history.replaceState(null, "", "#" + token); } catch {}
     render();
     window.scrollTo(0, 0);
   }
+  function findLesson(id) {
+    for (const m of MAIN) { const l = LECTII[m].find(x => x.id === id); if (l) return [m, l]; }
+    return null;
+  }
   function fromHash() {
     const h = (location.hash || "").slice(1);
     const s = MAIN.find(m => slug(m) === h);
-    if (s) { view = "materie"; currentSubj = s; }
+    const fl = findLesson(h);
+    if (fl) { view = "lectie"; currentSubj = fl[0]; currentLesson = fl[1]; }
+    else if (s) { view = "materie"; currentSubj = s; }
     else if (h === "materii") view = "materii";
     else view = "teme";
   }
   $("tabTeme").addEventListener("click", () => go("teme"));
   $("tabMaterii").addEventListener("click", () => go("materii"));
   $("backBtn").addEventListener("click", () => go("materii"));
-  window.addEventListener("hashchange", () => { fromHash(); render(); });
+  window.addEventListener("hashchange", () => { const was = currentLesson; fromHash(); if (currentLesson !== was) lxBuilt = null; render(); });
+
+  // ---------- Progres lecții (pe tabletă) ----------
+  const progKey = id => "lectie:" + id;
+  const getProg = id => { try { return JSON.parse(localStorage.getItem(progKey(id)) || "null"); } catch { return null; } };
+  const setProg = (id, v) => { try { localStorage.setItem(progKey(id), JSON.stringify(v)); } catch {} };
+
+  // ---------- Lecția interactivă ----------
+  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+  const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+  function buildLectie() {
+    const L = currentLesson, m = currentSubj;
+    const root = $("viewLectie");
+    root.replaceChildren();
+    const st = { step: 0, seen: new Set([0]), ex: 0, first: L.exercitii.map(() => null) };
+
+    const back = el("button", "back", "← " + m);
+    back.type = "button";
+    back.addEventListener("click", () => go("materie", m));
+    const head = el("div", "detail-head");
+    head.style.setProperty("--h", SUBJ[m]);
+    head.append(el("h2", null, L.titlu), el("div", "info", L.sub));
+
+    const STEPS = ["Învață", "Exemple", "Exersează", "Recapitulare"];
+    const nav = el("nav", "lx-steps");
+    nav.setAttribute("aria-label", "Pașii lecției");
+    const stage = el("div", "lx");
+    const foot = el("div", "lx-nav");
+    const prevB = el("button", "btn ghost", "← Înapoi"); prevB.type = "button";
+    const nextB = el("button", "btn primary", "Mai departe →"); nextB.type = "button";
+    foot.append(prevB, nextB);
+
+    function drawNav() {
+      nav.replaceChildren();
+      STEPS.forEach((s, i) => {
+        const b = el("button", "lx-step" + (st.seen.has(i) ? " seen" : ""), `${i + 1}. ${s}`);
+        b.type = "button";
+        if (i === st.step) b.setAttribute("aria-current", "step");
+        b.addEventListener("click", () => goStep(i));
+        nav.append(b);
+      });
+    }
+    function goStep(i) {
+      st.step = i; st.seen.add(i);
+      drawNav(); drawStage();
+      prevB.hidden = i === 0;
+      nextB.hidden = i === STEPS.length - 1;
+      root.scrollIntoView({ block: "start" });
+    }
+    prevB.addEventListener("click", () => goStep(st.step - 1));
+    nextB.addEventListener("click", () => goStep(st.step + 1));
+
+    function drawStage() {
+      stage.replaceChildren();
+      if (st.step === 0) L.invata.forEach(c => { const k = el("div", "card"); k.append(el("h3", null, c.h)); k.insertAdjacentHTML("beforeend", c.html); stage.append(k); });
+      if (st.step === 1) L.exemple.forEach(x => {
+        const k = el("div", "card");
+        k.append(el("h3", null, x.titlu));
+        const list = el("div", "ex-steps");
+        let shown = 1;
+        const more = el("button", "btn ghost", "Arată pasul următor"); more.type = "button";
+        const draw = () => {
+          list.replaceChildren();
+          x.pasi.slice(0, shown).forEach((p, i) => list.append(el("div", "ex-step" + (i === x.pasi.length - 1 ? " final" : ""), p)));
+          more.hidden = shown >= x.pasi.length;
+        };
+        more.addEventListener("click", () => { shown++; draw(); });
+        draw();
+        k.append(list, more);
+        stage.append(k);
+      });
+      if (st.step === 2) drawExercise();
+      if (st.step === 3) drawRecap();
+    }
+
+    function feedback(box, ok, title, html) {
+      box.replaceChildren();
+      const f = el("div", "fb " + (ok ? "ok" : "no"));
+      f.append(el("b", null, title));
+      if (html) f.insertAdjacentHTML("beforeend", html);
+      box.append(f);
+    }
+
+    function drawExercise() {
+      const n = L.exercitii.length;
+      if (st.ex >= n) {
+        const good = st.first.filter(Boolean).length;
+        const k = el("div", "card");
+        k.append(el("h3", null, "Exercițiile sunt gata!"), el("div", "score", `${good} din ${n}`), el("p", null, good === n ? "Toate corecte din prima. Bravo!" : "Corecte din prima încercare. Treci la recapitulare."));
+        const again = el("button", "btn ghost", "Reia exercițiile"); again.type = "button";
+        again.addEventListener("click", () => { st.ex = 0; st.first = L.exercitii.map(() => null); drawStage(); });
+        k.append(again);
+        stage.append(k);
+        return;
+      }
+      const X = L.exercitii[st.ex];
+      const k = el("div", "card");
+      k.append(el("div", "sub", `Exercițiul ${st.ex + 1} din ${n}`), el("div", "q", X.q));
+      const fb = el("div");
+      const nextEx = el("button", "btn primary", st.ex === n - 1 ? "Vezi rezultatul →" : "Următorul exercițiu →");
+      nextEx.type = "button"; nextEx.hidden = true;
+      nextEx.addEventListener("click", () => { st.ex++; drawStage(); });
+      let tries = 0;
+      const finish = ok => {
+        if (st.first[st.ex] === null) st.first[st.ex] = ok && tries === 1;
+        nextEx.hidden = false;
+      };
+      const miss = (onReveal) => {
+        if (tries === 1) feedback(fb, false, "Nu chiar. Mai încearcă!", "");
+        else { feedback(fb, false, "Uite cum se face:", X.ex); onReveal && onReveal(); st.first[st.ex] = false; finish(false); }
+      };
+
+      if (X.tip === "alege") {
+        const opts = el("div", "opts");
+        const btns = X.opt.map((o, i) => {
+          const b = el("button", "opt", o); b.type = "button";
+          b.addEventListener("click", () => {
+            tries++;
+            if (i === X.ok) { b.classList.add("good"); btns.forEach(x => x.disabled = true); feedback(fb, true, "Corect!", X.ex); finish(true); }
+            else { b.classList.add("bad"); b.disabled = true; miss(() => { btns[X.ok].classList.add("good"); btns.forEach(x => x.disabled = true); }); }
+          });
+          opts.append(b); return b;
+        });
+        k.append(opts);
+      }
+      if (X.tip === "numar") {
+        const row = el("div", "numrow");
+        const inp = document.createElement("input");
+        inp.type = "text"; inp.inputMode = "numeric"; inp.id = "ans-" + L.id + "-" + st.ex; inp.autocomplete = "off";
+        inp.setAttribute("aria-label", "Răspunsul tău");
+        const chk = el("button", "btn primary", "Verifică"); chk.type = "button";
+        const check = () => {
+          const v = inp.value.trim().replace(/\s/g, "");
+          if (!v) return;
+          tries++;
+          if (Number(v) === X.ok) { inp.disabled = true; chk.disabled = true; feedback(fb, true, "Corect!", X.ex); finish(true); }
+          else miss(() => { inp.value = X.ok; inp.disabled = true; chk.disabled = true; });
+        };
+        chk.addEventListener("click", check);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+        row.append(inp, chk);
+        k.append(row);
+        setTimeout(() => inp.focus(), 50);
+      }
+      if (X.tip === "potrivire") {
+        const wrap = el("div", "match");
+        const cl = el("div", "colm"), cr = el("div", "colm");
+        let sel = null, left = X.perechi.length, mistakes = 0;
+        const lb = X.perechi.map((p, i) => { const b = el("button", "opt", p[0]); b.type = "button"; b.dataset.i = i; cl.append(b); return b; });
+        const rb = shuffle(X.perechi.map((p, i) => [p[1], i])).map(([t, i]) => { const b = el("button", "opt", t); b.type = "button"; b.dataset.i = i; cr.append(b); return b; });
+        lb.forEach(b => b.addEventListener("click", () => { lb.forEach(x => x.classList.remove("sel")); sel = b; b.classList.add("sel"); }));
+        rb.forEach(b => b.addEventListener("click", () => {
+          if (!sel) { feedback(fb, false, "Alege întâi o putere din stânga.", ""); return; }
+          if (sel.dataset.i === b.dataset.i) {
+            sel.classList.remove("sel"); sel.classList.add("good"); b.classList.add("good"); sel.disabled = b.disabled = true; sel = null; left--;
+            fb.replaceChildren();
+            if (!left) { tries = mistakes ? 2 : 1; feedback(fb, true, mistakes ? "Gata, toate potrivite!" : "Corect, toate din prima!", X.ex); finish(!mistakes); }
+          } else {
+            mistakes++;
+            b.classList.add("bad"); setTimeout(() => b.classList.remove("bad"), 600);
+            feedback(fb, false, "Nu se potrivesc. Calculează puterea și mai încearcă.", "");
+          }
+        }));
+        wrap.append(cl, cr);
+        k.append(wrap);
+      }
+      k.append(fb, nextEx);
+      stage.append(k);
+    }
+
+    function drawRecap() {
+      const k = el("div", "card");
+      k.append(el("h3", null, "Ce ținem minte"));
+      const ul = el("ol", "recap");
+      L.recap.forEach(r => ul.append(el("li", null, r)));
+      k.append(ul);
+      const prev = getProg(L.id);
+      const good = st.first.filter(Boolean).length, n = L.exercitii.length;
+      const doneB = el("button", "btn primary", "Am terminat lecția ✓"); doneB.type = "button";
+      doneB.addEventListener("click", () => {
+        const answered = st.first.some(v => v !== null);
+        const score = answered ? good : (prev ? prev.best : 0);
+        setProg(L.id, { best: Math.max(score, prev ? prev.best : 0), total: n, data: todayIso() });
+        go("materie", m);
+      });
+      k.append(doneB);
+      stage.append(k);
+    }
+
+    const par = el("details", "parent");
+    par.append(el("summary", null, "Pentru părinte"));
+    const P = L.parinte;
+    [["Ce trebuie să știe", P.stie], ["Greșeli frecvente", P.greseli], ["Întrebări pe care i le poți pune", P.intrebari]].forEach(([t, arr]) => {
+      par.append(el("h4", null, t));
+      const ul = el("ul");
+      arr.forEach(x => ul.append(el("li", null, x)));
+      par.append(ul);
+    });
+
+    root.append(back, head, nav, stage, foot, par);
+    goStep(0);
+    lxBuilt = L.id;
+  }
 
   function hoursOf(subj) {
     const parts = [];
@@ -627,15 +986,27 @@ textarea { min-height: 96px; resize: vertical; }
       p.textContent = "Lecțiile apar aici în curând, pe măsură ce le pregătim după caietul și manualul tău.";
       lb.append(p);
     }
+    const man = $("dManual");
+    if (MANUALE[m]) { man.href = MANUALE[m]; man.hidden = false; } else man.hidden = true;
+
     LECTII[m].forEach((l, i) => {
-      const r = document.createElement("div");
+      const r = document.createElement("button");
+      r.type = "button";
       r.className = "lesson";
+      r.style.textAlign = "left"; r.style.font = "inherit"; r.style.color = "inherit";
       const n = document.createElement("span");
       n.className = "n";
       n.textContent = i + 1;
       const t = document.createElement("div");
+      t.style.fontWeight = "700";
       t.textContent = l.titlu;
-      r.append(n, t);
+      const s = document.createElement("span");
+      s.className = "st";
+      const p = getProg(l.id);
+      s.textContent = p ? `✓ ${p.best}/${p.total}` : "Începe →";
+      if (!p) s.style.color = "var(--pen)";
+      r.append(n, t, s);
+      r.addEventListener("click", () => go("lectie", m, l));
       lb.append(r);
     });
 
@@ -659,6 +1030,9 @@ textarea { min-height: 96px; resize: vertical; }
     $("viewTeme").hidden = view !== "teme";
     $("viewMaterii").hidden = view !== "materii";
     $("viewMaterie").hidden = view !== "materie";
+    $("viewLectie").hidden = view !== "lectie";
+    $("addBtn").hidden = view === "lectie";
+    if (view === "lectie" && lxBuilt !== (currentLesson && currentLesson.id)) buildLectie();
     $("tabTeme").setAttribute("aria-selected", view === "teme" ? "true" : "false");
     $("tabMaterii").setAttribute("aria-selected", view !== "teme" ? "true" : "false");
     $("addBtn").textContent = view === "materie" ? `+ Temă la ${currentSubj}` : "+ Temă nouă";
