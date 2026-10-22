@@ -1,0 +1,649 @@
+<title>Temele Vikăi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: caiet cu pătrățele — un antet cu ziua de mâine, apoi coloane de liste (Pentru mâine | Primite azi + Restante) care se stivuiesc pe ecran îngust */
+:root {
+  --paper: #F6F8FC;
+  --sheet: #FFFFFF;
+  --grid: #E1E8F3;
+  --ink: #1B2A4A;
+  --muted: #5B6B88;
+  --line: #D3DCEA;
+  --pen: #2A4FD6;
+  --pen-ink: #FFFFFF;
+  --marker: #FFE45C;
+  --marker-ink: #3A3000;
+  --late: #C2412D;
+  --late-bg: #FCEBE7;
+  --ok: #1F8A5B;
+  --ok-bg: #E3F4EC;
+  --chip-s: 75%;
+  --chip-l: 88%;
+  --chip-ink: #1B2A4A;
+  --shadow: 0 1px 2px rgba(27,42,74,.06), 0 4px 14px rgba(27,42,74,.06);
+  --f-display: "Baloo 2", "Nunito", system-ui, sans-serif;
+  --f-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111726; --sheet: #182035; --grid: #1C2539; --ink: #E6ECF7; --muted: #97A5C0; --line: #2A3550;
+    --pen: #8FA8FF; --pen-ink: #0E1530; --marker: #E8C93A; --marker-ink: #2B2300;
+    --late: #FF8A73; --late-bg: #3A1F1C; --ok: #5FD39B; --ok-bg: #16352A;
+    --chip-s: 40%; --chip-l: 30%; --chip-ink: #EEF2FA;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111726; --sheet: #182035; --grid: #1C2539; --ink: #E6ECF7; --muted: #97A5C0; --line: #2A3550;
+  --pen: #8FA8FF; --pen-ink: #0E1530; --marker: #E8C93A; --marker-ink: #2B2300;
+  --late: #FF8A73; --late-bg: #3A1F1C; --ok: #5FD39B; --ok-bg: #16352A;
+  --chip-s: 40%; --chip-l: 30%; --chip-ink: #EEF2FA;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 120px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 20px; }
+
+header.top { display: grid; gap: 10px; }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(30px, 5vw, 42px); line-height: 1; margin: 0; letter-spacing: -.01em; }
+.today { color: var(--muted); font-weight: 700; font-size: 18px; }
+.banner { background: var(--marker); color: var(--marker-ink); font-weight: 800; padding: 10px 14px; border-radius: 12px; }
+.tomorrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tomorrow .lbl { font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-right: 4px; }
+
+.chip {
+  --h: 220;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: hsl(var(--h) var(--chip-s) var(--chip-l));
+  color: var(--chip-ink);
+  font-weight: 800; font-size: 15px;
+  padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+}
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 20px; align-items: start; }
+.col { display: grid; gap: 20px; min-width: 0; }
+
+section.list { background: var(--sheet); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 16px; display: grid; gap: 12px; min-width: 0; }
+section.list.main { border-top: 6px solid var(--marker); }
+section.list.late { border-top: 6px solid var(--late); }
+.list h2 { font-family: var(--f-display); font-weight: 700; font-size: 24px; margin: 0; line-height: 1.1; text-wrap: balance; }
+.list .sub { color: var(--muted); font-weight: 700; font-size: 15px; }
+.list-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.progress { font-weight: 800; font-size: 15px; color: var(--ok); font-variant-numeric: tabular-nums; }
+.empty { color: var(--muted); font-weight: 600; padding: 6px 2px; }
+
+.items { display: grid; gap: 10px; }
+.item { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 10px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+.item.done { background: var(--ok-bg); border-color: transparent; }
+.item.done .what { text-decoration: line-through; color: var(--muted); }
+.item .body { min-width: 0; display: grid; gap: 4px; cursor: pointer; }
+.item .what { font-weight: 700; overflow-wrap: anywhere; }
+.item .meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--muted); font-size: 14px; font-weight: 700; }
+.item .meta .lateTag { color: var(--late); }
+.check {
+  width: 52px; height: 52px; border-radius: 14px; border: 3px solid var(--pen); background: var(--sheet);
+  display: grid; place-items: center; cursor: pointer; color: var(--pen-ink); padding: 0;
+}
+.check svg { width: 28px; height: 28px; opacity: 0; transition: opacity .15s; }
+.item.done .check { background: var(--ok); border-color: var(--ok); }
+.item.done .check svg { opacity: 1; }
+.thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; border: 1px solid var(--line); cursor: zoom-in; background: var(--sheet); }
+
+details.later summary { cursor: pointer; font-family: var(--f-display); font-weight: 700; font-size: 20px; list-style: none; }
+details.later summary::-webkit-details-marker { display: none; }
+details.later summary::before { content: "▸ "; color: var(--muted); }
+details.later[open] summary::before { content: "▾ "; }
+details.later .items { margin-top: 12px; }
+
+.foot { color: var(--muted); font-size: 14px; font-weight: 600; text-align: center; }
+.warn { background: var(--late-bg); color: var(--late); font-weight: 800; padding: 10px 14px; border-radius: 12px; }
+
+button { font: inherit; }
+.btn { border: 0; border-radius: 14px; padding: 14px 20px; font-weight: 800; font-size: 18px; cursor: pointer; min-height: 52px; }
+.btn.primary { background: var(--pen); color: var(--pen-ink); }
+.btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); }
+.btn.danger { background: transparent; color: var(--late); border: 2px solid var(--late); }
+.btn.danger.sure { background: var(--late); color: var(--sheet); }
+button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 3px solid var(--pen); outline-offset: 2px; }
+
+.fab {
+  position: fixed; z-index: 20;
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 6px 20px rgba(42,79,214,.35);
+  font-size: 20px; padding: 16px 24px; border-radius: 999px;
+  font-family: var(--f-display);
+}
+
+/* Foaia de adăugare */
+.overlay { position: fixed; inset: 0; z-index: 30; background: rgba(10,16,32,.45); display: grid; place-items: end center; padding: 0; }
+.sheet {
+  background: var(--sheet); color: var(--ink); width: 100%; max-width: 760px; max-height: 92%; overflow-y: auto;
+  border-radius: 22px 22px 0 0; display: grid; gap: 18px;
+  padding-block: 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 700px) { .overlay { place-items: center; } .sheet { border-radius: 22px; max-height: 90%; } }
+.sheet h3 { font-family: var(--f-display); font-weight: 800; font-size: 26px; margin: 0; }
+.field { display: grid; gap: 8px; }
+.field > .lbl { font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.subjects { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.subj {
+  --h: 220; border: 3px solid transparent; border-radius: 14px; padding: 12px 8px; min-height: 56px;
+  background: hsl(var(--h) var(--chip-s) var(--chip-l)); color: var(--chip-ink); font-weight: 800; font-size: 16px; cursor: pointer;
+}
+.subj[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 2px var(--sheet); }
+textarea, input[type="date"] {
+  width: 100%; font: inherit; font-size: 18px; color: var(--ink); background: var(--paper);
+  border: 2px solid var(--line); border-radius: 12px; padding: 12px;
+}
+textarea { min-height: 96px; resize: vertical; }
+.row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.hint { color: var(--muted); font-size: 14px; font-weight: 700; }
+.photoRow { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.photoBtn { display: inline-flex; align-items: center; gap: 8px; }
+.photoBtn input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.prev { width: 96px; height: 96px; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; }
+.actions .right { display: flex; gap: 10px; margin-left: auto; }
+.err { color: var(--late); font-weight: 800; }
+
+.viewer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.85); display: grid; place-items: center; padding: 20px; cursor: zoom-out; }
+.viewer img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Temele Vikăi</h1>
+    <div class="today" id="today"></div>
+    <div class="banner" id="vacBanner" hidden></div>
+    <div class="tomorrow" id="tomorrow"></div>
+  </header>
+
+  <div class="warn" id="storeWarn" hidden>Temele nu se pot salva în acest browser (poate e o fereastră privată). Ce adaugi acum se pierde la închidere.</div>
+
+  <div class="cols">
+    <div class="col">
+      <section class="list main" aria-labelledby="hNext">
+        <div class="list-head">
+          <h2 id="hNext">Pentru mâine</h2>
+          <span class="progress" id="progNext"></span>
+        </div>
+        <div class="sub" id="subNext"></div>
+        <div class="items" id="listNext"></div>
+      </section>
+    </div>
+    <div class="col">
+      <section class="list" aria-labelledby="hToday" id="secToday">
+        <div class="list-head"><h2 id="hToday">Primite azi</h2></div>
+        <div class="sub">Cu termen mai târziu</div>
+        <div class="items" id="listToday"></div>
+      </section>
+      <section class="list late" aria-labelledby="hLate" id="secLate" hidden>
+        <div class="list-head"><h2 id="hLate">Restante</h2></div>
+        <div class="sub">Termenul a trecut și nu sunt bifate</div>
+        <div class="items" id="listLate"></div>
+      </section>
+      <section class="list" id="secLater" hidden>
+        <details class="later">
+          <summary id="sumLater">Mai târziu</summary>
+          <div class="items" id="listLater"></div>
+        </details>
+      </section>
+    </div>
+  </div>
+
+  <p class="foot">Temele se salvează doar pe această tabletă.</p>
+</div>
+
+<button class="btn primary fab" id="addBtn" type="button">+ Temă nouă</button>
+
+<div class="overlay" id="overlay" hidden>
+  <form class="sheet" id="form" role="dialog" aria-modal="true" aria-labelledby="formTitle" novalidate>
+    <h3 id="formTitle">Temă nouă</h3>
+
+    <div class="field">
+      <span class="lbl">Materia</span>
+      <div class="subjects" id="subjGrid"></div>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="fText">Ce s-a dat?</label>
+      <textarea id="fText" placeholder="ex. 3, 4 și 5 de la pagina 42"></textarea>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label class="lbl" for="fGiven">Primită pe</label>
+        <input type="date" id="fGiven">
+      </div>
+      <div class="field">
+        <label class="lbl" for="fDue">De predat pe</label>
+        <input type="date" id="fDue">
+        <span class="hint" id="dueHint"></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="lbl">Poză (opțional)</span>
+      <div class="photoRow">
+        <label class="btn ghost photoBtn" for="fPhoto">📷 <span id="photoLbl">Fă o poză la caiet</span>
+          <input type="file" id="fPhoto" accept="image/*" capture="environment">
+        </label>
+        <img class="prev" id="prev" alt="Poza temei" hidden>
+        <button class="btn ghost" type="button" id="rmPhoto" hidden>Scoate poza</button>
+      </div>
+    </div>
+
+    <div class="err" id="formErr" hidden></div>
+
+    <div class="actions">
+      <button class="btn danger" type="button" id="delBtn" hidden>Șterge</button>
+      <div class="right">
+        <button class="btn ghost" type="button" id="cancelBtn">Renunță</button>
+        <button class="btn primary" type="submit" id="saveBtn">Salvează</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="viewer" id="viewer" hidden><img id="viewerImg" alt="Poza temei"></div>
+
+<script>
+(() => {
+  // ---------- Orar și calendar (clasa a V-a, Dolj, 2026–2027) ----------
+  const SUBJ = {
+    "Matematică": 220, "Română": 350, "Franceză": 265, "Engleză": 195, "Istorie": 30,
+    "Geografie": 140, "Biologie": 95, "Religie": 45, "Informatică": 180, "Ed. Muzicală": 300,
+    "Ed. Socială": 170, "Ed. Tehnologică": 60, "Ed. Plastică": 320, "Dirigenție": 0
+  };
+  // 1 = luni ... 5 = vineri
+  const ORAR = {
+    1: ["Matematică", "Franceză", "Istorie"],
+    2: ["Franceză", "Engleză", "Română", "Informatică", "Ed. Muzicală"],
+    3: ["Română", "Geografie", "Religie"],
+    4: ["Matematică", "Istorie", "Română", "Engleză", "Ed. Tehnologică", "Ed. Plastică"],
+    5: ["Biologie", "Matematică", "Dirigenție", "Ed. Socială"]
+  };
+  const START = "2026-09-07", END = "2027-06-18";
+  const VACANTE = [
+    ["2026-10-24", "2026-11-01", "Vacanța de toamnă"],
+    ["2026-12-23", "2027-01-10", "Vacanța de iarnă"],
+    ["2027-02-15", "2027-02-21", "Vacanța de schi"],
+    ["2027-04-24", "2027-05-04", "Vacanța de Paște"],
+    ["2027-06-19", "2027-09-05", "Vacanța de vară"]
+  ];
+  const LIBER = ["2026-11-30", "2026-12-01", "2027-06-01"];
+
+  const ZILE = ["duminică", "luni", "marți", "miercuri", "joi", "vineri", "sâmbătă"];
+  const LUNI = ["ianuarie", "februarie", "martie", "aprilie", "mai", "iunie", "iulie", "august", "septembrie", "octombrie", "noiembrie", "decembrie"];
+
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
+  const todayIso = () => iso(new Date());
+  const vacationOf = s => VACANTE.find(([a, b]) => s >= a && s <= b) || null;
+  const isSchoolDay = s => {
+    const wd = parse(s).getDay();
+    return wd >= 1 && wd <= 5 && s >= START && s <= END && !vacationOf(s) && !LIBER.includes(s);
+  };
+  const nextSchoolDay = from => {
+    let s = addDays(from, 1);
+    for (let i = 0; i < 400; i++, s = addDays(s, 1)) if (isSchoolDay(s)) return s;
+    return null;
+  };
+  const dueFor = (subj, given) => {
+    let s = addDays(given, 1);
+    for (let i = 0; i < 400; i++, s = addDays(s, 1)) {
+      if (isSchoolDay(s) && (ORAR[parse(s).getDay()] || []).includes(subj)) return s;
+    }
+    return nextSchoolDay(given);
+  };
+  const longDate = s => { const d = parse(s); return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()]}`; };
+  const shortDate = s => { const d = parse(s); return `${ZILE[d.getDay()]}, ${d.getDate()} ${LUNI[d.getMonth()].slice(0, 3)}.`; };
+  const dayWord = (s, today) => {
+    if (s === addDays(today, 1)) return "mâine";
+    const diff = (parse(s) - parse(today)) / 864e5;
+    return diff > 1 && diff < 7 ? ZILE[parse(s).getDay()] : shortDate(s);
+  };
+
+  // ---------- Salvare pe tabletă (IndexedDB) ----------
+  let db = null;
+  const mem = { teme: new Map(), poze: new Map() };
+  function openDB() {
+    return new Promise((res, rej) => {
+      try {
+        const r = indexedDB.open("teme-viki", 1);
+        r.onupgradeneeded = () => {
+          const d = r.result;
+          if (!d.objectStoreNames.contains("teme")) d.createObjectStore("teme", { keyPath: "id" });
+          if (!d.objectStoreNames.contains("poze")) d.createObjectStore("poze");
+        };
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => rej(r.error);
+      } catch (e) { rej(e); }
+    });
+  }
+  function req(store, mode, fn) {
+    if (!db) return Promise.resolve(fn(null));
+    return new Promise((res, rej) => {
+      try {
+        const tx = db.transaction(store, mode);
+        const r = fn(tx.objectStore(store));
+        tx.oncomplete = () => res(r && "result" in r ? r.result : undefined);
+        tx.onerror = () => rej(tx.error);
+      } catch (e) { rej(e); }
+    });
+  }
+  const store = {
+    all: async () => db ? await req("teme", "readonly", s => s.getAll()) : [...mem.teme.values()],
+    put: async t => db ? req("teme", "readwrite", s => s.put(t)) : mem.teme.set(t.id, t),
+    del: async id => db ? req("teme", "readwrite", s => s.delete(id)) : mem.teme.delete(id),
+    getPhoto: async id => db ? await req("poze", "readonly", s => s.get(id)) : mem.poze.get(id),
+    putPhoto: async (id, blob) => db ? req("poze", "readwrite", s => s.put(blob, id)) : mem.poze.set(id, blob),
+    delPhoto: async id => db ? req("poze", "readwrite", s => s.delete(id)) : mem.poze.delete(id)
+  };
+
+  let items = [];
+  const urlCache = new Map();
+  async function photoUrl(id) {
+    if (urlCache.has(id)) return urlCache.get(id);
+    try {
+      const blob = await store.getPhoto(id);
+      if (!blob) return null;
+      const u = URL.createObjectURL(blob);
+      urlCache.set(id, u);
+      return u;
+    } catch { return null; }
+  }
+
+  // ---------- Afișare ----------
+  const $ = id => document.getElementById(id);
+  const chip = name => {
+    const c = document.createElement("span");
+    c.className = "chip";
+    c.style.setProperty("--h", SUBJ[name] ?? 220);
+    c.textContent = name;
+    return c;
+  };
+
+  function renderHeader(today) {
+    $("today").textContent = "Azi e " + longDate(today);
+    const vac = vacationOf(today);
+    const vb = $("vacBanner");
+    if (vac) { vb.hidden = false; vb.textContent = `${vac[2]} — până ${longDate(vac[1])}`; }
+    else vb.hidden = true;
+
+    const next = nextSchoolDay(today);
+    const t = $("tomorrow");
+    t.replaceChildren();
+    if (!next) return;
+    const lbl = document.createElement("span");
+    lbl.className = "lbl";
+    lbl.textContent = (next === addDays(today, 1) ? "Mâine ai" : `${ZILE[parse(next).getDay()][0].toUpperCase() + ZILE[parse(next).getDay()].slice(1)} ai`) + ":";
+    t.append(lbl, ...ORAR[parse(next).getDay()].map(chip));
+  }
+
+  function itemEl(it, today, opts = {}) {
+    const el = document.createElement("div");
+    el.className = "item" + (it.done ? " done" : "");
+
+    const cb = document.createElement("button");
+    cb.type = "button";
+    cb.className = "check";
+    cb.setAttribute("aria-pressed", it.done ? "true" : "false");
+    cb.setAttribute("aria-label", (it.done ? "Debifează: " : "Bifează ca făcută: ") + it.subj);
+    cb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+    cb.addEventListener("click", async () => {
+      it.done = !it.done;
+      it.doneAt = it.done ? todayIso() : null;
+      try { await store.put(it); } catch {}
+      render();
+    });
+
+    const body = document.createElement("div");
+    body.className = "body";
+    body.tabIndex = 0;
+    body.setAttribute("role", "button");
+    body.setAttribute("aria-label", "Modifică tema la " + it.subj);
+    const what = document.createElement("div");
+    what.className = "what";
+    what.textContent = it.text || "(fără descriere)";
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.append(chip(it.subj));
+    const due = document.createElement("span");
+    if (opts.late) { due.className = "lateTag"; due.textContent = "trebuia predată " + shortDate(it.due); }
+    else if (opts.showDue) due.textContent = "pentru " + dayWord(it.due, today);
+    else if (opts.showGiven) due.textContent = "primită " + shortDate(it.given);
+    if (due.textContent) meta.append(due);
+    body.append(what, meta);
+    body.addEventListener("click", () => openForm(it));
+    body.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openForm(it); } });
+
+    const right = document.createElement("div");
+    if (it.photoId) {
+      const img = document.createElement("img");
+      img.className = "thumb";
+      img.alt = "Poza temei la " + it.subj;
+      photoUrl(it.photoId).then(u => { if (u) img.src = u; else img.hidden = true; });
+      img.addEventListener("click", () => showPhoto(it.photoId));
+      right.append(img);
+    }
+    el.append(cb, body, right);
+    return el;
+  }
+
+  const bySubj = (a, b) => a.subj.localeCompare(b.subj, "ro") || (a.created || 0) - (b.created || 0);
+  const undoneFirst = (a, b) => (a.done - b.done) || bySubj(a, b);
+
+  function fill(listId, arr, today, opts, emptyText) {
+    const box = $(listId);
+    box.replaceChildren();
+    if (!arr.length && emptyText) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = emptyText;
+      box.append(p);
+    }
+    arr.forEach(it => box.append(itemEl(it, today, opts)));
+  }
+
+  function render() {
+    const today = todayIso();
+    renderHeader(today);
+    const next = nextSchoolDay(today);
+
+    const forNext = items.filter(i => i.due === next).sort(undoneFirst);
+    const late = items.filter(i => !i.done && i.due <= today).sort((a, b) => a.due.localeCompare(b.due) || bySubj(a, b));
+    const givenToday = items.filter(i => i.given === today && i.due !== next && i.due > today).sort(undoneFirst);
+    const later = items.filter(i => !i.done && i.due > next && i.given !== today).sort((a, b) => a.due.localeCompare(b.due) || bySubj(a, b));
+
+    if (next) {
+      const w = next === addDays(today, 1) ? "mâine" : ZILE[parse(next).getDay()];
+      $("hNext").textContent = "Pentru " + w;
+      $("subNext").textContent = longDate(next);
+    }
+    const doneN = forNext.filter(i => i.done).length;
+    $("progNext").textContent = forNext.length ? `${doneN} din ${forNext.length} făcute` : "";
+    fill("listNext", forNext, today, { showGiven: true }, "Nicio temă pentru " + (next === addDays(today, 1) ? "mâine" : "ziua următoare de școală") + ". Apasă „+ Temă nouă” ca s-o adaugi.");
+
+    $("secToday").hidden = !isSchoolDay(today) && !givenToday.length;
+    fill("listToday", givenToday, today, { showDue: true }, "Nimic primit azi pentru mai târziu.");
+
+    $("secLate").hidden = !late.length;
+    fill("listLate", late, today, { late: true });
+
+    $("secLater").hidden = !later.length;
+    $("sumLater").textContent = `Mai târziu (${later.length})`;
+    fill("listLater", later, today, { showDue: true });
+  }
+
+  // ---------- Formular ----------
+  let editing = null, chosen = null, pendingPhoto = undefined, delArmed = false, dueTouched = false;
+  const grid = $("subjGrid");
+  Object.keys(SUBJ).forEach(name => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "subj";
+    b.style.setProperty("--h", SUBJ[name]);
+    b.textContent = name;
+    b.dataset.s = name;
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", () => { chosen = name; markSubj(); if (!dueTouched) autoDue(); });
+    grid.append(b);
+  });
+  const markSubj = () => grid.querySelectorAll(".subj").forEach(b => b.setAttribute("aria-pressed", b.dataset.s === chosen ? "true" : "false"));
+
+  function autoDue() {
+    const g = $("fGiven").value;
+    if (!chosen || !g) { $("dueHint").textContent = ""; return; }
+    const d = dueFor(chosen, g);
+    if (d) {
+      $("fDue").value = d;
+      $("dueHint").textContent = `Următoarea oră de ${chosen}: ${longDate(d)}`;
+    }
+  }
+  $("fGiven").addEventListener("change", () => { if (!dueTouched) autoDue(); });
+  $("fDue").addEventListener("change", () => { dueTouched = true; $("dueHint").textContent = "Dată aleasă de tine"; });
+
+  function setPreview(src) {
+    $("prev").hidden = !src;
+    $("rmPhoto").hidden = !src;
+    if (src) $("prev").src = src; else $("prev").removeAttribute("src");
+    $("photoLbl").textContent = src ? "Altă poză" : "Fă o poză la caiet";
+  }
+
+  async function openForm(it) {
+    editing = it || null;
+    chosen = it ? it.subj : null;
+    pendingPhoto = undefined;
+    delArmed = false;
+    dueTouched = !!it;
+    $("formTitle").textContent = it ? "Modifică tema" : "Temă nouă";
+    $("fText").value = it ? it.text : "";
+    $("fGiven").value = it ? it.given : todayIso();
+    $("fDue").value = it ? it.due : "";
+    $("dueHint").textContent = it ? "" : "Alege materia și data se completează singură";
+    $("formErr").hidden = true;
+    $("delBtn").hidden = !it;
+    $("delBtn").textContent = "Șterge";
+    $("delBtn").classList.remove("sure");
+    $("fPhoto").value = "";
+    setPreview(it && it.photoId ? await photoUrl(it.photoId) : null);
+    markSubj();
+    $("overlay").hidden = false;
+    (it ? $("fText") : grid.querySelector(".subj")).focus();
+  }
+  const closeForm = () => { $("overlay").hidden = true; $("addBtn").focus(); };
+
+  $("addBtn").addEventListener("click", () => openForm(null));
+  $("cancelBtn").addEventListener("click", closeForm);
+  $("overlay").addEventListener("click", e => { if (e.target === $("overlay")) closeForm(); });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    if (!$("viewer").hidden) $("viewer").hidden = true;
+    else if (!$("overlay").hidden) closeForm();
+  });
+
+  async function shrink(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+      const max = 1400, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      return await new Promise(res => c.toBlob(b => res(b || file), "image/jpeg", 0.8));
+    } catch { return file; }
+    finally { URL.revokeObjectURL(url); }
+  }
+  $("fPhoto").addEventListener("change", async e => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    pendingPhoto = await shrink(f);
+    setPreview(URL.createObjectURL(pendingPhoto));
+  });
+  $("rmPhoto").addEventListener("click", () => { pendingPhoto = null; $("fPhoto").value = ""; setPreview(null); });
+
+  $("delBtn").addEventListener("click", async () => {
+    if (!editing) return;
+    if (!delArmed) { delArmed = true; $("delBtn").textContent = "Sigur? Apasă din nou"; $("delBtn").classList.add("sure"); return; }
+    try {
+      if (editing.photoId) await store.delPhoto(editing.photoId);
+      await store.del(editing.id);
+    } catch {}
+    items = items.filter(i => i.id !== editing.id);
+    closeForm(); render();
+  });
+
+  $("form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const err = $("formErr");
+    const text = $("fText").value.trim();
+    const given = $("fGiven").value, due = $("fDue").value;
+    if (!chosen) { err.textContent = "Alege materia."; err.hidden = false; return; }
+    if (!text && !pendingPhoto && !(editing && editing.photoId && pendingPhoto !== null)) { err.textContent = "Scrie ce s-a dat sau fă o poză."; err.hidden = false; return; }
+    if (!given || !due) { err.textContent = "Completează ambele date."; err.hidden = false; return; }
+    if (due < given) { err.textContent = "Data de predare nu poate fi înainte de data primirii."; err.hidden = false; return; }
+
+    const it = editing || { id: "t" + Date.now() + Math.random().toString(36).slice(2, 6), created: Date.now(), done: false, doneAt: null, photoId: null };
+    Object.assign(it, { subj: chosen, text, given, due });
+    try {
+      if (pendingPhoto === null && it.photoId) { await store.delPhoto(it.photoId); urlCache.delete(it.photoId); it.photoId = null; }
+      if (pendingPhoto) {
+        if (it.photoId) { await store.delPhoto(it.photoId); urlCache.delete(it.photoId); }
+        it.photoId = "p" + it.id + "-" + Date.now();
+        await store.putPhoto(it.photoId, pendingPhoto);
+      }
+      await store.put(it);
+    } catch {
+      err.textContent = "Nu s-a putut salva. Verifică spațiul liber de pe tabletă.";
+      err.hidden = false;
+      return;
+    }
+    if (!editing) items.push(it);
+    closeForm(); render();
+  });
+
+  async function showPhoto(id) {
+    const u = await photoUrl(id);
+    if (!u) return;
+    $("viewerImg").src = u;
+    $("viewer").hidden = false;
+  }
+  $("viewer").addEventListener("click", () => { $("viewer").hidden = true; });
+
+  // ---------- Pornire ----------
+  (async () => {
+    try { db = await openDB(); } catch { db = null; $("storeWarn").hidden = false; }
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
+    try { items = await store.all(); } catch { items = []; }
+    render();
+    // reîmprospătare la miezul nopții / când tableta revine din standby
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) render(); });
+  })();
+  render();
+})();
+</script>
