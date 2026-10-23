@@ -462,9 +462,976 @@ select { font: inherit; font-size: 17px; color: var(--ink); background: var(--pa
     5: ["Biologie", "Matematică", "Dirigenție", "Ed. Socială"]
   };
   // Materiile din meniu (cu lecții interactive)
-  const MAIN = ["Română", "Matematică", "Engleză", "Franceză", "Istorie", "Geografie", "Biologie", "Informatică", "Ed. Socială"];
+  const MAIN = ["Română", "Matematică", "Engleză", "Franceză", "Istorie", "Geografie", "Biologie", "Informatică", "Ed. Socială", "Ed. Tehnologică"];
   // Lecțiile se adaugă aici, în ordinea din școală: { titlu: "...", data: "2026-09-08" }
   const DATA = {};
+// Biologie, clasa a V-a — Editura Sigma (A.M. Fodor, L.M. Sună, V. Boldișor, C.M. Ciuculescu)
+// Cuprinsul și paginile sunt luate din manual. Lecțiile și exercițiile sunt scrise de noi, după manual.
+DATA["Biologie"] = {
+  manual: "https://www.manual.digital/72291.pdf",
+  unitati: [
+    { titlu: "Introducere", lectii: [
+      { id: "b-0", cod: "Intro", titlu: "Laboratorul de biologie", pag: 7,
+        sub: "Ce studiază biologia și cu ce instrumente",
+        invata: [
+          { h: "Ce este biologia", html: `
+            <p><b>Biologia</b> studiază viețuitoarele: microorganismele, plantele, animalele și omul.</p>
+            <p>Cuvântul vine din greacă: <b>bios</b> = viață, <b>logos</b> = știință.</p>` },
+          { h: "Instrumente de teren", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">termometru</span><span>măsoară temperatura</span></div>
+              <div class="rule"><span class="f">anemometru</span><span>măsoară viteza vântului</span></div>
+              <div class="rule"><span class="f">higrometru</span><span>măsoară umiditatea aerului</span></div>
+              <div class="rule"><span class="f">busolă</span><span>te ajută să te orientezi</span></div>
+              <div class="rule"><span class="f">lupă</span><span>mărește viețuitoarele mici</span></div>
+            </div>` },
+          { h: "Microscopul", html: `
+            <p>Te lasă să vezi ce nu se vede cu ochiul liber. Te uiți prin <b>ocular</b>; <b>obiectivele</b> se pot schimba pentru mărimi diferite.</p>
+            <p>Preparatul se pune pe o <b>lamă</b> de sticlă, acoperit cu o <b>lamelă</b> subțire. <b>Diafragma</b> reglează lumina, iar <b>rotița de focalizare</b> face imaginea clară.</p>` },
+          { h: "Reguli în natură", html: `
+            <p>Haine sport, nu colecta prea multe plante sau animale, nu maltrata animalele, notează ce observi, nu face zgomot și nu lăsa gunoaie.</p>` }
+        ],
+        exemple: [
+          { titlu: "Ce iei cu tine la o ieșire lângă un lac?", pasi: [
+            "Termometru, pentru temperatura apei și a aerului",
+            "Lupă și cutii, pentru insecte și plante mici",
+            "Caiet, pentru notițe",
+            "Și pleci fără să lași gunoaie în urmă"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Ce înseamnă „bios”?", opt: ["Viață", "Plantă", "Știință"], ok: 0, ex: "Bios = viață, logos = știință." },
+          { tip: "potrivire", q: "Potrivește instrumentul cu ce măsoară.", perechi: [["termometrul", "temperatura"], ["anemometrul", "viteza vântului"], ["higrometrul", "umiditatea aerului"]], ex: "Fiecare instrument măsoară un factor de mediu." },
+          { tip: "alege", q: "Prin ce parte a microscopului te uiți?", opt: ["Ocular", "Diafragmă", "Lamelă"], ok: 0, ex: "Ocularul e partea de sus, la ochi." },
+          { tip: "alege", q: "Ce face diafragma microscopului?", opt: ["Reglează lumina", "Mărește imaginea", "Ține preparatul"], ok: 0, ex: "Diafragma controlează câtă lumină ajunge la preparat." },
+          { tip: "alege", q: "Ce NU ai voie să faci în natură?", opt: ["Să notezi ce observi", "Să lași gunoaie", "Să porți haine sport"], ok: 1, ex: "Natura trebuie lăsată curată." }
+        ],
+        recap: ["Biologia studiază viețuitoarele.", "Instrumente: termometru, anemometru, higrometru, busolă, lupă.", "Microscop: ocular, obiective, diafragmă, lamă și lamelă, rotiță de focalizare."],
+        parinte: {
+          stie: ["Ce studiază biologia.", "Instrumentele de teren.", "Părțile principale ale microscopului."],
+          greseli: ["Confundă anemometrul cu higrometrul.", "Confundă lama cu lamela.", "Crede că lupa și microscopul măresc la fel."],
+          intrebari: ["„Ce ai vrea să vezi la microscop?”", "„Ce măsoară un anemometru?”", "„Care sunt regulile când mergi în natură?”"]
+        }
+      }
+    ] },
+
+    { titlu: "Capitolul 1 · Viețuitoare în diferite medii de viață", lectii: [
+      { id: "b-1.1", cod: "1.1", titlu: "Medii de viață – ecosistem, biotop și biocenoză", pag: 10,
+        sub: "Cum sunt legate viețuitoarele de locul în care trăiesc",
+        invata: [
+          { h: "Ecosistemul", html: `
+            <p><b>Ecosistemul</b> = un loc cu tot ce trăiește în el și cu tot ce nu e viu, legate între ele.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">biotop</span><span>partea <b>fără viață</b>: sol, apă, aer, lumină, temperatură</span></div>
+              <div class="rule"><span class="f">biocenoză</span><span>partea <b>vie</b>: plante, animale, microorganisme</span></div>
+            </div>
+            <div class="big">ecosistem = biotop + biocenoză</div>` },
+          { h: "Tipuri de ecosisteme", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">terestre</span><span>pădure, pajiște, grădină, livadă, parc</span></div>
+              <div class="rule"><span class="f">acvatice</span><span>lac, râu, fluviu, mare</span></div>
+            </div>
+            <p><b>Naturale</b> (făcute de natură): pădurea, pajiștea, lacul, râul. <b>Artificiale</b> (făcute de om): grădina, livada, parcul, acvariul, lacul de acumulare.</p>` },
+          { h: "Cine mănâncă pe cine", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">producători</span><span>plantele verzi; își fac singure hrana (fotosinteză)</span></div>
+              <div class="rule"><span class="f">consumatori</span><span>animalele: erbivore (vaca), carnivore (lupul), omnivore (porcul)</span></div>
+              <div class="rule"><span class="f">descompunători</span><span>bacteriile; transformă resturile în substanțe minerale</span></div>
+            </div>
+            <p><b>Lanț trofic</b>: frunze → omidă → pițigoi → uliu. Mai multe lanțuri legate formează o <b>rețea trofică</b>.</p>` }
+        ],
+        exemple: [
+          { titlu: "Biotop sau biocenoză? Un iaz din curtea școlii", pasi: [
+            "Apa, nămolul, lumina, temperatura → biotop (fără viață)",
+            "Broaștele, algele, peștii, bacteriile → biocenoză (vii)",
+            "Împreună formează un ecosistem acvatic artificial (dacă l-a făcut omul)"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care face parte din <b>biotop</b>?", opt: ["Broasca", "Temperatura apei", "Alga", "Bacteria"], ok: 1, ex: "Temperatura nu e vie, deci ține de biotop." },
+          { tip: "alege", q: "Care ecosistem este <b>natural</b>?", opt: ["Parcul", "Acvariul", "Pădurea", "Grădina de legume"], ok: 2, ex: "Pădurea s-a format singură; celelalte sunt făcute de om." },
+          { tip: "potrivire", q: "Potrivește animalul cu felul în care se hrănește.", perechi: [["calul", "erbivor"], ["vulpea", "carnivor"], ["ursul", "omnivor"]], ex: "Calul mănâncă plante, vulpea animale, ursul și plante, și animale." },
+          { tip: "ordine", q: "Așază lanțul trofic în ordine.", items: ["iarbă", "lăcustă", "broască", "barză"], ex: "Iarba e producătorul, apoi consumatorii, pe rând." },
+          { tip: "alege", q: "Cine sunt descompunătorii?", opt: ["Plantele verzi", "Bacteriile", "Animalele carnivore"], ok: 1, ex: "Bacteriile descompun resturile în substanțe minerale." }
+        ],
+        recap: ["Ecosistem = biotop (fără viață) + biocenoză (viețuitoare).", "Ecosistemele pot fi terestre sau acvatice, naturale sau artificiale.", "Producători → consumatori → descompunători; lanțuri și rețele trofice."],
+        parinte: {
+          stie: ["Diferența biotop–biocenoză.", "Exemple de ecosisteme naturale și artificiale.", "Ce e un lanț trofic."],
+          greseli: ["Pune solul la biocenoză.", "Crede că lacul de acumulare e natural.", "Începe lanțul trofic cu un animal în loc de o plantă."],
+          intrebari: ["„Ce ecosistem e parcul Romanescu: natural sau artificial?”", "„Fă-mi un lanț trofic cu 4 verigi.”", "„Ce s-ar întâmpla fără descompunători?”"]
+        }
+      },
+      { id: "b-1.2", cod: "1.2", titlu: "Grădina", pag: 13,
+        sub: "Legume, dăunători și animale folositoare",
+        invata: [
+          { h: "Grădina – ecosistem făcut de om", html: `
+            <p>Omul ajută plantele: <b>sapă</b> (aerisește solul), <b>fertilizează</b>, <b>udă</b> (irigă) și combate dăunătorii.</p>` },
+          { h: "Ce mâncăm de la legume", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">rădăcina</span><span>morcov, țelină, sfeclă, ridiche</span></div>
+              <div class="rule"><span class="f">frunzele</span><span>varză, salată, spanac</span></div>
+              <div class="rule"><span class="f">tulpina subterană</span><span>ceapă și usturoi (bulbi), cartof (tubercul)</span></div>
+              <div class="rule"><span class="f">fructele</span><span>roșii, ardei, vinete, castraveți, fasole</span></div>
+            </div>` },
+          { h: "Dăunători și ajutoare", html: `
+            <p><b>Dăunători</b>: gândacul de Colorado (mănâncă frunzele de cartof), albilița (larvele mănâncă varza), melcii și limacșii, afidele.</p>
+            <p><b>Folositori</b>: <b>albina</b> (polenizează florile), <b>buburuza</b> (mănâncă afidele), <b>râma</b> (aerisește și îngrașă solul).</p>
+            <p>Lanț trofic scurt: frunză → afide → buburuză.</p>` },
+          { h: "Albinele", html: `
+            <p>Trăiesc în familii de zeci de mii: <b>matca</b> depune ouă, <b>trântorii</b> sunt masculii, <b>lucrătoarele</b> fac aproape tot: îngrijesc larvele, apără stupul, culeg polen, fac fagurii și mierea.</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce e râma prietenul grădinarului?", pasi: [
+            "Sapă galerii în pământ → solul se aerisește, rădăcinile respiră",
+            "Înghite pământ cu resturi și îl elimină → solul se afânează",
+            "Excrementele ei sunt îngrășământ"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Ce parte a plantei mâncăm?", perechi: [["spanacul", "frunzele"], ["ridichea", "rădăcina"], ["usturoiul", "bulbul"], ["vânăta", "fructul"]], ex: "Spanac – frunze, ridiche – rădăcină, usturoi – bulb, vânătă – fruct." },
+          { tip: "alege", q: "Cine mănâncă frunzele de cartof?", opt: ["Buburuza", "Gândacul de Colorado", "Albina"], ok: 1, ex: "Gândacul de Colorado e dăunătorul cartofului." },
+          { tip: "alege", q: "De ce e buburuza folositoare?", opt: ["Face miere", "Mănâncă afidele (păduchii de plante)", "Aerisește solul"], ok: 1, ex: "Atât buburuzele adulte, cât și larvele lor mănâncă afide." },
+          { tip: "alege", q: "Care albine fac mierea?", opt: ["Matca", "Trântorii", "Lucrătoarele"], ok: 2, ex: "Lucrătoarele culeg nectar și polen și fac mierea." },
+          { tip: "alege", q: "De unde vine cartoful?", opt: ["America de Sud", "China", "Africa"], ok: 0, ex: "A fost adus în Europa de spanioli." }
+        ],
+        recap: ["Grădina e un ecosistem artificial: omul sapă, udă, fertilizează.", "Mâncăm de la legume rădăcina, frunzele, tulpina subterană sau fructul.", "Dăunători: gândacul de Colorado, albilița, melcii. Folositori: albina, buburuza, râma."],
+        parinte: {
+          stie: ["Ce parte se mănâncă la legumele obișnuite.", "Dăunători și animale folositoare.", "Rolurile din familia albinelor."],
+          greseli: ["Crede că din cartof mâncăm rădăcina (e tubercul, tulpină subterană).", "Crede că buburuza e dăunătoare.", "Crede că matca face mierea."],
+          intrebari: ["„Ce parte a plantei e roșia?”", "„De ce n-am stropi buburuzele?”", "„Ce face o albină lucrătoare?”"]
+        }
+      },
+      { id: "b-1.3", cod: "1.3", titlu: "Livada și via", pag: 17,
+        sub: "Pomi fructiferi și vița-de-vie",
+        invata: [
+          { h: "Livada", html: `
+            <p>Pomii stau pe rânduri, pe terenuri însorite, cu pantă ușoară și sol fertil. Sunt <b>plante lemnoase</b>: rădăcini lemnoase, trunchi și coroană.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">semințoase</span><span>măr, păr, gutui; semințele în „căsuțe” în mijlocul fructului</span></div>
+              <div class="rule"><span class="f">sâmburoase</span><span>cireș, vișin, prun, cais, piersic; un sâmbure tare</span></div>
+            </div>` },
+          { h: "Vița-de-vie", html: `
+            <p>Crește în <b>podgorii</b>, pe dealuri însorite. E un <b>arbust agățător</b>, cu frunze mari și flori mici, verzi, care înfloresc în mai.</p>
+            <p>Se înmulțește prin <b>butași</b> (bucăți de tulpină), adică vegetativ.</p>` },
+          { h: "Oamenii și livada", html: `
+            <p><b>Pomicultura</b> = creșterea pomilor fructiferi. <b>Viticultura</b> = creșterea viței-de-vie.</p>
+            <p>Dăunători: viespea merelor, gărgărița florilor de măr, păianjenul roșu (înțeapă frunzele și le suge seva).</p>
+            <p>Din fructe: sucuri, compot, dulceață. Din lemnul de cireș și nuc: mobilă.</p>` }
+        ],
+        exemple: [
+          { titlu: "Măr sau cireș: semințos sau sâmburos?", pasi: [
+            "Tai un măr: în mijloc, mai multe semințe mici în compartimente → semințos",
+            "Mănânci o cireașă: un singur sâmbure tare → sâmburos"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care este un pom <b>sâmburos</b>?", opt: ["Părul", "Gutuiul", "Caisul", "Mărul"], ok: 2, ex: "Caisa are un sâmbure tare. Părul, gutuiul și mărul sunt semințoase." },
+          { tip: "alege", q: "Cum se numește creșterea viței-de-vie?", opt: ["Pomicultură", "Viticultură", "Apicultură"], ok: 1, ex: "Viticultura. Pomicultura e pentru pomi, apicultura pentru albine." },
+          { tip: "alege", q: "Cum se înmulțește de obicei vița-de-vie?", opt: ["Prin butași", "Prin sâmburi", "Prin bulbi"], ok: 0, ex: "Prin butași, bucăți de tulpină puse în pământ." },
+          { tip: "alege", q: "Ce culoare au florile viței-de-vie?", opt: ["Roz", "Verzi", "Galbene"], ok: 1, ex: "Flori mici, verzi, cu miros discret." },
+          { tip: "potrivire", q: "Potrivește.", perechi: [["podgorie", "loc unde se cultivă vița-de-vie"], ["livadă", "loc cu pomi fructiferi"], ["pomicultură", "creșterea pomilor"]], ex: "Podgoria are viță, livada are pomi." }
+        ],
+        recap: ["Pomii fructiferi pot fi semințoși (măr, păr, gutui) sau sâmburoși (cireș, prun, cais).", "Vița-de-vie: arbust agățător, flori verzi, se înmulțește prin butași.", "Pomicultura și viticultura; dăunători: viespea merelor, păianjenul roșu."],
+        parinte: {
+          stie: ["Semințoase vs sâmburoase.", "Caracteristicile viței-de-vie.", "Pomicultură / viticultură."],
+          greseli: ["Pune piersicul la semințoase.", "Crede că vița e un copac.", "Confundă pomicultura cu viticultura."],
+          intrebari: ["„E prunul semințos sau sâmburos?”", "„Ce se face din lemn de nuc?”", "„Unde vedem podgorii lângă Craiova?”"]
+        }
+      },
+      { id: "b-1.4", cod: "1.4", titlu: "Parcul", pag: 20,
+        sub: "Copaci, licheni și animalele din parc",
+        invata: [
+          { h: "Parcul", html: `
+            <p>Parcul e un ecosistem <b>artificial</b>. În interior lumina e mai slabă (filtrată de coroane), umiditatea mai mare și vântul mai slab decât la margine.</p>
+            <p>Știai? <b>Parcul Nicolae Romanescu</b> din Craiova e cea mai mare zonă verde dintr-un oraș din România.</p>` },
+          { h: "Plantele din parc", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">foioase</span><span>își pierd frunzele toamna: stejar, plop, arțar, castan, tei</span></div>
+              <div class="rule"><span class="f">conifere</span><span>au ace, verzi tot anul: brad, molid, ienupăr</span></div>
+            </div>
+            <p><b>Lichenii</b> = o algă și o ciupercă trăind împreună (<b>simbioză</b>). Unde sunt mulți licheni, aerul e curat.</p>` },
+          { h: "Animalele din parc", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">veverița</span><span><b>rozătoare</b>: dinți din față care cresc mereu; îngroapă ghinde și alune</span></div>
+              <div class="rule"><span class="f">ariciul</span><span><b>insectivor</b>: dinți mici, conici; <b>hibernează</b> iarna</span></div>
+              <div class="rule"><span class="f">porumbelul</span><span>corp în formă de fus, pene, oase subțiri, fără măduvă</span></div>
+              <div class="rule"><span class="f">brotăcelul</span><span>discuri adezive la degete, se cațără în copaci</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Cum ajută veverița pădurea?", pasi: [
+            "Toamna îngroapă ghinde și alune ca rezervă",
+            "Nu le mai găsește pe toate",
+            "Cele uitate încolțesc primăvara → copaci noi"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care copac este <b>conifer</b>?", opt: ["Stejarul", "Molidul", "Castanul", "Plopul"], ok: 1, ex: "Molidul are ace și e verde tot anul." },
+          { tip: "alege", q: "Ce arată prezența multor licheni pe copaci?", opt: ["Aer poluat", "Aer curat", "Sol uscat"], ok: 1, ex: "Lichenii nu suportă poluarea." },
+          { tip: "potrivire", q: "Potrivește animalul cu adaptarea lui.", perechi: [["veverița", "dinți care cresc continuu"], ["ariciul", "dinți mici, conici"], ["brotăcelul", "discuri adezive la degete"], ["porumbelul", "corp acoperit cu pene"]], ex: "Fiecare animal e adaptat la felul lui de viață." },
+          { tip: "alege", q: "Ce face ariciul iarna?", opt: ["Migrează", "Hibernează", "Își schimbă blana"], ok: 1, ex: "Doarme sub frunze până primăvara, fără să mănânce." },
+          { tip: "alege", q: "Lichenul este format din:", opt: ["O algă și o ciupercă", "Un mușchi și o ferigă", "O bacterie și o insectă"], ok: 0, ex: "Conviețuirea lor se numește simbioză." }
+        ],
+        recap: ["Parcul e ecosistem artificial; în interior e mai umbros și mai umed.", "Foioase (frunze care cad) și conifere (ace); lichenii arată aer curat.", "Veverița – rozătoare, ariciul – insectivor care hibernează, porumbelul – adaptat la zbor."],
+        parinte: {
+          stie: ["Foioase vs conifere.", "Ce sunt lichenii.", "Adaptările animalelor din parc."],
+          greseli: ["Crede că lichenul e o plantă obișnuită.", "Crede că veverița hibernează ca ariciul.", "Pune bradul la foioase."],
+          intrebari: ["„Ce copaci vezi în parcul Romanescu?”", "„De ce cresc mereu dinții veveriței?”", "„Unde doarme ariciul iarna?”"]
+        }
+      },
+      { id: "b-1.5", cod: "1.5", titlu: "Animale din vecinătatea ta", pag: 24 },
+      { id: "b-1.6", cod: "1.6", titlu: "Pajiștea", pag: 27 },
+      { id: "b-1.7", cod: "1.7", titlu: "Pădurea", pag: 32 },
+      { id: "b-1.8", cod: "1.8", titlu: "Râul", pag: 38 },
+      { id: "b-1.9", cod: "1.9", titlu: "Lacul", pag: 42 },
+      { id: "b-1.10", cod: "1.10", titlu: "Evaluare · Capitolul 1", pag: 47 }
+    ] },
+
+    { titlu: "Capitolul 2 · Viețuitoare din alte zone din țara noastră și de pe glob", lectii: [
+      { id: "b-2.1", cod: "2.1", titlu: "Delta Dunării – rezervație a biosferei", pag: 50 },
+      { id: "b-2.2", cod: "2.2", titlu: "Marea Neagră", pag: 56 },
+      { id: "b-2.3", cod: "2.3", titlu: "Peștera", pag: 61 },
+      { id: "b-2.4", cod: "2.4", titlu: "Viețuitoare din diferite zone geografice ale globului", pag: 63 },
+      { id: "b-2.5", cod: "2.5", titlu: "Evaluare · Capitolul 2", pag: 67 }
+    ] },
+
+    { titlu: "Capitolul 3 · Grupe de viețuitoare", lectii: [
+      { id: "b-3.1", cod: "3.1", titlu: "Grupe de viețuitoare. Regnul Monera", pag: 70 },
+      { id: "b-3.2", cod: "3.2", titlu: "Regnul Protista", pag: 73 },
+      { id: "b-3.3", cod: "3.3", titlu: "Regnul Fungi", pag: 75 },
+      { id: "b-3.4", cod: "3.4", titlu: "Regnul Plante", pag: 78 },
+      { id: "b-3.5", cod: "3.5", titlu: "Regnul Animale", pag: 81 },
+      { id: "b-3.6", cod: "3.6", titlu: "Evaluare · Capitolul 3", pag: 86 }
+    ] }
+  ]
+};
+
+// Limba engleză (L1), clasa a V-a — Art Klett 2022 (C. Kennedy, C. Soldi, C. Rusu, D. Todoran)
+// Cuprinsul și paginile sunt luate din manual. Lecțiile și exercițiile sunt scrise de noi.
+DATA["Engleză"] = {
+  manual: "https://catalog.manualedigitaleart.ro/art-limba-engleza-5-2022/v1/art-limba-engleza-5-2022.pdf",
+  unitati: [
+    { titlu: "Starter", lectii: [
+      { id: "e-S", cod: "S", titlu: "Starter: greetings, numbers, dates, classroom", pag: 8,
+        sub: "Salutul, numerele, zilele, lunile și obiectele din clasă",
+        invata: [
+          { h: "Greetings – salutul", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">Good morning</span><span>dimineața (până la 12)</span></div>
+              <div class="rule"><span class="f">Good afternoon</span><span>după-amiaza</span></div>
+              <div class="rule"><span class="f">Good evening</span><span>seara, când te întâlnești cu cineva</span></div>
+              <div class="rule"><span class="f">Good night</span><span>doar când pleci sau te duci la culcare</span></div>
+            </div>
+            <p>Între prieteni: <b>Hi! Hello! Bye!</b> Formal: <b>Goodbye.</b></p>` },
+          { h: "Numbers – numerele", html: `
+            <p>13–19 se termină în <b>-teen</b>: thirteen, fourteen… Zecile se termină în <b>-ty</b>: twenty, thirty, forty (fără u!), fifty.</p>
+            <p>21 = twenty-one (cu cratimă). 100 = one hundred. În numere de telefon, 0 se citește <b>„oh”</b>.</p>` },
+          { h: "Days and months", html: `
+            <p>Zilele și lunile se scriu <b>mereu cu literă mare</b>: Monday, January. Anotimpurile, de obicei, cu literă mică: spring, summer, autumn, winter.</p>
+            <p>Datele folosesc numerale ordinale: <b>1st</b> first, <b>2nd</b> second, <b>3rd</b> third, apoi <b>-th</b>: 4th, 12th, 25th. Dar 21st, 22nd, 23rd!</p>` },
+          { h: "In the classroom", html: `
+            <p>pen, pencil, rubber (gumă), ruler (riglă), pencil case (penar), schoolbag, desk, board, notebook.</p>` }
+        ],
+        exemple: [
+          { titlu: "Cum spui data de 18 decembrie?", pasi: [
+            "Luna cu literă mare: December",
+            "18 → eighteenth (18th)",
+            "the eighteenth of December / December 18th"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "E ora 20:00 și intri la o petrecere. Ce spui?", opt: ["Good night!", "Good evening!", "Good morning!"], ok: 1, ex: "Good evening la întâlnire. Good night doar la plecare sau înainte de culcare." },
+          { tip: "cuvant", q: "Scrie în litere numărul 40:", ok: ["forty"], ex: "forty, fără u (deși four are u)." },
+          { tip: "alege", q: "Care e scris corect?", opt: ["monday", "Monday"], ok: 1, ex: "Zilele săptămânii se scriu cu literă mare." },
+          { tip: "potrivire", q: "Potrivește numărul cu forma ordinală.", perechi: [["1", "1st"], ["2", "2nd"], ["3", "3rd"], ["22", "22nd"], ["15", "15th"]], ex: "first, second, third, twenty-second, fifteenth." },
+          { tip: "potrivire", q: "Potrivește cuvântul cu traducerea.", perechi: [["rubber", "gumă de șters"], ["ruler", "riglă"], ["pencil case", "penar"]], ex: "Rubber și ruler se încurcă des!" }
+        ],
+        recap: ["Good morning / afternoon / evening; Good night doar la plecare.", "-teen pentru 13–19, -ty pentru zeci; forty fără u.", "Zilele și lunile cu literă mare; 1st, 2nd, 3rd, apoi -th."],
+        parinte: {
+          stie: ["Saluturile după momentul zilei.", "Numerele 1–100.", "Zilele, lunile, data cu ordinale."],
+          greseli: ["„Good night” la sosire.", "„fourty” în loc de forty.", "Lunile scrise cu literă mică."],
+          intrebari: ["„When is your birthday?” (răspuns în engleză)", "„Spell Wednesday.”", "„How do you say 99?”"]
+        }
+      }
+    ] },
+
+    { titlu: "Unit 1 · We’re from the UK", lectii: [
+      { id: "e-1A", cod: "1A", titlu: "Countries and nationalities", pag: 13,
+        sub: "Țări și naționalități",
+        invata: [
+          { h: "Țara și naționalitatea", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">Romania</span><span>Romanian</span></div>
+              <div class="rule"><span class="f">Italy</span><span>Italian</span></div>
+              <div class="rule"><span class="f">the UK</span><span>British · England → English</span></div>
+              <div class="rule"><span class="f">the USA</span><span>American</span></div>
+              <div class="rule"><span class="f">Spain</span><span>Spanish</span></div>
+              <div class="rule"><span class="f">France</span><span>French</span></div>
+              <div class="rule"><span class="f">Germany</span><span>German</span></div>
+            </div>
+            <p>În engleză, și naționalitățile se scriu cu <b>literă mare</b>: I’m Romanian.</p>` },
+          { h: "Cum te prezinți", html: `
+            <div class="ex-step">Where are you from? – I’m from Romania. I’m Romanian.</div>
+            <p>Atenție: unele țări au <b>the</b>: the UK, the USA.</p>` }
+        ],
+        exemple: [
+          { titlu: "Prezintă-te în engleză", pasi: [
+            "Hi, I’m Ana.",
+            "I’m from Romania.",
+            "I’m Romanian. I’m from Craiova."
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește țara cu naționalitatea.", perechi: [["Germany", "German"], ["France", "French"], ["Spain", "Spanish"], ["the USA", "American"]], ex: "Germany–German, France–French, Spain–Spanish, the USA–American." },
+          { tip: "alege", q: "Care e corect?", opt: ["I’m romanian.", "I’m Romanian."], ok: 1, ex: "Naționalitățile se scriu cu literă mare în engleză." },
+          { tip: "cuvant", q: "Completează: „She’s from Italy. She’s …”", ok: ["Italian"], ex: "Italy → Italian." },
+          { tip: "alege", q: "Care e corect?", opt: ["I’m from USA.", "I’m from the USA."], ok: 1, ex: "the USA, the UK au articolul the." }
+        ],
+        recap: ["Țara ≠ naționalitate: Italy / Italian.", "Naționalitățile se scriu cu literă mare.", "the UK, the USA."],
+        parinte: {
+          stie: ["10 țări cu naționalitățile lor.", "Cum se prezintă.", "Literă mare la naționalități."],
+          greseli: ["„I’m romanian”.", "Confundă English cu British.", "Uită the la the USA."],
+          intrebari: ["„Where is Messi from?”", "„What nationality is Simona Halep?”", "„Introduce yourself in English.”"]
+        }
+      },
+      { id: "e-1B", cod: "1B", titlu: "Subject pronouns. The verb to be (affirmative)", pag: 16,
+        sub: "I am, you are, he is…",
+        invata: [
+          { h: "Pronumele personale", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">I</span><span>eu (mereu cu literă mare!)</span></div>
+              <div class="rule"><span class="f">you</span><span>tu / voi</span></div>
+              <div class="rule"><span class="f">he / she / it</span><span>el (persoană) / ea (persoană) / el, ea (lucru, animal)</span></div>
+              <div class="rule"><span class="f">we</span><span>noi</span></div>
+              <div class="rule"><span class="f">they</span><span>ei, ele</span></div>
+            </div>` },
+          { h: "To be – a fi", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">I am</span><span>I’m</span></div>
+              <div class="rule"><span class="f">you are</span><span>you’re</span></div>
+              <div class="rule"><span class="f">he / she / it is</span><span>he’s / she’s / it’s</span></div>
+              <div class="rule"><span class="f">we / you / they are</span><span>we’re / you’re / they’re</span></div>
+            </div>
+            <p>Forma scurtă (I’m, she’s) e cea folosită în vorbire.</p>` }
+        ],
+        exemple: [
+          { titlu: "Completează: „Ana and I … friends.”", pasi: [
+            "Ana and I = noi = we",
+            "we → are",
+            "Ana and I are friends."
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "„My dog … black.”", opt: ["am", "is", "are"], ok: 1, ex: "My dog = it → is." },
+          { tip: "alege", q: "„The girls … in the gym.”", opt: ["is", "are", "am"], ok: 1, ex: "The girls = they → are." },
+          { tip: "alege", q: "Ce pronume înlocuiește „Mihai and Dan”?", opt: ["he", "we", "they"], ok: 2, ex: "Doi băieți = they." },
+          { tip: "cuvant", q: "Scrie forma scurtă: „she is” → …", ok: ["she's", "shes"], ex: "she is = she’s." },
+          { tip: "potrivire", q: "Potrivește pronumele cu forma lui to be.", perechi: [["I", "am"], ["she", "is"], ["they", "are"]], ex: "I am, she is, they are." }
+        ],
+        recap: ["I, you, he, she, it, we, they; I mereu cu literă mare.", "I am, he/she/it is, we/you/they are.", "Forme scurte: I’m, she’s, they’re."],
+        parinte: {
+          stie: ["Toate pronumele.", "Conjugarea lui to be.", "Formele scurte."],
+          greseli: ["„i am” cu i mic.", "„They is”.", "Folosește he pentru un obiect în loc de it."],
+          intrebari: ["„Spune-mi 3 propoziții cu am, is, are.”", "„Ce e it?”", "„How old are you? – I’m …”"]
+        }
+      },
+      { id: "e-1C", cod: "1C–D", titlu: "Possessive adjectives. Articles a / an / the", pag: 17,
+        sub: "my, your, his, her… și a, an, the",
+        invata: [
+          { h: "Adjectivele posesive", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">I → my</span><span>my bag</span></div>
+              <div class="rule"><span class="f">you → your</span><span>your book</span></div>
+              <div class="rule"><span class="f">he → his</span><span>his sister (sora lui)</span></div>
+              <div class="rule"><span class="f">she → her</span><span>her brother (fratele ei)</span></div>
+              <div class="rule"><span class="f">it → its</span><span>its tail (coada lui/ei)</span></div>
+              <div class="rule"><span class="f">we → our · they → their</span><span>our school · their house</span></div>
+            </div>
+            <p>Se pun <b>înaintea</b> substantivului și <b>nu se schimbă</b>: my brother, my sisters. La his/her contează a <b>cui</b> e, nu ce e.</p>` },
+          { h: "Articolele", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">a</span><span>înainte de consoană: a boy, a pen</span></div>
+              <div class="rule"><span class="f">an</span><span>înainte de vocală (a, e, i, o, u): an apple, an egg</span></div>
+              <div class="rule"><span class="f">the</span><span>articol hotărât, același la singular și plural: the teacher, the teachers</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "„Andrei and … sister.” (sora lui Andrei)", pasi: [
+            "A cui e sora? A lui Andrei → he",
+            "he → his",
+            "Andrei and his sister."
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "„This is Maria and … dog.” (câinele Mariei)", opt: ["his", "her", "its"], ok: 1, ex: "Câinele e al Mariei (she) → her." },
+          { tip: "alege", q: "„We are in class 5B. … teacher is Mrs Popa.”", opt: ["Their", "Our", "Your"], ok: 1, ex: "we → our." },
+          { tip: "alege", q: "Alege articolul: „… orange”", opt: ["a", "an"], ok: 1, ex: "orange începe cu vocală → an." },
+          { tip: "alege", q: "Alege articolul: „… ball”", opt: ["a", "an"], ok: 0, ex: "ball începe cu consoană → a." },
+          { tip: "potrivire", q: "Potrivește pronumele cu adjectivul posesiv.", perechi: [["they", "their"], ["he", "his"], ["it", "its"], ["I", "my"]], ex: "they–their, he–his, it–its, I–my." }
+        ],
+        recap: ["my, your, his, her, its, our, their – înaintea substantivului, nu se schimbă.", "his/her după cine e proprietarul.", "a + consoană, an + vocală, the pentru ceva anume."],
+        parinte: {
+          stie: ["Perechile pronume – posesiv.", "his vs her.", "a vs an."],
+          greseli: ["„Maria and his dog”.", "„a apple”.", "Confundă their cu there."],
+          intrebari: ["„What’s your favourite sport?”", "„Ce spui: a umbrella sau an umbrella?”", "„Tell me about your family: my mum is…”"]
+        }
+      },
+      { id: "e-1R", cod: "1", titlu: "Unit 1: Skills, culture, Making introductions", pag: 19 }
+    ] },
+
+    { titlu: "Unit 2 · Are they twins?", lectii: [
+      { id: "e-2A", cod: "2A", titlu: "Family. Possessive ’s", pag: 25,
+        sub: "Membrii familiei și „al cui”",
+        invata: [
+          { h: "Family", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">mum / dad</span><span>mama / tata · parents = părinți</span></div>
+              <div class="rule"><span class="f">brother / sister</span><span>frate / soră · twins = gemeni</span></div>
+              <div class="rule"><span class="f">grandma / grandpa</span><span>bunica / bunicul</span></div>
+              <div class="rule"><span class="f">aunt / uncle</span><span>mătușa / unchiul</span></div>
+              <div class="rule"><span class="f">cousin</span><span>văr / verișoară</span></div>
+            </div>` },
+          { h: "Possessive ’s", html: `
+            <p>Ca să spui „al cui e”, pui <b>’s</b> după proprietar: <b>Ana’s</b> bike = bicicleta Anei.</p>
+            <p>Dacă proprietarul e la plural și se termină în s, pui doar <b>’</b>: my parents’ car.</p>
+            <p>Atenție: <b>’s</b> poate însemna și <b>is</b>: She’s my sister (she is). Te uiți la context.</p>` }
+        ],
+        exemple: [
+          { titlu: "Cum spui „câinele lui Andrei”?", pasi: [
+            "Proprietarul: Andrei",
+            "Adaugi ’s: Andrei’s",
+            "Andrei’s dog"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește.", perechi: [["aunt", "mătușă"], ["uncle", "unchi"], ["cousin", "văr / verișoară"], ["twins", "gemeni"]], ex: "aunt, uncle, cousin, twins." },
+          { tip: "alege", q: "„Bunicul lui Matei” în engleză:", opt: ["Matei grandpa", "Matei’s grandpa", "grandpa’s Matei"], ok: 1, ex: "Proprietarul + ’s + lucrul: Matei’s grandpa." },
+          { tip: "alege", q: "„My sisters’ room” înseamnă:", opt: ["camera surorii mele", "camera surorilor mele"], ok: 1, ex: "Apostroful după s arată plural: surorile." },
+          { tip: "alege", q: "În „He’s my cousin”, ’s înseamnă:", opt: ["is", "posesie"], ok: 0, ex: "He’s = he is." }
+        ],
+        recap: ["Familia: mum, dad, brother, sister, grandma, grandpa, aunt, uncle, cousin.", "Posesia: Ana’s book; la plural cu s: my parents’ car.", "’s poate fi și is."],
+        parinte: {
+          stie: ["Cuvintele pentru familie.", "Folosirea lui ’s.", "Diferența ’s = is / ’s = posesie."],
+          greseli: ["„the book of Ana” în loc de Ana’s book.", "Confundă aunt cu uncle.", "Pune ’s greșit: „book’s Ana”."],
+          intrebari: ["„What’s your grandma’s name?”", "„Have you got cousins?”", "„Whose bag is this? – It’s Ana’s.”"]
+        }
+      },
+      { id: "e-2B", cod: "2B–D", titlu: "To be: negative and questions. Question words", pag: 28,
+        sub: "isn’t, aren’t, Are you…? Who, What, Where…",
+        invata: [
+          { h: "Negativ", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">I’m not</span><span>I am not</span></div>
+              <div class="rule"><span class="f">he / she / it isn’t</span><span>is not</span></div>
+              <div class="rule"><span class="f">we / you / they aren’t</span><span>are not</span></div>
+            </div>` },
+          { h: "Întrebări și răspunsuri scurte", html: `
+            <p>La întrebare, <b>verbul trece în față</b>: You are 11. → <b>Are you</b> 11?</p>
+            <div class="ex-step">Is she your sister? – Yes, she is. / No, she isn’t.</div>
+            <div class="ex-step">Are they twins? – Yes, they are. / No, they aren’t.</div>
+            <p>La răspunsul scurt afirmativ <b>nu</b> se folosește forma scurtă: Yes, I am (nu „Yes, I’m”).</p>` },
+          { h: "Question words", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">What?</span><span>Ce?</span></div>
+              <div class="rule"><span class="f">Who?</span><span>Cine?</span></div>
+              <div class="rule"><span class="f">Where?</span><span>Unde?</span></div>
+              <div class="rule"><span class="f">When?</span><span>Când?</span></div>
+              <div class="rule"><span class="f">How old?</span><span>Câți ani?</span></div>
+              <div class="rule"><span class="f">Why?</span><span>De ce?</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Transformă în întrebare: „Your coach is strict.”", pasi: [
+            "Găsești verbul: is",
+            "Îl muți în față: Is your coach strict?",
+            "Răspuns scurt: Yes, he is. / No, he isn’t."
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Forma negativă: „They … from Spain.”", opt: ["isn’t", "aren’t", "am not"], ok: 1, ex: "they → aren’t." },
+          { tip: "alege", q: "Care întrebare e corectă?", opt: ["She is your friend?", "Is she your friend?"], ok: 1, ex: "Verbul to be trece în fața subiectului." },
+          { tip: "alege", q: "„Are you twelve?” – Răspuns scurt afirmativ:", opt: ["Yes, I’m.", "Yes, I am.", "Yes, I are."], ok: 1, ex: "La răspuns scurt afirmativ nu se folosește forma scurtă." },
+          { tip: "potrivire", q: "Potrivește întrebarea cu răspunsul.", perechi: [["Where are you from?", "From Craiova."], ["How old is she?", "She’s eleven."], ["Who is he?", "My cousin."], ["When is your birthday?", "In December."]], ex: "Where – loc, How old – vârstă, Who – persoană, When – timp." },
+          { tip: "cuvant", q: "Completează cu cuvântul de întrebare: „… is your bag? – It’s under the desk.”", ok: ["Where"], ex: "Răspunsul e un loc → Where." }
+        ],
+        recap: ["Negativ: I’m not, he isn’t, they aren’t.", "Întrebare: verbul în față (Is she…?); răspuns scurt Yes, she is / No, she isn’t.", "What, Who, Where, When, How old, Why."],
+        parinte: {
+          stie: ["Negativul lui to be.", "Întrebarea și răspunsurile scurte.", "Cuvintele de întrebare."],
+          greseli: ["„Yes, I’m.”", "„She is your friend?” fără inversiune.", "Confundă Who cu Where."],
+          intrebari: ["„Ask me 3 questions with Where, Who, How old.”", "„Is your coach Romanian?”", "„Are you a footballer? – No, I’m not…”"]
+        }
+      },
+      { id: "e-2R", cod: "2", titlu: "Unit 2: Skills, culture. Evaluation test (Units 1–2)", pag: 31 }
+    ] },
+
+    { titlu: "Unit 3 · Have you got a pet?", lectii: [
+      { id: "e-3", cod: "3", titlu: "Pets. Have got. This, that, these, those", pag: 38 },
+      { id: "e-3R", cod: "3", titlu: "Unit 3: Describing people. Skills and culture", pag: 45 }
+    ] },
+    { titlu: "Unit 4 · There’s a huge garden", lectii: [
+      { id: "e-4", cod: "4", titlu: "Rooms. There is / there are. Some / any. Prepositions of place", pag: 50 },
+      { id: "e-4R", cod: "4", titlu: "Unit 4: Describing your bedroom. Evaluation test (Units 3–4)", pag: 57 }
+    ] },
+    { titlu: "Unit 5 · I usually get up early", lectii: [
+      { id: "e-5", cod: "5", titlu: "Daily routines. Present simple. Adverbs of frequency", pag: 64 },
+      { id: "e-5R", cod: "5", titlu: "Unit 5: Talking about school. Skills and culture", pag: 71 }
+    ] },
+    { titlu: "Unit 6 · What do you do on Saturdays?", lectii: [
+      { id: "e-6", cod: "6", titlu: "Free-time activities. Present simple: negative and questions", pag: 76 },
+      { id: "e-6R", cod: "6", titlu: "Unit 6: Talking about frequency. Evaluation test (Units 5–6)", pag: 83 }
+    ] },
+    { titlu: "Unit 7 · I can cook very well!", lectii: [
+      { id: "e-7", cod: "7", titlu: "Abilities and sports. Can. Imperative", pag: 90 },
+      { id: "e-7R", cod: "7", titlu: "Unit 7: Permission, apologising and thanking. British sports", pag: 97 }
+    ] },
+    { titlu: "Unit 8 · They’re looking at trainers", lectii: [
+      { id: "e-8", cod: "8", titlu: "Clothes. Present continuous. Possessive pronouns. Whose?", pag: 102 },
+      { id: "e-8R", cod: "8", titlu: "Unit 8: Shopping for clothes. Evaluation test (Units 7–8)", pag: 109 }
+    ] },
+    { titlu: "Unit 9 · Have you got any eggs?", lectii: [
+      { id: "e-9", cod: "9", titlu: "Food and drink. Countable / uncountable. Much, many, a lot of", pag: 116 },
+      { id: "e-9R", cod: "9", titlu: "Unit 9: Ordering food. Final evaluation test", pag: 123 }
+    ] },
+    { titlu: "Extra", lectii: [
+      { id: "e-X1", cod: "+", titlu: "Story time, CLIL, Culture", pag: 130 },
+      { id: "e-X2", cod: "+", titlu: "Festivals: Autumn festivals, Christmas. Semester projects", pag: 140 }
+    ] }
+  ]
+};
+
+// Istorie, clasa a V-a — Editura Corint (M.M. Gheorghe, V. Ionescu, I.E. Săvuță, A.C. Soare)
+// Cuprinsul și paginile sunt luate din manual. Lecțiile și exercițiile sunt scrise de noi, după manual.
+DATA["Istorie"] = {
+  manual: "https://www.manual.digital/31310.pdf",
+  unitati: [
+    { titlu: "Capitolul I · Alfabetul istoriei", lectii: [
+      { id: "i-I.1", cod: "I.1", titlu: "Izvoare istorice", pag: 8,
+        sub: "Cum aflăm ce s-a întâmplat demult",
+        invata: [
+          { h: "Ce este istoria?", html: `
+            <p><b>Istoria</b> este știința care studiază cum au trăit oamenii de la începuturi până azi: cine conducea, cu ce se ocupau, cum se înțelegeau între ei, ce credeau și ce creau.</p>
+            <p><b>Herodot</b> din Halicarnas este numit „părintele istoriei”. Muza istoriei, la greci, era <b>Clio</b>.</p>` },
+          { h: "Izvoarele istorice", html: `
+            <p>Un <b>izvor istoric</b> (sau sursă istorică) este orice obiect sau document din care aflăm cum era viața în trecut.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">nescrise</span><span>unelte, arme, podoabe, locuințe, morminte, picturi pe pereții peșterilor</span></div>
+              <div class="rule"><span class="f">scrise</span><span>inscripții, monede, documente, hărți, cărți, scrisori</span></div>
+            </div>
+            <p>Izvoarele scrise au apărut abia când s-a inventat <b>scrierea</b>, acum aproximativ 5 000 de ani.</p>` },
+          { h: "Surse primare și secundare", html: `
+            <p><b>Primare</b>: făcute chiar atunci, de cei care au văzut sau au trăit evenimentul (un jurnal, o scrisoare, o fotografie).</p>
+            <p><b>Secundare</b>: scrise mai târziu, de cineva care a adunat informații din alte surse (un manual, o enciclopedie).</p>` },
+          { h: "Științele care ajută istoria", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">arheologia</span><span>caută și studiază obiectele vechi găsite prin săpături</span></div>
+              <div class="rule"><span class="f">numismatica</span><span>studiază monedele și medaliile vechi</span></div>
+              <div class="rule"><span class="f">epigrafia</span><span>descifrează inscripțiile pe piatră, metal, lemn</span></div>
+              <div class="rule"><span class="f">cartografia</span><span>studiază hărțile</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Ce fel de izvor este o medalie de la un concurs din 1980?", pasi: [
+            "E un obiect pe care scrie ceva (anul, numele concursului)",
+            "Are text, deci e izvor scris",
+            "E făcută chiar la concurs, deci e sursă primară",
+            "Ar studia-o numismatica (medalii și monede)"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care dintre acestea este un izvor <b>nescris</b>?", opt: ["O scrisoare", "Un vas de lut găsit la o săpătură", "O inscripție pe piatră", "O hartă veche"], ok: 1,
+            ex: "Vasul de lut nu are text: e izvor nescris. Scrisoarea, inscripția și harta sunt izvoare scrise." },
+          { tip: "potrivire", q: "Potrivește știința cu ce studiază.", perechi: [["arheologia", "obiecte găsite prin săpături"], ["numismatica", "monede vechi"], ["epigrafia", "inscripții"], ["cartografia", "hărți"]],
+            ex: "Fiecare știință auxiliară ajută istoria cu un tip de izvor." },
+          { tip: "alege", q: "Jurnalul unui sportiv, scris în ziua unei competiții, este o sursă:", opt: ["primară", "secundară"], ok: 0,
+            ex: "E scris chiar de cel care a trăit evenimentul, atunci: sursă primară." },
+          { tip: "alege", q: "Cine este numit „părintele istoriei”?", opt: ["Herodot", "Homer", "Clio", "Hipocrate"], ok: 0,
+            ex: "Herodot din Halicarnas. Clio era muza istoriei." },
+          { tip: "alege", q: "De când există izvoare istorice scrise?", opt: ["De când au apărut oamenii", "De când s-a inventat scrierea, acum aproximativ 5 000 de ani", "De acum 100 de ani"], ok: 1,
+            ex: "Fără scriere nu pot exista izvoare scrise." }
+        ],
+        recap: [
+          "Istoria studiază viața oamenilor din trecut până azi.",
+          "Izvoarele istorice pot fi scrise sau nescrise, primare sau secundare.",
+          "Arheologia, numismatica, epigrafia și cartografia sunt științe care ajută istoria."
+        ],
+        parinte: {
+          stie: ["Diferența dintre izvor scris și nescris, cu exemple.", "Ce înseamnă sursă primară și secundară.", "Cele 4 științe auxiliare."],
+          greseli: ["Crede că o monedă e izvor nescris (are text, deci e scris).", "Confundă arheologia cu paleontologia (dinozaurii).", "Nu poate da exemple proprii."],
+          intrebari: ["„Ce obiecte din casa noastră ar fi izvoare istorice peste 200 de ani?”", "„O fotografie de la ziua ta e sursă primară sau secundară?”", "„Ce face un arheolog?”"]
+        }
+      },
+      { id: "i-I.2", cod: "I.2", titlu: "Perceperea timpului și a spațiului", pag: 10,
+        sub: "Secole, milenii, epoci istorice",
+        invata: [
+          { h: "Unitățile de timp", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">deceniu</span><span>10 ani</span></div>
+              <div class="rule"><span class="f">secol (veac)</span><span>100 de ani</span></div>
+              <div class="rule"><span class="f">mileniu</span><span>1 000 de ani</span></div>
+            </div>
+            <p>Timpul în istorie e studiat de <b>cronologie</b>. Îl măsurăm cu ceasul și calendarul; în vechime, cu clepsidra și ceasul solar.</p>` },
+          { h: "În ce secol e un an?", html: `
+            <p>Secolul I = anii 1–100, secolul al II-lea = 101–200 și așa mai departe.</p>
+            <p>Truc: <b>scoți ultimele două cifre</b> și <b>aduni 1</b>, dar dacă anul se termină în <b>00</b>, nu mai aduni.</p>
+            <div class="ex-step">1848 → 18 + 1 = secolul al XIX-lea · 1900 → secolul al XIX-lea · 2026 → secolul al XXI-lea</div>
+            <p>Mileniul: anii 1–1000 = mileniul I; 1001–2000 = mileniul al II-lea; din 2001 = mileniul al III-lea.</p>` },
+          { h: "Înainte și după Hristos", html: `
+            <p>Creștinii numără anii de la nașterea lui Iisus Hristos (anul 1). Ce s-a întâmplat înainte se scrie <b>î.H.</b> și se numără înapoi: anul 753 î.H. e mai vechi decât anul 500 î.H.</p>
+            <p>Alte popoare aveau alte începuturi: grecii de la primele Jocuri Olimpice (776 î.H.), romanii de la întemeierea Romei (753 î.H.).</p>` },
+          { h: "Epocile istorice", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">Preistoria</span><span>până la inventarea scrierii (aprox. 3000 î.H.)</span></div>
+              <div class="rule"><span class="f">Antichitatea</span><span>până în 476</span></div>
+              <div class="rule"><span class="f">Evul Mediu</span><span>476–1492</span></div>
+              <div class="rule"><span class="f">Epoca modernă</span><span>1492–1789</span></div>
+              <div class="rule"><span class="f">Epoca contemporană</span><span>din 1789 până azi</span></div>
+            </div>
+            <p><b>Spațiul istoric</b> = locul unde s-au petrecut evenimentele: sat, oraș, țară, continent.</p>` }
+        ],
+        exemple: [
+          { titlu: "În ce secol și mileniu e anul 1600?", pasi: [
+            "Se termină în 00, deci nu adunăm 1: 16 → secolul al XVI-lea",
+            "1600 e între 1001 și 2000 → mileniul al II-lea"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Câți ani are un secol?", ok: 100, ex: "Un secol (veac) are 100 de ani." },
+          { tip: "alege", q: "În ce secol este anul 1918?", opt: ["Secolul al XIX-lea", "Secolul al XX-lea", "Secolul al XVIII-lea"], ok: 1, ex: "19 + 1 = 20 → secolul al XX-lea." },
+          { tip: "alege", q: "În ce secol este anul 1700?", opt: ["Secolul al XVII-lea", "Secolul al XVIII-lea"], ok: 0, ex: "Se termină în 00, deci rămâne 17 → secolul al XVII-lea." },
+          { tip: "alege", q: "Care an este mai vechi?", opt: ["600 î.H.", "300 î.H.", "100 d.H."], ok: 0, ex: "Înainte de Hristos se numără înapoi: 600 î.H. e cel mai îndepărtat." },
+          { tip: "ordine", q: "Pune epocile istorice în ordine.", items: ["Preistoria", "Antichitatea", "Evul Mediu", "Epoca modernă", "Epoca contemporană"], ex: "Preistorie → Antichitate → Ev Mediu → Epoca modernă → Epoca contemporană." }
+        ],
+        recap: [
+          "Deceniu = 10 ani, secol = 100 de ani, mileniu = 1 000 de ani.",
+          "Secolul: primele cifre + 1 (fără +1 dacă anul se termină în 00).",
+          "Epocile: Preistorie, Antichitate, Ev Mediu, Modernă, Contemporană."
+        ],
+        parinte: {
+          stie: ["Unitățile de timp.", "Cum află secolul și mileniul unui an.", "Ordinea epocilor istorice."],
+          greseli: ["Spune că 1918 e în secolul XIX (uită să adune 1).", "Adună 1 și la anii terminați în 00.", "Crede că 600 î.H. e mai nou decât 300 î.H."],
+          intrebari: ["„În ce secol te-ai născut tu?” (XXI)", "„În ce secol a fost Marea Unire din 1918?”", "„Ce epocă a fost înaintea Evului Mediu?”"]
+        }
+      },
+      { id: "i-I.EV", cod: "E", titlu: "Evaluare · Capitolul I", pag: 12 }
+    ] },
+
+    { titlu: "Capitolul II · Preistoria", lectii: [
+      { id: "i-II.1", cod: "II.1", titlu: "Primii oameni", pag: 14,
+        sub: "De la australopiteci la Homo sapiens",
+        invata: [
+          { h: "Preistoria", html: `
+            <p><b>Preistoria</b> e perioada de dinaintea scrierii. Prima ei parte se numește <b>paleolitic</b> (epoca veche a pietrei).</p>
+            <p>Primii strămoși ai omului au apărut în <b>Africa de est</b> și mergeau pe două picioare (bipezi).</p>` },
+          { h: "Etapele omului", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">Australopitec</span><span>culegător, vânător; cel mai cunoscut schelet: „Lucy”</span></div>
+              <div class="rule"><span class="f">Homo habilis</span><span>„omul îndemânatic”: primele unelte din piatră lovită</span></div>
+              <div class="rule"><span class="f">Homo erectus</span><span>„omul drept”: primul care a ieșit din Africa, folosea focul</span></div>
+              <div class="rule"><span class="f">Homo sapiens</span><span>„omul înțelept”, strămoșul nostru direct, apărut în Africa acum ~200 000 de ani</span></div>
+            </div>` },
+          { h: "Viața omului din paleolitic", html: `
+            <p>Trăiau în grupuri, în peșteri sau adăposturi, din <b>vânătoare, pescuit și cules</b>. Făceau unelte din piatră, os, corn.</p>
+            <p>Homo sapiens a pictat animale pe pereții peșterilor (Lascaux în Franța, Altamira în Spania, <b>Cuciulat</b> în România) și și-a îngropat morții.</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce a fost important focul?", pasi: [
+            "Dădea căldură în zonele reci, după ieșirea din Africa",
+            "Ținea la distanță animalele sălbatice",
+            "Permitea frigerea cărnii",
+            "Așa oamenii au putut trăi în Europa și Asia"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Pe ce continent au apărut primii strămoși ai omului?", opt: ["Europa", "Asia", "Africa", "America"], ok: 2, ex: "În Africa de est." },
+          { tip: "potrivire", q: "Potrivește specia cu ce o caracterizează.", perechi: [["Homo habilis", "primele unelte din piatră"], ["Homo erectus", "primul care a ieșit din Africa"], ["Homo sapiens", "strămoșul nostru direct"]],
+            ex: "Habilis = îndemânatic, erectus = drept, sapiens = înțelept." },
+          { tip: "ordine", q: "Pune în ordine, de la cel mai vechi.", items: ["Australopitec", "Homo habilis", "Homo erectus", "Homo sapiens"], ex: "Australopitec → habilis → erectus → sapiens." },
+          { tip: "alege", q: "Cu ce se ocupau oamenii din paleolitic?", opt: ["Agricultură", "Vânătoare, pescuit și cules", "Comerț cu monede"], ok: 1, ex: "Agricultura a apărut abia în neolitic." },
+          { tip: "alege", q: "Ce înseamnă „paleolitic”?", opt: ["Epoca veche a pietrei", "Epoca fierului", "Epoca nouă a pietrei"], ok: 0, ex: "Paleo = vechi, litos = piatră." }
+        ],
+        recap: [
+          "Primii oameni au apărut în Africa de est.",
+          "Etapele: australopitec → Homo habilis → Homo erectus → Homo sapiens.",
+          "În paleolitic: vânătoare, cules, unelte din piatră, picturi în peșteri."
+        ],
+        parinte: {
+          stie: ["Ordinea speciilor și ce a adus fiecare.", "Unde au apărut primii oameni.", "Cum trăiau oamenii în paleolitic."],
+          greseli: ["Crede că oamenii trăiau în același timp cu dinozaurii.", "Pune agricultura în paleolitic.", "Încurcă habilis cu erectus."],
+          intrebari: ["„Ce înseamnă Homo sapiens?”", "„De ce desenau oamenii animale în peșteri?”", "„Cine a ieșit primul din Africa?”"]
+        }
+      },
+      { id: "i-II.2", cod: "II.2", titlu: "Revoluția neolitică", pag: 16,
+        sub: "Oamenii devin agricultori",
+        invata: [
+          { h: "Ce s-a schimbat", html: `
+            <p>În <b>neolitic</b> (epoca nouă a pietrei, a pietrei șlefuite) oamenii nu mai doar culeg și vânează: încep să <b>cultive plante</b> și să <b>crească animale</b>. Devin producători de hrană.</p>
+            <p>Schimbarea a fost atât de mare încât istoricii o numesc <b>revoluția neolitică</b>.</p>` },
+          { h: "Noutăți", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">agricultura</span><span>grâu și orz (Orientul Apropiat), orez (China), porumb (America)</span></div>
+              <div class="rule"><span class="f">animalele</span><span>primul animal domesticit: <b>câinele</b>; apoi oaia, capra, vaca, porcul</span></div>
+              <div class="rule"><span class="f">așezările</span><span>sate stabile pe malul râurilor; mai târziu, primele orașe în Orient</span></div>
+              <div class="rule"><span class="f">meșteșugurile</span><span>olăritul (vase de lut), torsul și țesutul</span></div>
+            </div>` },
+          { h: "Neoliticul în România", html: `
+            <p>Pe teritoriul României au existat culturi neolitice cunoscute: <b>Hamangia</b> (statuetele „Gânditorul” și „Femeie șezând”), <b>Cucuteni</b>, <b>Vădastra</b> (în Oltenia, aproape de tine!).</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce a dus agricultura la sate stabile?", pasi: [
+            "Ca să cultivi, trebuie să aștepți să crească plantele",
+            "Deci oamenii rămân în același loc",
+            "Își construiesc case durabile și depozitează recolta în vase de lut",
+            "Așa apar satele, apoi orașele"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care a fost primul animal domesticit?", opt: ["Vaca", "Calul", "Câinele", "Oaia"], ok: 2, ex: "Câinele a fost primul, apoi oaia, capra, vaca, porcul." },
+          { tip: "alege", q: "Ce schimbare principală aduce neoliticul?", opt: ["Oamenii devin producători de hrană", "Se inventează scrierea", "Oamenii încep să folosească fierul"], ok: 0, ex: "Agricultura și creșterea animalelor." },
+          { tip: "potrivire", q: "Potrivește planta cu locul unde a fost cultivată prima dată.", perechi: [["orezul", "China"], ["porumbul", "America Centrală"], ["grâul", "Orientul Apropiat"]], ex: "Fiecare regiune și-a cultivat plantele ei." },
+          { tip: "alege", q: "La ce foloseau vasele de lut?", opt: ["Ca să depoziteze recolta și să gătească", "Ca arme", "Ca monede"], ok: 0, ex: "Olăritul a apărut odată cu agricultura." },
+          { tip: "alege", q: "Care cultură neolitică este din Oltenia?", opt: ["Vădastra", "Hamangia", "Cucuteni"], ok: 0, ex: "Vădastra e în județul Olt. Hamangia e în Dobrogea, Cucuteni în Moldova." }
+        ],
+        recap: [
+          "Neoliticul = epoca pietrei șlefuite; oamenii devin agricultori și crescători de animale.",
+          "Apar satele stabile, olăritul și țesutul; primul animal domesticit e câinele.",
+          "Schimbările sunt atât de mari încât se numesc „revoluția neolitică”."
+        ],
+        parinte: {
+          stie: ["Diferența paleolitic–neolitic.", "Noutățile neoliticului.", "Câteva culturi neolitice din România."],
+          greseli: ["Confundă paleoliticul cu neoliticul.", "Crede că primul animal domesticit a fost calul.", "Nu face legătura agricultură → sate stabile."],
+          intrebari: ["„Ce ar mânca un om din neolitic la micul dejun?”", "„De ce i se spune revoluție?”", "„Ce s-a găsit la Hamangia?”"]
+        }
+      },
+      { id: "i-II.3", cod: "II.3", titlu: "Inventarea metalurgiei", pag: 18,
+        sub: "Cuprul, bronzul, fierul",
+        invata: [
+          { h: "Primele metale", html: `
+            <p><b>Metalurgia</b> = extragerea și prelucrarea metalelor. Primele prelucrate au fost aurul, argintul și <b>cuprul</b> (arama), în mileniul al IV-lea î.H.</p>
+            <p>Amestecând cuprul cu <b>cositorul</b> s-a obținut un metal mai tare: <b>bronzul</b>. Așa începe epoca bronzului.</p>` },
+          { h: "Epoca fierului", html: `
+            <p>Fierul era mai ieftin, fiind mult mai răspândit. Din jurul anului <b>1200 î.H.</b> a devenit mai folosit decât bronzul.</p>
+            <p>Din fier se făceau pluguri mai bune și arme mai puternice. Popoarele care știau să-l prelucreze au devenit puternice.</p>
+            <p>În spațiul nostru, epoca fierului are două perioade: <b>Hallstatt</b> și <b>La Tène</b>.</p>` },
+          { h: "Ce s-a schimbat", html: `
+            <p>Apar meșteșugari specializați (fierari), mineritul, mai multă hrană (pluguri de fier), mai mulți oameni și mai multă bogăție, deci și conducători mai puternici.</p>
+            <p>La greci, zeul focului și al fierarilor era <b>Hefaistos</b> (romanii îl numeau Vulcan).</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce a câștigat fierul în fața bronzului?", pasi: [
+            "Bronzul are nevoie de cositor, care e rar",
+            "Minereul de fier se găsește în multe locuri",
+            "Deci fierul e mai ieftin și se poate folosi la scară mare",
+            "Uneltele și armele de fier sunt și foarte rezistente"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Din ce se obține bronzul?", opt: ["Fier și cupru", "Cupru și cositor", "Aur și argint"], ok: 1, ex: "Bronzul = cupru + cositor." },
+          { tip: "ordine", q: "Pune metalele în ordinea în care au devenit importante.", items: ["Cuprul", "Bronzul", "Fierul"], ex: "Cupru → bronz → fier." },
+          { tip: "alege", q: "Cine era Hefaistos?", opt: ["Zeul grec al focului și al fierarilor", "Un rege egiptean", "Un arheolog"], ok: 0, ex: "Romanii îl numeau Vulcan." },
+          { tip: "alege", q: "De ce era fierul mai ieftin decât bronzul?", opt: ["Era mai frumos", "Minereul de fier era foarte răspândit", "Nu trebuia topit"], ok: 1, ex: "Abundența fierului l-a făcut accesibil." },
+          { tip: "alege", q: "Care e o consecință a folosirii fierului?", opt: ["Dispariția agriculturii", "Unelte agricole mai bune și mai multă hrană", "Inventarea scrierii"], ok: 1, ex: "Plugul de fier a crescut producția." }
+        ],
+        recap: [
+          "Ordinea: cupru → bronz (cupru + cositor) → fier.",
+          "Fierul, mai ieftin și răspândit, s-a impus după 1200 î.H.",
+          "Metalele au adus meșteșugari, pluguri și arme mai bune, state mai puternice."
+        ],
+        parinte: {
+          stie: ["Ordinea epocilor metalelor.", "Ce e bronzul.", "Consecințele folosirii fierului."],
+          greseli: ["Crede că bronzul e un metal găsit în natură.", "Inversează epoca bronzului cu a fierului.", "Nu știe de ce fierul a fost mai răspândit."],
+          intrebari: ["„Ce obiecte de fier folosim azi?”", "„Ce ar fi schimbat un plug de fier pentru un țăran?”", "„Cum se numea Hefaistos la romani?”"]
+        }
+      },
+      { id: "i-II.EV", cod: "E", titlu: "Evaluare · Capitolul II", pag: 20 }
+    ] },
+
+    { titlu: "Capitolul III · Orientul antic", lectii: [
+      { id: "i-III.1", cod: "III.1", titlu: "Mediul natural și viața cotidiană", pag: 22,
+        sub: "Viața lângă marile fluvii",
+        invata: [
+          { h: "Lângă apă", html: `
+            <p>Primele civilizații au apărut lângă <b>marile fluvii</b>, unde pământul era fertil. Zona dintre Egipt și Mesopotamia se numește <b>Semiluna fertilă</b>, „leagănul civilizației”.</p>
+            <p>Oamenii au săpat <b>canale de irigație</b> și diguri. Pentru asta trebuiau să lucreze împreună, așa că au apărut primele orașe și state.</p>` },
+          { h: "Viața de zi cu zi", html: `
+            <p>Casele erau din <b>cărămizi uscate la soare</b> (la evrei, și colibe sau corturi). În Egipt se mânca mai ales <b>pâine</b>, legume, pește, carne de pasăre; băutura preferată era berea.</p>
+            <p>Bărbatul era șeful familiei. Primele orașe au apărut în <b>Mesopotamia</b>: Uruk, Nippur.</p>` },
+          { h: "Societatea și religia", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">aristocrația</span><span>cei bogați</span></div>
+              <div class="rule"><span class="f">oamenii liberi</span><span>țărani, meșteșugari, negustori</span></div>
+              <div class="rule"><span class="f">sclavii</span><span>prizonieri de război sau datornici</span></div>
+            </div>
+            <p>Majoritatea popoarelor erau <b>politeiste</b> (credeau în mai mulți zei). Evreii credeau într-un singur Dumnezeu.</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce irigațiile au dus la apariția statelor?", pasi: [
+            "Canalele și digurile sunt lucrări mari",
+            "Un om singur nu le poate face",
+            "Cineva trebuie să organizeze munca multor oameni",
+            "Așa apar conducători și state organizate"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Unde au apărut primele civilizații?", opt: ["În munți", "Lângă marile fluvii", "În deșert, departe de apă"], ok: 1, ex: "Lângă fluvii pământul era fertil." },
+          { tip: "alege", q: "Din ce erau construite multe case în Orientul antic?", opt: ["Din cărămizi uscate la soare", "Din beton", "Din sticlă"], ok: 0, ex: "Lutul uscat la soare era la îndemână." },
+          { tip: "alege", q: "Ce înseamnă „politeist”?", opt: ["Care crede în mai mulți zei", "Care nu crede în niciun zeu", "Care crede într-un singur zeu"], ok: 0, ex: "Poli = mulți, theos = zeu." },
+          { tip: "alege", q: "Care popor din Orientul antic credea într-un singur Dumnezeu?", opt: ["Egiptenii", "Evreii", "Babilonienii"], ok: 1, ex: "Evreii credeau în Iahve." },
+          { tip: "alege", q: "Unde au apărut primele orașe?", opt: ["Mesopotamia", "Grecia", "Dacia"], ok: 0, ex: "Uruk și Nippur, în Mesopotamia." }
+        ],
+        recap: [
+          "Primele civilizații au apărut lângă fluvii, în Semiluna fertilă.",
+          "Irigațiile au cerut muncă în comun, deci orașe și state.",
+          "Societate: aristocrați, oameni liberi, sclavi; religie mai ales politeistă."
+        ],
+        parinte: {
+          stie: ["Ce e Semiluna fertilă.", "Legătura fluvii–agricultură–state.", "Categoriile sociale."],
+          greseli: ["Crede că egiptenii trăiau în piramide.", "Confundă politeist cu monoteist.", "Nu știe unde e Mesopotamia (între Tigru și Eufrat)."],
+          intrebari: ["„De ce n-au construit orașe în mijlocul deșertului?”", "„Ce mâncau egiptenii?”", "„Cine erau sclavii?”"]
+        }
+      },
+      { id: "i-III.SC1", cod: "SC", titlu: "Studiu de caz: Orașul-stat Babilon", pag: 24 },
+      { id: "i-III.SC2", cod: "SC", titlu: "Studiu de caz: Temple și piramide", pag: 25 },
+      { id: "i-III.2", cod: "III.2", titlu: "Popoare și civilizații pe harta Orientului antic", pag: 26,
+        sub: "Mesopotamia, Egipt, fenicieni, India, China",
+        invata: [
+          { h: "Mesopotamia", html: `
+            <p>Regiunea <b>dintre Tigru și Eufrat</b>. <b>Sumerienii</b> au inventat roata, scrierea cuneiformă și ziguratul (templu în trepte). Regele <b>Hammurabi</b> din Babilon a dat <b>primele legi scrise</b>.</p>` },
+          { h: "Egiptul", html: `
+            <p>Civilizația de pe valea <b>Nilului</b>. Pe la 3000 î.H., regele <b>Narmer</b> a unit Egiptul de Sus cu Egiptul de Jos. Regii se numeau <b>faraoni</b> (Kheops, Ramses al II-lea). Herodot a numit Egiptul „un dar al Nilului”.</p>` },
+          { h: "Alte popoare", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">fenicienii</span><span>marinari și negustori; cea mai vestită colonie: Cartagina</span></div>
+              <div class="rule"><span class="f">perșii</span><span>imperiu uriaș, cel mai întins sub Darius I</span></div>
+              <div class="rule"><span class="f">India</span><span>orașele Harappa și Mohenjo-Daro, pe Indus</span></div>
+              <div class="rule"><span class="f">China</span><span>pe fluviile Huang He și Yangtze; unificată de dinastia Qin</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Ce au în comun toate aceste civilizații?", pasi: [
+            "Mesopotamia: Tigru și Eufrat",
+            "Egipt: Nil · India: Indus · China: Huang He",
+            "Toate s-au născut lângă un mare fluviu"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește civilizația cu fluviul ei.", perechi: [["Egiptul", "Nilul"], ["Mesopotamia", "Tigrul și Eufratul"], ["India antică", "Indusul"], ["China antică", "Huang He"]], ex: "Fiecare mare civilizație avea fluviul ei." },
+          { tip: "alege", q: "Cine a dat primele legi scrise din lume?", opt: ["Hammurabi", "Kheops", "Darius I"], ok: 0, ex: "Hammurabi, regele Babilonului." },
+          { tip: "alege", q: "Cum se numeau regii Egiptului?", opt: ["Împărați", "Faraoni", "Consuli"], ok: 1, ex: "Faraonii." },
+          { tip: "alege", q: "Prin ce erau cunoscuți fenicienii?", opt: ["Marinari și negustori", "Constructori de piramide", "Inventatori ai fierului"], ok: 0, ex: "Navigau pe toată Marea Mediterană." },
+          { tip: "alege", q: "Ce au inventat sumerienii?", opt: ["Hârtia", "Roata și scrierea cuneiformă", "Praful de pușcă"], ok: 1, ex: "Hârtia și praful de pușcă sunt invenții chinezești." }
+        ],
+        recap: [
+          "Toate marile civilizații antice au apărut lângă fluvii.",
+          "Mesopotamia: sumerieni, Babilon, Hammurabi. Egipt: Nilul, faraonii.",
+          "Fenicienii – marinari; perșii – imperiu mare; India și China – civilizații pe fluvii."
+        ],
+        parinte: {
+          stie: ["Perechile civilizație–fluviu.", "Hammurabi și legile scrise.", "Câte o caracteristică pentru fiecare popor."],
+          greseli: ["Confundă Tigrul/Eufratul cu Nilul.", "Atribuie hârtia sumerienilor.", "Nu știe ce e un faraon."],
+          intrebari: ["„De ce i-a spus Herodot Egiptului «darul Nilului»?”", "„Ce era Cartagina?”", "„Ce a făcut Hammurabi?”"]
+        }
+      },
+      { id: "i-III.SC3", cod: "SC", titlu: "Studiu de caz: Chinezii", pag: 28 },
+      { id: "i-III.SC4", cod: "SC", titlu: "Studiu de caz: Evreii", pag: 29 },
+      { id: "i-III.3", cod: "III.3", titlu: "Inventarea scrierii – de la pictograme la alfabet", pag: 30,
+        sub: "Cuneiforme, hieroglife, alfabet",
+        invata: [
+          { h: "De ce scrierea?", html: `
+            <p>Regii aveau nevoie să țină socoteli, să scrie legi și să trimită mesaje. Cu scrierea începe <b>istoria</b>; înainte era preistoria.</p>` },
+          { h: "Tipuri de scriere", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">cuneiformă</span><span>sumerienii, după 3300 î.H.; semne „ca niște cuie” pe tăblițe de lut</span></div>
+              <div class="rule"><span class="f">hieroglifică</span><span>egiptenii, pe la 3000 î.H.; desene pe piatră sau pe <b>papirus</b></span></div>
+              <div class="rule"><span class="f">pictografică</span><span>chinezii; fiecare semn e o silabă cu înțeles</span></div>
+              <div class="rule"><span class="f">alfabetul</span><span>fenicienii, pe la 1200 î.H.; doar 22 de semne, câte unul pentru fiecare sunet</span></div>
+            </div>` },
+          { h: "Drumul alfabetului", html: `
+            <p>Fenicieni → <b>greci</b> (au adăugat vocalele) → <b>romani</b> → noi. Alfabetul nostru vine din cel latin!</p>
+            <p>În România s-au găsit tăblițele de la <b>Tărtăria</b> (jud. Alba), cu semne foarte vechi (aprox. 4000 î.H.).</p>` }
+        ],
+        exemple: [
+          { titlu: "De ce alfabetul a fost un mare progres?", pasi: [
+            "Hieroglifele aveau aproximativ 5 000 de semne",
+            "Alfabetul fenician avea doar 22",
+            "Cu puține semne poți scrie orice cuvânt",
+            "Deci mult mai mulți oameni puteau învăța să scrie"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește scrierea cu poporul.", perechi: [["cuneiformă", "sumerienii"], ["hieroglifică", "egiptenii"], ["alfabetul", "fenicienii"]], ex: "Sumerieni – cuie pe lut; egipteni – desene; fenicieni – litere." },
+          { tip: "alege", q: "Pe ce scriau egiptenii?", opt: ["Pe papirus și pe piatră", "Pe hârtie", "Pe tablete digitale"], ok: 0, ex: "Papirusul e o plantă de pe malul Nilului." },
+          { tip: "numar", q: "Câte semne avea alfabetul fenician?", ok: 22, ex: "22 de semne, câte unul pentru un sunet." },
+          { tip: "ordine", q: "Pune în ordine drumul alfabetului până la noi.", items: ["Fenicienii", "Grecii", "Romanii", "Limba română de azi"], ex: "Fenicieni → greci → romani → noi." },
+          { tip: "alege", q: "Ce perioadă începe odată cu scrierea?", opt: ["Preistoria", "Istoria", "Paleoliticul"], ok: 1, ex: "Înainte de scriere e preistoria." }
+        ],
+        recap: [
+          "Scrierea a apărut din nevoia de socoteli, legi și mesaje.",
+          "Cuneiforme (sumerieni), hieroglife (egipteni), pictograme (chinezi), alfabet (fenicieni).",
+          "Alfabetul a trecut la greci, apoi la romani și a ajuns până la noi."
+        ],
+        parinte: {
+          stie: ["Cele 4 tipuri de scriere și cine le-a inventat.", "De ce alfabetul a fost un progres.", "Drumul alfabetului."],
+          greseli: ["Crede că egiptenii au inventat alfabetul.", "Confundă cuneiform cu hieroglifă.", "Nu știe ce e papirusul."],
+          intrebari: ["„Cum ai scrie numele tău cu desene?”", "„Ce au adăugat grecii alfabetului?”", "„Ce s-a găsit la Tărtăria?”"]
+        }
+      },
+      { id: "i-III.SC5", cod: "SC", titlu: "Studiu de caz: Epopeea lui Ghilgameș", pag: 32 },
+      { id: "i-III.SC6", cod: "SC", titlu: "Studiu de caz: Codul lui Hammurabi", pag: 33 },
+      { id: "i-III.EV", cod: "E", titlu: "Evaluare și recapitulare · Capitolul III", pag: 34 }
+    ] },
+
+    { titlu: "Capitolul IV · Civilizația greacă și sinteza elenistică", lectii: [
+      { id: "i-IV.1", cod: "IV.1", titlu: "Mediul natural și ocupațiile grecilor", pag: 38 },
+      { id: "i-IV.SC1", cod: "SC", titlu: "Studiu de caz: Ceramica între utilitate și artă", pag: 39 },
+      { id: "i-IV.2", cod: "IV.2", titlu: "Adevăr și legendă", pag: 40 },
+      { id: "i-IV.3", cod: "IV.3", titlu: "Polisul, organizare internă: Atena și Sparta", pag: 42 },
+      { id: "i-IV.4", cod: "IV.4", titlu: "Procesul de colonizare", pag: 44 },
+      { id: "i-IV.SC2", cod: "SC", titlu: "Studiu de caz: Histria, Tomis, Callatis", pag: 46 },
+      { id: "i-IV.5", cod: "IV.5", titlu: "Războaiele grecilor", pag: 48 },
+      { id: "i-IV.SC3", cod: "SC", titlu: "Studiu de caz: Bătălia de la Maraton", pag: 49 },
+      { id: "i-IV.6", cod: "IV.6", titlu: "Alexandru Macedon și civilizația elenistică", pag: 50 },
+      { id: "i-IV.7", cod: "IV.7", titlu: "Frumos și cunoaștere în lumea greacă", pag: 52 },
+      { id: "i-IV.SC4", cod: "SC", titlu: "Studiu de caz: Acropola ateniană", pag: 54 },
+      { id: "i-IV.SC5", cod: "SC", titlu: "Studiu de caz: Moștenirea lumii grecești", pag: 56 },
+      { id: "i-IV.SC6", cod: "SC", titlu: "Studiu de caz: Jocurile Olimpice în Antichitate", pag: 57 },
+      { id: "i-IV.EV", cod: "E", titlu: "Evaluare · Capitolul IV", pag: 58 }
+    ] },
+
+    { titlu: "Capitolul V · Lumea romană", lectii: [
+      { id: "i-V.1", cod: "V.1", titlu: "Fondarea Romei: istorie și legendă", pag: 60 },
+      { id: "i-V.2", cod: "V.2", titlu: "Statul roman", pag: 62 },
+      { id: "i-V.3", cod: "V.3", titlu: "Viața cotidiană în lumea romană", pag: 64 },
+      { id: "i-V.SC1", cod: "SC", titlu: "Studii de caz: Orașul, Colosseum, Pompei, Armata, Zeii, Creștinismul", pag: 66 },
+      { id: "i-V.4", cod: "V.4", titlu: "Romanizarea", pag: 72 },
+      { id: "i-V.EV", cod: "E", titlu: "Evaluare · Capitolul V", pag: 74 }
+    ] },
+
+    { titlu: "Capitolul VI · Geto-dacii", lectii: [
+      { id: "i-VI.1", cod: "VI.1", titlu: "Geții și dacii: rânduieli, obiceiuri, credințe", pag: 76 },
+      { id: "i-VI.2", cod: "VI.2", titlu: "Burebista și Decebal. Războaiele daco-romane", pag: 78 },
+      { id: "i-VI.EV", cod: "E", titlu: "Evaluare și recapitulare · Capitolul VI", pag: 80 }
+    ] },
+
+    { titlu: "Capitolul VII · Civilizația islamică", lectii: [
+      { id: "i-VII.1", cod: "VII.1", titlu: "Apariția islamului. Credința musulmană", pag: 84 },
+      { id: "i-VII.2", cod: "VII.2", titlu: "Expansiunea militară și culturală a islamului", pag: 86 },
+      { id: "i-VII.EV", cod: "E", titlu: "Evaluare · Capitolul VII", pag: 88 }
+    ] },
+
+    { titlu: "Capitolul VIII · Europa medievală", lectii: [
+      { id: "i-VIII.1", cod: "VIII.1", titlu: "Formarea popoarelor europene", pag: 90 },
+      { id: "i-VIII.2", cod: "VIII.2", titlu: "Etnogeneza românească", pag: 92 },
+      { id: "i-VIII.3", cod: "VIII.3", titlu: "Europa creștină în mileniul I", pag: 94 },
+      { id: "i-VIII.SC1", cod: "SC", titlu: "Studii de caz: Carol cel Mare, Imperiul Bizantin", pag: 96 },
+      { id: "i-VIII.4", cod: "VIII.4", titlu: "Viața cotidiană în Evul Mediu", pag: 98 },
+      { id: "i-VIII.SC2", cod: "SC", titlu: "Studii de caz: Domeniul feudal, Orașul medieval, Cavalerism, Cruciadele", pag: 100 },
+      { id: "i-VIII.5", cod: "VIII.5", titlu: "Statele medievale", pag: 104 },
+      { id: "i-VIII.SC3", cod: "SC", titlu: "Studii de caz: Catedrale și universități, Lumea românească în sec. XIV–XV", pag: 106 },
+      { id: "i-VIII.EV", cod: "E", titlu: "Evaluare și recapitulare finală", pag: 110 }
+    ] }
+  ]
+};
+
 // Matematică, clasa a V-a — Editura Paralela 45 (D.-I. Voiculescu și colab.)
 // Cuprinsul și paginile sunt luate din manual. Lecțiile interactive sunt scrise după manual.
 DATA["Matematică"] = {
@@ -530,18 +1497,18 @@ DATA["Matematică"] = {
         exercitii: [
           { tip: "alege", q: "În 7<sup>3</sup>, care este <b>baza</b>?", opt: ["7", "3", "21", "343"], ok: 0,
             ex: "Baza este numărul care se înmulțește: 7. Exponentul 3 arată de câte ori: 7 · 7 · 7." },
-          { tip: "numar", q: "Scrie ca putere: 11 · 11 · 11 · 11 = 11<sup>?</sup>", ok: 4,
-            ex: "11 apare de 4 ori ca factor, deci exponentul este 4: 11<sup>4</sup>." },
-          { tip: "numar", q: "Calculează: 2<sup>4</sup> = ?", ok: 16,
-            ex: "2<sup>4</sup> = 2 · 2 · 2 · 2 = 16. Greșeala frecventă e 2 · 4 = 8." },
+          { tip: "numar", q: "Scrie ca putere: 13 · 13 · 13 · 13 · 13 = 13<sup>?</sup>", ok: 5,
+            ex: "13 apare de 5 ori ca factor, deci exponentul este 5: 13<sup>5</sup>." },
+          { tip: "numar", q: "Calculează: 3<sup>3</sup> = ?", ok: 27,
+            ex: "3<sup>3</sup> = 3 · 3 · 3 = 27. Greșeala frecventă e 3 · 3 = 9." },
           { tip: "potrivire", q: "Potrivește fiecare calcul cu rezultatul lui.", perechi: [
-              ["2 · 2 · 2", "8"], ["5<sup>2</sup>", "25"], ["6<sup>1</sup>", "6"], ["1<sup>5</sup>", "1"], ["0<sup>4</sup>", "0"]
+              ["4 · 4 · 4", "64"], ["9<sup>2</sup>", "81"], ["8<sup>1</sup>", "8"], ["1<sup>7</sup>", "1"], ["0<sup>5</sup>", "0"]
             ],
-            ex: "2 · 2 · 2 = 8, 5<sup>2</sup> = 25, 6<sup>1</sup> = 6, 1<sup>5</sup> = 1 și 0<sup>4</sup> = 0." },
-          { tip: "numar", q: "Calculează: 3<sup>2</sup> + 2<sup>3</sup> − 5 = ?", ok: 12,
-            ex: "Întâi puterile: 9 + 8 − 5 = 12." },
-          { tip: "numar", q: "Calculează: 5 · 9<sup>0</sup> = ?", ok: 5,
-            ex: "9<sup>0</sup> = 1, deci 5 · 1 = 5." }
+            ex: "4 · 4 · 4 = 64, 9<sup>2</sup> = 81, 8<sup>1</sup> = 8, 1<sup>7</sup> = 1 și 0<sup>5</sup> = 0." },
+          { tip: "numar", q: "Calculează: 2<sup>3</sup> + 4<sup>2</sup> − 6 = ?", ok: 18,
+            ex: "Întâi puterile: 8 + 16 − 6 = 18." },
+          { tip: "numar", q: "Calculează: 7 · 4<sup>0</sup> + 0<sup>3</sup> = ?", ok: 7,
+            ex: "4<sup>0</sup> = 1 și 0<sup>3</sup> = 0, deci 7 · 1 + 0 = 7." }
         ],
         recap: [
           "a<sup>n</sup> = a · a · … · a (de n ori). Baza se înmulțește, exponentul numără de câte ori.",
@@ -606,15 +1573,15 @@ DATA["Matematică"] = {
         ],
         exercitii: [
           { tip: "numar", q: "Calculează: 6<sup>2</sup> = ?", ok: 36, ex: "6<sup>2</sup> = 6 · 6 = 36." },
-          { tip: "numar", q: "Calculează: 5<sup>3</sup> = ?", ok: 125, ex: "5<sup>3</sup> = 5 · 5 · 5 = 25 · 5 = 125." },
-          { tip: "alege", q: "Care număr <b>nu</b> poate fi pătrat perfect, doar uitându-te la ultima cifră?", opt: ["49", "117", "196", "225"], ok: 1,
-            ex: "117 se termină în 7. Pătratele perfecte nu se termină niciodată în 2, 3, 7 sau 8." },
-          { tip: "numar", q: "343 este un cub perfect: 343 = ?<sup>3</sup>", ok: 7, ex: "7 · 7 · 7 = 49 · 7 = 343, deci 343 = 7<sup>3</sup>." },
+          { tip: "numar", q: "Calculează: 11<sup>2</sup> = ?", ok: 121, ex: "11<sup>2</sup> = 11 · 11 = 121." },
+          { tip: "alege", q: "Care număr <b>nu</b> poate fi pătrat perfect, doar uitându-te la ultima cifră?", opt: ["64", "118", "196", "225"], ok: 1,
+            ex: "118 se termină în 8. Pătratele perfecte nu se termină niciodată în 2, 3, 7 sau 8." },
+          { tip: "numar", q: "216 este un cub perfect: 216 = ?<sup>3</sup>", ok: 6, ex: "6 · 6 · 6 = 36 · 6 = 216, deci 216 = 6<sup>3</sup>." },
           { tip: "potrivire", q: "Potrivește fiecare număr cu scrierea lui ca putere.", perechi: [
-              ["16", "4<sup>2</sup>"], ["81", "9<sup>2</sup>"], ["27", "3<sup>3</sup>"], ["100", "10<sup>2</sup>"], ["8", "2<sup>3</sup>"]
-            ], ex: "16 = 4<sup>2</sup>, 81 = 9<sup>2</sup>, 27 = 3<sup>3</sup>, 100 = 10<sup>2</sup>, 8 = 2<sup>3</sup>." },
-          { tip: "alege", q: "Între ce pătrate perfecte se află 56?", opt: ["36 și 49", "49 și 64", "64 și 81", "25 și 36"], ok: 1,
-            ex: "7<sup>2</sup> = 49 &lt; 56 &lt; 64 = 8<sup>2</sup>, deci 56 nu e pătrat perfect." }
+              ["36", "6<sup>2</sup>"], ["49", "7<sup>2</sup>"], ["125", "5<sup>3</sup>"], ["400", "20<sup>2</sup>"], ["121", "11<sup>2</sup>"]
+            ], ex: "36 = 6<sup>2</sup>, 49 = 7<sup>2</sup>, 125 = 5<sup>3</sup>, 400 = 20<sup>2</sup>, 121 = 11<sup>2</sup>." },
+          { tip: "alege", q: "Între ce pătrate perfecte vecine se află 90?", opt: ["64 și 81", "81 și 100", "100 și 121", "49 și 64"], ok: 1,
+            ex: "9<sup>2</sup> = 81 &lt; 90 &lt; 100 = 10<sup>2</sup>, deci 90 nu e pătrat perfect." }
         ],
         recap: [
           "a<sup>2</sup> = pătratul lui a; a<sup>3</sup> = cubul lui a.",
@@ -674,10 +1641,10 @@ DATA["Matematică"] = {
         ],
         exercitii: [
           { tip: "numar", q: "2<sup>3</sup> · 2<sup>5</sup> = 2<sup>?</sup>", ok: 8, ex: "Aceeași bază, înmulțire: 3 + 5 = 8, deci 2<sup>8</sup>." },
-          { tip: "numar", q: "3<sup>6</sup> : 3<sup>5</sup> = ?", ok: 3, ex: "6 − 5 = 1, deci 3<sup>1</sup> = 3." },
-          { tip: "numar", q: "(5<sup>2</sup>)<sup>4</sup> = 5<sup>?</sup>", ok: 8, ex: "Putere la putere: 2 · 4 = 8, deci 5<sup>8</sup>." },
-          { tip: "numar", q: "2<sup>3</sup> · 5<sup>3</sup> = ?", ok: 1000, ex: "Puterea unui produs: 2<sup>3</sup> · 5<sup>3</sup> = (2 · 5)<sup>3</sup> = 10<sup>3</sup> = 1 000." },
-          { tip: "numar", q: "18<sup>6</sup> : 9<sup>6</sup> = 2<sup>?</sup>", ok: 6, ex: "Puterea unui cât: (18 : 9)<sup>6</sup> = 2<sup>6</sup>." },
+          { tip: "numar", q: "5<sup>7</sup> : 5<sup>5</sup> = ?", ok: 25, ex: "7 − 5 = 2, deci 5<sup>2</sup> = 25." },
+          { tip: "numar", q: "(3<sup>4</sup>)<sup>2</sup> = 3<sup>?</sup>", ok: 8, ex: "Putere la putere: 4 · 2 = 8, deci 3<sup>8</sup>." },
+          { tip: "numar", q: "4<sup>2</sup> · 25<sup>2</sup> = ?", ok: 10000, ex: "Puterea unui produs: 4<sup>2</sup> · 25<sup>2</sup> = (4 · 25)<sup>2</sup> = 100<sup>2</sup> = 10 000." },
+          { tip: "numar", q: "15<sup>4</sup> : 5<sup>4</sup> = ?", ok: 81, ex: "Puterea unui cât: (15 : 5)<sup>4</sup> = 3<sup>4</sup> = 81." },
           { tip: "alege", q: "Cât face 2<sup>3</sup> + 2<sup>4</sup>?", opt: ["2<sup>7</sup>", "24", "2<sup>12</sup>", "14"], ok: 1,
             ex: "La adunare nu se adună exponenții! 2<sup>3</sup> + 2<sup>4</sup> = 8 + 16 = 24." }
         ],
@@ -722,11 +1689,11 @@ DATA["Matematică"] = {
             <p>7<sup>200</sup> = 49<sup>100</sup> și 5<sup>300</sup> = 125<sup>100</sup>. Deci 7<sup>200</sup> &lt; 5<sup>300</sup>.</p>` }
         ],
         exemple: [
-          { titlu: "Compară 27<sup>15</sup> cu 9<sup>22</sup>", pasi: [
-            "Ambele baze sunt puteri ale lui 3: 27 = 3<sup>3</sup>, 9 = 3<sup>2</sup>",
-            "27<sup>15</sup> = (3<sup>3</sup>)<sup>15</sup> = 3<sup>45</sup>",
-            "9<sup>22</sup> = (3<sup>2</sup>)<sup>22</sup> = 3<sup>44</sup>",
-            "45 &gt; 44, deci 27<sup>15</sup> &gt; 9<sup>22</sup>"
+          { titlu: "Compară 9<sup>20</sup> cu 27<sup>13</sup>", pasi: [
+            "Ambele baze sunt puteri ale lui 3: 9 = 3<sup>2</sup>, 27 = 3<sup>3</sup>",
+            "9<sup>20</sup> = (3<sup>2</sup>)<sup>20</sup> = 3<sup>40</sup>",
+            "27<sup>13</sup> = (3<sup>3</sup>)<sup>13</sup> = 3<sup>39</sup>",
+            "40 &gt; 39, deci 9<sup>20</sup> &gt; 27<sup>13</sup>"
           ] },
           { titlu: "Compară 2<sup>30</sup> cu 3<sup>20</sup>", pasi: [
             "Aducem la același exponent, 10",
@@ -736,16 +1703,16 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Compară 6<sup>20</sup> cu 6<sup>25</sup>.", opt: ["6<sup>20</sup> &lt; 6<sup>25</sup>", "6<sup>20</sup> &gt; 6<sup>25</sup>", "Sunt egale"], ok: 0,
-            ex: "Aceeași bază, 6. Exponentul 20 e mai mic decât 25, deci 6<sup>20</sup> &lt; 6<sup>25</sup>." },
-          { tip: "alege", q: "Compară 16<sup>10</sup> cu 18<sup>10</sup>.", opt: ["16<sup>10</sup> &lt; 18<sup>10</sup>", "16<sup>10</sup> &gt; 18<sup>10</sup>", "Sunt egale"], ok: 0,
-            ex: "Același exponent, 10. Baza 16 &lt; 18, deci 16<sup>10</sup> &lt; 18<sup>10</sup>." },
-          { tip: "numar", q: "Scrie 8<sup>30</sup> ca putere a lui 2: 8<sup>30</sup> = 2<sup>?</sup>", ok: 90,
-            ex: "8 = 2<sup>3</sup>, deci 8<sup>30</sup> = (2<sup>3</sup>)<sup>30</sup> = 2<sup>90</sup>." },
-          { tip: "alege", q: "Compară 8<sup>30</sup> cu 16<sup>22</sup>.", opt: ["8<sup>30</sup> &lt; 16<sup>22</sup>", "8<sup>30</sup> &gt; 16<sup>22</sup>", "Sunt egale"], ok: 1,
-            ex: "8<sup>30</sup> = 2<sup>90</sup> și 16<sup>22</sup> = (2<sup>4</sup>)<sup>22</sup> = 2<sup>88</sup>. 90 &gt; 88, deci 8<sup>30</sup> &gt; 16<sup>22</sup>." },
-          { tip: "alege", q: "Compară 4<sup>30</sup> cu 3<sup>40</sup>.", opt: ["4<sup>30</sup> &lt; 3<sup>40</sup>", "4<sup>30</sup> &gt; 3<sup>40</sup>", "Sunt egale"], ok: 0,
-            ex: "Aducem la exponentul 10: 4<sup>30</sup> = 64<sup>10</sup>, 3<sup>40</sup> = 81<sup>10</sup>. 64 &lt; 81, deci 4<sup>30</sup> &lt; 3<sup>40</sup>." }
+          { tip: "alege", q: "Compară 7<sup>31</sup> cu 7<sup>29</sup>.", opt: ["7<sup>31</sup> &lt; 7<sup>29</sup>", "7<sup>31</sup> &gt; 7<sup>29</sup>", "Sunt egale"], ok: 1,
+            ex: "Aceeași bază, 7. Exponentul 31 e mai mare decât 29, deci 7<sup>31</sup> &gt; 7<sup>29</sup>." },
+          { tip: "alege", q: "Compară 12<sup>15</sup> cu 11<sup>15</sup>.", opt: ["12<sup>15</sup> &lt; 11<sup>15</sup>", "12<sup>15</sup> &gt; 11<sup>15</sup>", "Sunt egale"], ok: 1,
+            ex: "Același exponent, 15. Baza 12 &gt; 11, deci 12<sup>15</sup> &gt; 11<sup>15</sup>." },
+          { tip: "numar", q: "Scrie 4<sup>25</sup> ca putere a lui 2: 4<sup>25</sup> = 2<sup>?</sup>", ok: 50,
+            ex: "4 = 2<sup>2</sup>, deci 4<sup>25</sup> = (2<sup>2</sup>)<sup>25</sup> = 2<sup>50</sup>." },
+          { tip: "alege", q: "Compară 4<sup>25</sup> cu 8<sup>16</sup>.", opt: ["4<sup>25</sup> &lt; 8<sup>16</sup>", "4<sup>25</sup> &gt; 8<sup>16</sup>", "Sunt egale"], ok: 1,
+            ex: "4<sup>25</sup> = 2<sup>50</sup> și 8<sup>16</sup> = (2<sup>3</sup>)<sup>16</sup> = 2<sup>48</sup>. 50 &gt; 48, deci 4<sup>25</sup> &gt; 8<sup>16</sup>." },
+          { tip: "alege", q: "Compară 2<sup>60</sup> cu 3<sup>40</sup>.", opt: ["2<sup>60</sup> &lt; 3<sup>40</sup>", "2<sup>60</sup> &gt; 3<sup>40</sup>", "Sunt egale"], ok: 0,
+            ex: "Aducem la exponentul 20: 2<sup>60</sup> = 8<sup>20</sup>, 3<sup>40</sup> = 9<sup>20</sup>. 8 &lt; 9, deci 2<sup>60</sup> &lt; 3<sup>40</sup>." }
         ],
         recap: [
           "Aceeași bază → câștigă exponentul mai mare.",
@@ -799,13 +1766,13 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "Scrie numărul: 5 · 10<sup>2</sup> + 6 · 10<sup>1</sup> + 0 · 10<sup>0</sup> = ?", ok: 560, ex: "500 + 60 + 0 = 560." },
-          { tip: "alege", q: "Care descompunere e corectă pentru 5 006?", opt: ["5 · 10<sup>3</sup> + 6 · 10<sup>0</sup>", "5 · 10<sup>4</sup> + 6", "5 · 10<sup>3</sup> + 6 · 10<sup>1</sup>"], ok: 0,
-            ex: "5 006 = 5 · 1 000 + 6 · 1 = 5 · 10<sup>3</sup> + 6 · 10<sup>0</sup>." },
-          { tip: "numar", q: "1101<sub>(2)</sub> = ? în baza 10", ok: 13, ex: "8 + 4 + 0 + 1 = 13." },
-          { tip: "numar", q: "110101<sub>(2)</sub> = ? în baza 10", ok: 53, ex: "32 + 16 + 0 + 4 + 0 + 1 = 53." },
-          { tip: "cuvant", q: "Scrie 54 în baza 2 (doar cifre 0 și 1):", ok: ["110110"],
-            ex: "54 = 32 + 16 + 4 + 2 = 110110<sub>(2)</sub>. Sau: 54:2=27 r0, 27:2=13 r1, 13:2=6 r1, 6:2=3 r0, 3:2=1 r1 → 110110." }
+          { tip: "numar", q: "Scrie numărul: 3 · 10<sup>3</sup> + 0 · 10<sup>2</sup> + 7 · 10<sup>1</sup> + 2 · 10<sup>0</sup> = ?", ok: 3072, ex: "3 000 + 0 + 70 + 2 = 3 072." },
+          { tip: "alege", q: "Care descompunere e corectă pentru 7 040?", opt: ["7 · 10<sup>3</sup> + 4 · 10<sup>1</sup>", "7 · 10<sup>3</sup> + 4 · 10<sup>2</sup>", "7 · 10<sup>4</sup> + 4 · 10<sup>1</sup>"], ok: 0,
+            ex: "7 040 = 7 · 1 000 + 4 · 10 = 7 · 10<sup>3</sup> + 4 · 10<sup>1</sup>." },
+          { tip: "numar", q: "1011<sub>(2)</sub> = ? în baza 10", ok: 11, ex: "8 + 0 + 2 + 1 = 11." },
+          { tip: "numar", q: "101101<sub>(2)</sub> = ? în baza 10", ok: 45, ex: "32 + 0 + 8 + 4 + 0 + 1 = 45." },
+          { tip: "cuvant", q: "Scrie 26 în baza 2 (doar cifre 0 și 1):", ok: ["11010"],
+            ex: "26 = 16 + 8 + 2 = 11010<sub>(2)</sub>. Sau: 26:2=13 r0, 13:2=6 r1, 6:2=3 r0, 3:2=1 r1 → 11010." }
         ],
         recap: [
           "Baza 10: fiecare cifră se înmulțește cu o putere a lui 10, după poziție.",
@@ -862,9 +1829,9 @@ DATA["Matematică"] = {
         exercitii: [
           { tip: "numar", q: "Calculează: 2 + 3 · 4 = ?", ok: 14, ex: "Întâi înmulțirea: 3 · 4 = 12, apoi 2 + 12 = 14." },
           { tip: "numar", q: "Calculează: (2 + 3) · 4 = ?", ok: 20, ex: "Întâi paranteza: 5, apoi 5 · 4 = 20." },
-          { tip: "numar", q: "Calculează: 63 : 21 + 270 : 9 + 4 − 3 = ?", ok: 34, ex: "3 + 30 + 4 − 3 = 34." },
-          { tip: "numar", q: "Calculează: 2<sup>3</sup> · 12 − 250 : 50 + (71 − 59) = ?", ok: 103, ex: "8 · 12 = 96; 250 : 50 = 5; 71 − 59 = 12. Deci 96 − 5 + 12 = 103." },
-          { tip: "numar", q: "Calculează: [(23 − 18) · (17 + 8) − 25] : 4 + 7 = ?", ok: 32, ex: "(5 · 25 − 25) : 4 + 7 = (125 − 25) : 4 + 7 = 100 : 4 + 7 = 25 + 7 = 32." }
+          { tip: "numar", q: "Calculează: 48 : 12 + 150 : 5 − 6 = ?", ok: 28, ex: "4 + 30 − 6 = 28." },
+          { tip: "numar", q: "Calculează: 3<sup>2</sup> · 10 − 64 : 8 + (45 − 38) = ?", ok: 89, ex: "9 · 10 = 90; 64 : 8 = 8; 45 − 38 = 7. Deci 90 − 8 + 7 = 89." },
+          { tip: "numar", q: "Calculează: [(30 − 18) · (9 + 1) − 20] : 5 + 3 = ?", ok: 23, ex: "(12 · 10 − 20) : 5 + 3 = 100 : 5 + 3 = 20 + 3 = 23." }
         ],
         recap: [
           "Ordinea: puteri → înmulțiri și împărțiri → adunări și scăderi (de la stânga la dreapta).",
@@ -923,12 +1890,12 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "Trei pachete conțin 24 de biscuiți. Câți biscuiți sunt în 5 pachete la fel?", ok: 40, ex: "1 pachet: 24 : 3 = 8 biscuiți. 5 pachete: 5 · 8 = 40." },
-          { tip: "numar", q: "11 ornamente costă 121 de lei. Cât costă 15 ornamente la fel?", ok: 165, ex: "1 ornament: 121 : 11 = 11 lei. 15 ornamente: 15 · 11 = 165 de lei." },
-          { tip: "alege", q: "Mai mulți robinete umplu același bazin. Cum sunt legate numărul de robinete și timpul?", opt: ["Direct proporționale", "Invers proporționale"], ok: 1,
+          { tip: "numar", q: "4 caiete costă 28 de lei. Cât costă 9 caiete la fel?", ok: 63, ex: "1 caiet: 28 : 4 = 7 lei. 9 caiete: 9 · 7 = 63 de lei." },
+          { tip: "numar", q: "8 mingi costă 96 de lei. Cât costă 5 mingi la fel?", ok: 60, ex: "1 minge: 96 : 8 = 12 lei. 5 mingi: 5 · 12 = 60 de lei." },
+          { tip: "alege", q: "Mai multe robinete umplu același bazin. Cum sunt legate numărul de robinete și timpul?", opt: ["Direct proporționale", "Invers proporționale"], ok: 1,
             ex: "Mai multe robinete → bazinul se umple mai repede. Una crește, cealaltă scade: invers proporționale." },
-          { tip: "numar", q: "6 muncitori renovează un apartament în 14 zile. În câte zile îl renovează 4 muncitori?", ok: 21, ex: "1 muncitor: 14 · 6 = 84 de zile. 4 muncitori: 84 : 4 = 21 de zile." },
-          { tip: "numar", q: "Din 56 kg de portocale se fac 7 litri de suc. Câți litri se fac din 96 kg?", ok: 12, ex: "1 litru: 56 : 7 = 8 kg. Din 96 kg: 96 : 8 = 12 litri." }
+          { tip: "numar", q: "5 muncitori termină o lucrare în 12 zile. În câte zile o termină 6 muncitori?", ok: 10, ex: "1 muncitor: 12 · 5 = 60 de zile. 6 muncitori: 60 : 6 = 10 zile." },
+          { tip: "numar", q: "Din 45 kg de mere se obțin 9 litri de suc. Câți litri se obțin din 75 kg?", ok: 15, ex: "1 litru: 45 : 9 = 5 kg. Din 75 kg: 75 : 5 = 15 litri." }
         ],
         recap: [
           "Scrie datele una sub alta și află mai întâi cât valorează o unitate.",
@@ -984,13 +1951,13 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "2 pixuri și 5 caiete costă 46 lei; 2 pixuri și 8 caiete costă 70 lei. Cât costă un caiet?", ok: 8, ex: "Diferența: 3 caiete costă 70 − 46 = 24 lei. Un caiet: 24 : 3 = 8 lei." },
-          { tip: "numar", q: "Din aceeași problemă (2 pixuri + 5 caiete = 46 lei, un caiet = 8 lei), cât costă un pix?", ok: 3, ex: "5 caiete = 40 lei, deci 2 pixuri = 46 − 40 = 6 lei. Un pix = 3 lei." },
-          { tip: "numar", q: "2 covrigi și 4 brioșe costă 16 lei; 5 covrigi și 4 brioșe costă 22 lei. Cât costă un covrig?", ok: 2, ex: "Brioșele sunt la fel. 3 covrigi costă 22 − 16 = 6 lei, deci un covrig = 2 lei." },
-          { tip: "numar", q: "4 păpuși și 7 mașinuțe costă 360 lei. O mașinuță costă cât 2 păpuși. Cât costă o păpușă?", ok: 20,
-            ex: "Înlocuim: 7 mașinuțe = 14 păpuși. 4 + 14 = 18 păpuși costă 360 lei, deci o păpușă = 20 lei (iar o mașinuță 40 lei)." },
-          { tip: "alege", q: "3 cărți și 4 caiete costă 42 lei; 9 cărți și 12 caiete costă 126 lei. Cât costă o carte?", opt: ["6 lei", "10 lei", "Nu se poate afla"], ok: 2,
-            ex: "Al doilea rând e exact primul de 3 ori (42 · 3 = 126). Nu aflăm nimic nou: datele sunt insuficiente." }
+          { tip: "numar", q: "3 caiete și 2 pixuri costă 29 lei; 3 caiete și 5 pixuri costă 41 lei. Cât costă un pix?", ok: 4, ex: "Caietele sunt la fel. 3 pixuri costă 41 − 29 = 12 lei, deci un pix = 4 lei." },
+          { tip: "numar", q: "Din aceeași problemă (3 caiete + 2 pixuri = 29 lei, un pix = 4 lei), cât costă un caiet?", ok: 7, ex: "2 pixuri = 8 lei, deci 3 caiete = 29 − 8 = 21 lei. Un caiet = 7 lei." },
+          { tip: "numar", q: "4 brioșe și 3 sucuri costă 27 lei; 4 brioșe și 5 sucuri costă 37 lei. Cât costă un suc?", ok: 5, ex: "Brioșele sunt la fel. 2 sucuri costă 37 − 27 = 10 lei, deci un suc = 5 lei (iar o brioșă 3 lei)." },
+          { tip: "numar", q: "3 mingi și 4 rachete costă 220 lei. O rachetă costă cât 2 mingi. Cât costă o minge?", ok: 20,
+            ex: "Înlocuim: 4 rachete = 8 mingi. 3 + 8 = 11 mingi costă 220 lei, deci o minge = 20 lei (iar o rachetă 40 lei)." },
+          { tip: "alege", q: "2 mere și 3 pere costă 13 lei; 4 mere și 6 pere costă 26 lei. Cât costă un măr?", opt: ["2 lei", "5 lei", "Nu se poate afla"], ok: 2,
+            ex: "Al doilea rând e exact primul de 2 ori (13 · 2 = 26). Nu aflăm nimic nou: datele sunt insuficiente." }
         ],
         recap: [
           "Scrie cele două situații una sub alta, pe coloane.",
@@ -1047,11 +2014,11 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "Două numere au suma 500 și diferența 80. Care e numărul mai mic?", ok: 210, ex: "500 − 80 = 420 = două părți egale, o parte = 210. Numărul mare: 290." },
-          { tip: "numar", q: "Într-o livadă sunt 45 de pomi, meri și pruni. Sunt cu 7 meri mai mulți decât pruni. Câți pruni sunt?", ok: 19, ex: "45 − 7 = 38, 38 : 2 = 19 pruni. Meri: 26." },
-          { tip: "numar", q: "Doi frați au economisit împreună 155 lei. Andrei are de 4 ori mai puțin decât Ina. Câți lei are Andrei?", ok: 31, ex: "Andrei = 1 parte, Ina = 4 părți: 5 părți = 155, o parte = 31 lei. Ina are 124 lei." },
-          { tip: "numar", q: "Trei numere naturale consecutive au suma 240. Care e cel mai mic?", ok: 79, ex: "n + (n+1) + (n+2) = 240 → 3n + 3 = 240 → 3n = 237 → n = 79. Numerele: 79, 80, 81." },
-          { tip: "numar", q: "O jucărie costă cât 3 stilouri. Ioana cumpără 1 stilou și 2 jucării și plătește 84 lei. Cât costă un stilou?", ok: 12, ex: "1 stilou + 2 · 3 stilouri = 7 stilouri = 84 lei, deci un stilou = 12 lei, iar o jucărie 36 lei." }
+          { tip: "numar", q: "Două numere au suma 300 și diferența 60. Care e numărul mai mic?", ok: 120, ex: "300 − 60 = 240 = două părți egale, o parte = 120. Numărul mare: 180." },
+          { tip: "numar", q: "La un cantonament sunt 52 de copii. Sunt cu 8 băieți mai mulți decât fete. Câte fete sunt?", ok: 22, ex: "52 − 8 = 44, 44 : 2 = 22 de fete. Băieți: 30." },
+          { tip: "numar", q: "Două echipe au marcat împreună 48 de goluri. Prima a marcat de 3 ori mai multe decât a doua. Câte goluri a marcat a doua?", ok: 12, ex: "A doua = 1 parte, prima = 3 părți: 4 părți = 48, o parte = 12. Prima a marcat 36." },
+          { tip: "numar", q: "Trei numere naturale consecutive au suma 75. Care e cel mai mic?", ok: 24, ex: "n + (n+1) + (n+2) = 75 → 3n + 3 = 75 → 3n = 72 → n = 24. Numerele: 24, 25, 26." },
+          { tip: "numar", q: "O minge costă cât 4 fluiere. Ana cumpără 2 mingi și 1 fluier și plătește 63 lei. Cât costă un fluier?", ok: 7, ex: "2 · 4 fluiere + 1 fluier = 9 fluiere = 63 lei, deci un fluier = 7 lei, iar o minge 28 lei." }
         ],
         recap: [
           "Desenează segmente: cel mai mic = o parte.",
@@ -1107,12 +2074,12 @@ DATA["Matematică"] = {
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "Un număr adunat cu 80 dă 125. Care e numărul?", ok: 45, ex: "x = 125 − 80 = 45." },
-          { tip: "numar", q: "La ce număr se împarte 576 ca să obții 64?", ok: 9, ex: "576 : x = 64 → x = 576 : 64 = 9." },
-          { tip: "numar", q: "(4x − 4) : 44 + 4 = 104. Află x.", ok: 1101, ex: "(4x − 4) : 44 = 100 → 4x − 4 = 4 400 → 4x = 4 404 → x = 1 101." },
-          { tip: "numar", q: "Cineva plătește facturile cu o cincime din salariu, apoi cumpără un aspirator cu o treime din rest și îi rămân 1 600 lei. Cât e salariul?", ok: 3000,
-            ex: "1 600 sunt două treimi din rest → o treime = 800, restul = 2 400. Restul e 4 cincimi din salariu → o cincime = 600, salariul = 3 000 lei." },
-          { tip: "numar", q: "Un număr + 10, apoi · 10, apoi − 10, apoi : 10 dă 10. Care e numărul?", ok: 1, ex: "Înapoi: 10 · 10 = 100; 100 + 10 = 110; 110 : 10 = 11; 11 − 10 = 1." }
+          { tip: "numar", q: "Un număr scăzut din 200 dă 73. Care e numărul?", ok: 127, ex: "200 − x = 73 → x = 200 − 73 = 127." },
+          { tip: "numar", q: "La ce număr împarți 360 ca să obții 45?", ok: 8, ex: "360 : x = 45 → x = 360 : 45 = 8." },
+          { tip: "numar", q: "(3x + 6) : 9 + 5 = 15. Află x.", ok: 28, ex: "(3x + 6) : 9 = 10 → 3x + 6 = 90 → 3x = 84 → x = 28." },
+          { tip: "numar", q: "Ana cheltuie un sfert din bani pe o carte, apoi jumătate din rest pe un joc și îi rămân 30 lei. Câți lei avea?", ok: 80,
+            ex: "30 lei sunt jumătate din rest → restul = 60 lei. Restul e 3 sferturi → un sfert = 20 lei, deci avea 80 lei." },
+          { tip: "numar", q: "Un număr se înmulțește cu 3, se adună 12, rezultatul se împarte la 5 și se obține 9. Care e numărul?", ok: 11, ex: "Înapoi: 9 · 5 = 45; 45 − 12 = 33; 33 : 3 = 11." }
         ],
         recap: [
           "Pornești de la rezultat și mergi înapoi, pas cu pas.",
@@ -1161,20 +2128,20 @@ DATA["Matematică"] = {
             "132 : 4 = 33 de bancnote de 5 lei; 83 − 33 = 50 de bancnote de 1 leu",
             "Proba: 33 · 5 + 50 = 215 ✓"
           ] },
-          { titlu: "Andrei are porumbei și iepuri: 25 de capete și 76 de picioare", pasi: [
-            "Presupunem că toți sunt porumbei: 25 · 2 = 50 de picioare",
-            "Lipsesc 76 − 50 = 26 de picioare",
-            "Un iepure în loc de un porumbel aduce 2 picioare",
-            "26 : 2 = 13 iepuri; 25 − 13 = 12 porumbei"
+          { titlu: "La o fermă sunt 20 de animale, găini și oi, cu 56 de picioare", pasi: [
+            "Presupunem că toate sunt găini: 20 · 2 = 40 de picioare",
+            "Lipsesc 56 − 40 = 16 picioare",
+            "O oaie în loc de o găină aduce 2 picioare",
+            "16 : 2 = 8 oi; 20 − 8 = 12 găini"
           ] }
         ],
         exercitii: [
-          { tip: "numar", q: "Un bloc are 25 de apartamente cu 2 sau 3 camere și 65 de camere. Câte apartamente au 3 camere?", ok: 15, ex: "Toate cu 2 camere: 50. Lipsesc 15 camere, fiecare schimb aduce 1 → 15 apartamente cu 3 camere și 10 cu 2." },
-          { tip: "numar", q: "Miruna are 14 pixuri și creioane și a plătit 66 lei. Pixul costă 6 lei, creionul 3 lei. Câte pixuri are?", ok: 8, ex: "Toate creioane: 42 lei. Lipsesc 24 lei, fiecare pix în loc de creion aduce 3 lei → 8 pixuri și 6 creioane." },
-          { tip: "numar", q: "În laborator sunt 13 mese cu 2 sau 3 scaune și 29 de locuri. Câte mese au 3 scaune?", ok: 3, ex: "Toate cu 2 scaune: 26. Lipsesc 3 locuri → 3 mese cu 3 scaune, 10 mese cu 2 scaune." },
-          { tip: "numar", q: "La un test cu 10 întrebări, Darius are 22 de puncte: +3 pentru corect, −1 pentru greșit. La câte întrebări a răspuns corect?", ok: 8,
-            ex: "Toate corecte: 30 de puncte. A pierdut 8. Fiecare greșeală costă 3 + 1 = 4 puncte → 2 greșeli, deci 8 corecte." },
-          { tip: "numar", q: "100 de copii stau în 28 de camere cu 3 sau 5 paturi, toate ocupate. Câte camere au 5 paturi?", ok: 8, ex: "Toate cu 3 paturi: 84. Lipsesc 16 locuri, fiecare cameră de 5 aduce 2 → 8 camere cu 5 paturi și 20 cu 3." }
+          { tip: "numar", q: "Un bloc are 20 de apartamente cu 2 sau 3 camere și 47 de camere. Câte apartamente au 3 camere?", ok: 7, ex: "Toate cu 2 camere: 40. Lipsesc 7 camere, fiecare schimb aduce 1 → 7 apartamente cu 3 camere și 13 cu 2." },
+          { tip: "numar", q: "S-au cumpărat 12 bilete de 5 lei și de 8 lei, plătind 75 de lei. Câte bilete de 8 lei sunt?", ok: 5, ex: "Toate de 5 lei: 60. Lipsesc 15 lei, fiecare bilet de 8 în loc de 5 aduce 3 lei → 5 bilete de 8 lei și 7 de 5 lei." },
+          { tip: "numar", q: "Într-o parcare sunt 15 biciclete și mașini, cu 42 de roți. Câte mașini sunt?", ok: 6, ex: "Toate biciclete: 30 de roți. Lipsesc 12, fiecare mașină în loc de bicicletă aduce 2 roți → 6 mașini și 9 biciclete." },
+          { tip: "numar", q: "La un test cu 12 întrebări primești +5 pentru corect și −2 pentru greșit. Matei are 46 de puncte. La câte întrebări a răspuns corect?", ok: 10,
+            ex: "Toate corecte: 60 de puncte. A pierdut 14. Fiecare greșeală costă 5 + 2 = 7 puncte → 2 greșeli, deci 10 corecte." },
+          { tip: "numar", q: "30 de copii dorm în 8 corturi de 3 și de 5 locuri, toate pline. Câte corturi au 5 locuri?", ok: 3, ex: "Toate de 3 locuri: 24. Lipsesc 6 locuri, fiecare cort de 5 aduce 2 → 3 corturi de 5 și 5 corturi de 3." }
         ],
         recap: [
           "Presupui că toate lucrurile sunt de un singur fel.",
@@ -1385,11 +2352,11 @@ DATA["Română"] = {
           { tip: "alege", q: "Unde se petrece cea mai mare parte a acțiunii?", opt: ["În curte", "În salonul doamnei Popescu", "La școală", "În bucătărie"], ok: 1,
             ex: "Totul se petrece în salon, unde sunt jucăriile lui Ionel." },
           { tip: "alege", q: "Care obiect din text arată că întâmplarea e de demult?", opt: ["Mingea", "Spirtiera pentru cafea", "Sabia de jucărie", "Masa"], ok: 1,
-            ex: "Spirtiera (cafeaua făcută pe spirt) era folosită în secolul al XIX-lea. Azi folosim aragazul sau espressorul." },
+            ex: "Spirtiera (cafeaua făcută pe spirt) era folosită în secolul al XIX-lea." },
           { tip: "potrivire", q: "Potrivește indiciul cu ce ne arată.", perechi: [["„de Sf. Ion”", "ziua (7 ianuarie)"], ["„gerul așa de aspru”", "anotimpul"], ["salonul cu jucării", "locul"], ["policandru, jupâneasă", "epoca"]],
             ex: "Sf. Ion arată ziua, gerul arată anotimpul, salonul e locul, iar obiectele și oamenii de altădată arată epoca." },
-          { tip: "alege", q: "Dacă vizita ar avea loc azi, ce ar înlocui spirtiera?", opt: ["Un policandru", "Un espressor de cafea", "O chesea", "Șoșonii"], ok: 1,
-            ex: "Azi cafeaua se face cu espressorul sau la ibric pe aragaz." }
+          { tip: "alege", q: "Ce este un indiciu de spațiu?", opt: ["O informație despre locul acțiunii", "O informație despre vârsta personajului", "Titlul textului"], ok: 0,
+            ex: "Indiciile de spațiu spun unde se petrece acțiunea: țară, oraș, casă, cameră." }
         ],
         recap: [
           "Acțiunea = întâmplările; au loc într-un timp și un spațiu.",
@@ -1437,22 +2404,19 @@ DATA["Română"] = {
           ] }
         ],
         exercitii: [
-          { tip: "ordine", q: "Pune întâmplările din „Vizită…” în ordinea din text.", items: [
-              "Un domn vine în vizită la doamna Popescu.",
-              "Ionel vrea să răstoarne spirtiera.",
-              "Ionel bate toba și suflă în trâmbiță, călare pe calul de jucărie.",
-              "Ionel atacă jupâneasa și o lovește pe mama cu spada.",
-              "Ionel ia cheseaua de dulceață și iese în vestibul.",
-              "Ionel fumează.",
-              "Mingea lovește ceașca și cafeaua se varsă pe pantalonii musafirului.",
-              "Lui Ionel i se face rău, apoi își revine.",
-              "Acasă, musafirul găsește dulceață în șoșoni."
-            ], ex: "Aceasta e ordinea din text. Ea devine planul simplu de idei." },
+          { tip: "ordine", q: "Pune aceste momente din „Vizită…” în ordinea din text.", items: [
+              "Musafirul îi aduce lui Ionel o minge.",
+              "Jupâneasa strigă că Ionel vrea să răstoarne spirtiera.",
+              "Musafirul îi explică lui Ionel că un maior nu cântă din trâmbiță.",
+              "Ionel își fumează țigareta până la carton.",
+              "Cafeaua se varsă pe pantalonii musafirului.",
+              "Musafirul pleacă acasă."
+            ], ex: "Aceasta e ordinea din text. Așa se construiește planul de idei." },
           { tip: "alege", q: "Ce este o idee secundară?", opt: ["Cea mai importantă idee din text", "O idee care adaugă amănunte la ideea principală", "Titlul textului", "Ultima propoziție"], ok: 1,
             ex: "Ideile secundare completează ideea principală cu detalii." },
-          { tip: "alege", q: "Care e o idee secundară bună pentru „Ionel fumează”?", opt: ["Musafirul pleacă acasă.", "Ionel ia o țigaretă din tabachera musafirului și se plimbă grav prin salon, ca un militar.", "Mama strigă după ajutor.", "Jupâneasa aduce cafele."], ok: 1,
-            ex: "Detaliile despre cum fumează Ionel completează ideea principală." },
-          { tip: "alege", q: "Ce trebuie respectat în planul dezvoltat?", opt: ["Ordinea în care apar ideile în text", "Ordinea alfabetică", "Doar ideile despre mamă", "Să fie cât mai scurt"], ok: 0,
+          { tip: "alege", q: "Ideea principală: „Ana pleacă la antrenament.” Care e o idee secundară potrivită?", opt: ["Pisica doarme pe canapea.", "Își pregătește echipamentul și ia autobuzul spre sală.", "A doua zi e duminică."], ok: 1,
+            ex: "O idee secundară dă amănunte despre aceeași întâmplare." },
+          { tip: "alege", q: "Ce trebuie respectat în planul dezvoltat?", opt: ["Ordinea în care apar ideile în text", "Ordinea alfabetică", "Doar ideile despre un personaj", "Să fie cât mai scurt"], ok: 0,
             ex: "Ideile principale și secundare se scriu în ordinea din text." }
         ],
         recap: [
@@ -1493,35 +2457,35 @@ DATA["Română"] = {
             </div>` },
           { h: "Cum afli trăsăturile", html: `
             <p>Trăsăturile pot fi <b>spuse direct</b> în text („un copilaș foarte drăguț”) sau <b>deduse</b> din ce face și ce spune personajul.</p>
-            <p>Ionel vrea să răstoarne spirtiera, atacă jupâneasa, fumează, toarnă dulceață în șoșoni → e <b>neastâmpărat, obraznic, răsfățat</b>. Mama îl iartă mereu și îl admiră → e <b>prea îngăduitoare</b>.</p>
-            <p>Mama repetă după fiecare năzbâtie: <b>„Vrei să moară mama?”</b></p>` },
+            <p>Metoda: alegi o faptă → te întrebi „ce fel de copil face asta?” → numești trăsătura → o susții cu fragmentul din text.</p>` },
           { h: "Cine povestește?", html: `
-            <p>Povestește <b>musafirul</b>, la <b>persoana I</b> („M-am dus”, „i-am dus”). El e și <b>participant</b> la acțiune, nu doar martor.</p>` }
+            <p>Uită-te la <b>persoana verbelor</b>. „<b>Am alergat</b> până la poartă” (persoana I): povestitorul <b>participă</b> la întâmplare. „Ana <b>alergă</b> până la poartă” (persoana a III-a): povestitorul doar spune ce fac alții.</p>
+            <p>Încearcă singură pe „Vizită…”: ce persoană au verbele din prima propoziție?</p>` }
         ],
         exemple: [
-          { titlu: "Deduce o trăsătură a lui Ionel", pasi: [
-            "Fragment: „Da tu de ce tragi? mă-ntrerupe maiorul lucrând cu lingura în cheseaua de dulceață…”",
-            "Ionel îl întrerupe pe un adult și îi răspunde obraznic",
-            "Mănâncă dulceață chiar dacă mama îi spune să se oprească",
-            "Trăsături deduse: obraznic, neascultător"
+          { titlu: "Deduce o trăsătură (exemplu din altă poveste)", pasi: [
+            "Fragment: „Mihai și-a dat sandvișul colegului care își uitase pachetul acasă.”",
+            "Ce face? Împarte mâncarea lui cu cineva care nu are",
+            "Ce fel de copil face asta? Unul generos, care se gândește la alții",
+            "Trăsătură: generos. Dovada: fragmentul de mai sus"
           ] }
         ],
         exercitii: [
           { tip: "potrivire", q: "Potrivește personajul cu tipul lui.", perechi: [["Ionel", "principal"], ["doamna Popescu", "secundar"], ["jupâneasa", "episodic"]],
             ex: "Ionel e în centrul acțiunii; mama și musafirul au rol secundar; jupâneasa apare doar în câteva momente." },
-          { tip: "alege", q: "Ce cuvinte repetă mama după aproape fiecare năzbâtie?", opt: ["„Bravo, Ionel!”", "„Vrei să moară mama?”", "„Du-te în camera ta!”", "„Cere-ți iertare!”"], ok: 1,
-            ex: "„Vrei să moară mama?” apare de mai multe ori, dar Ionel nu se schimbă." },
-          { tip: "alege", q: "La ce persoană povestește naratorul?", opt: ["Persoana I", "Persoana a II-a", "Persoana a III-a"], ok: 0,
-            ex: "„M-am dus”, „i-am dus”, „am ieșit”: musafirul povestește la persoana I." },
-          { tip: "alege", q: "Ce trăsătură a mamei reiese din text?", opt: ["Este severă", "Este prea îngăduitoare cu Ionel", "Este indiferentă", "Este glumeață cu musafirul"], ok: 1,
-            ex: "Îl iartă imediat, îl sărută și chiar îl admiră când fumează." },
-          { tip: "alege", q: "Ionel e îmbrăcat ca maior. Se poartă ca un ofițer adevărat?", opt: ["Da, e disciplinat și respectuos", "Nu, imită doar gesturile, dar e neascultător și obraznic"], ok: 1,
-            ex: "Salută militărește și comandă, dar nu ascultă de nimeni și face numai năzbâtii." }
+          { tip: "alege", q: "Ce jucării alege Ionel prima dată din colțul salonului?", opt: ["O minge și o sabie", "O trâmbiță și o tobă", "Un cal și o trotinetă"], ok: 1,
+            ex: "„Dintre toate, maiorul alege o trâmbiță și o tobă.”" },
+          { tip: "alege", q: "Ce face Ionel după ce musafirul îi spune că un maior nu cântă din trâmbiță?", opt: ["Plânge", "Aruncă toba și trâmbița și începe să comande atacul", "Iese din salon"], ok: 1,
+            ex: "Maiorul descalecă, trântește toba și trâmbița și strigă: „Înainte! marș!”" },
+          { tip: "alege", q: "Într-o poveste citim: „Am alergat până la poartă.” Cine povestește?", opt: ["Un personaj care participă la întâmplare", "Cineva care doar privește din afară"], ok: 0,
+            ex: "Persoana I („am alergat”) arată că povestitorul participă la acțiune." },
+          { tip: "alege", q: "Cum afli o trăsătură a unui personaj care nu e spusă direct?", opt: ["Din faptele și vorbele lui", "Din titlul textului", "Din numărul de pagini"], ok: 0,
+            ex: "Trăsăturile se deduc din ce face, ce spune personajul și ce spun alții despre el." }
         ],
         recap: [
           "Personajul există doar în textul literar; poate fi principal, secundar sau episodic.",
-          "Trăsăturile se spun direct sau se deduc din fapte și vorbe.",
-          "Ionel: neastâmpărat, obraznic, răsfățat. Mama: prea îngăduitoare. Naratorul: musafirul, la persoana I."
+          "Trăsăturile se spun direct sau se deduc din fapte și vorbe; le susții mereu cu un fragment.",
+          "Persoana verbelor arată dacă povestitorul participă (persoana I) sau doar povestește (persoana a III-a)."
         ],
         parinte: {
           stie: [
@@ -1546,41 +2510,48 @@ DATA["Română"] = {
         sub: "Tema, titlul, mesajul",
         invata: [
           { h: "Tema", html: `
-            <p>Tema este <b>subiectul general</b> despre care e textul. Pentru „Vizită…” se pot spune mai multe teme, de exemplu: <b>educația copiilor</b>, relația dintre copii și părinți, copilăria.</p>
-            <p>Mama vorbește despre „părerile ei sănătoase în privința educației copiilor”, dar Ionel arată exact contrariul. Asta e <b>ironia</b> textului.</p>` },
-          { h: "Titlul", html: `
-            <p><b>Punctele de suspensie</b> din titlu („Vizită…”) sugerează că nu a fost o vizită obișnuită. Spune mai mult decât un simplu cuvânt: o vizită plină de peripeții.</p>` },
-          { h: "Ce putem învăța", html: `
-            <p>Răsfățul nu e același lucru cu dragostea. Copiii au nevoie și de reguli. Textul e citit cu plăcere și după peste o sută de ani pentru că e <b>amuzant</b> și pentru că astfel de situații se întâmplă și azi.</p>` }
+            <p>Tema este <b>subiectul general</b> despre care e textul: prietenia, curajul, copilăria, familia. Un text poate avea mai multe teme.</p>
+            <p>O temă o propui și apoi o <b>susții cu dovezi</b> din text.</p>` },
+          { h: "Ironia", html: `
+            <p><b>Ironia</b> apare când vorbele spun una, dar se înțelege altceva, sau când ce spune un personaj nu se potrivește cu ce se vede. De exemplu, spui „Ce vreme frumoasă!” când plouă cu găleata.</p>
+            <p>Caută în „Vizită…” un loc în care vorbele mamei nu se potrivesc cu faptele lui Ionel.</p>` },
+          { h: "Cum îți spui părerea", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">1</span><span>Mi-a plăcut textul pentru că…</span></div>
+              <div class="rule"><span class="f">2</span><span>Nu mi-a plăcut că…</span></div>
+              <div class="rule"><span class="f">3</span><span>Textul mi-a amintit de…</span></div>
+            </div>
+            <p>După fiecare, adaugă un exemplu din text.</p>` }
         ],
         exemple: [
-          { titlu: "Cum susții o temă cu dovezi", pasi: [
-            "Tema propusă: educația copiilor",
-            "Dovada 1: mama spune că trebuie „să-i fac educația”",
-            "Dovada 2: Ionel face numai năzbâtii, iar mama îl iartă mereu",
-            "Concluzie: textul arată, cu umor, o educație greșită"
+          { titlu: "Cum susții o temă cu dovezi (pe „Capra cu trei iezi” de Ion Creangă)", pasi: [
+            "Tema propusă: ascultarea de părinți",
+            "Dovada 1: capra le spune iezilor să nu deschidă nimănui ușa",
+            "Dovada 2: iezii mari nu ascultă, deschid ușa și sunt mâncați de lup",
+            "Dovada 3: iedul cel mic ascultă, se ascunde și scapă",
+            "Concluzie: textul arată ce se întâmplă când nu asculți de sfaturi"
           ] }
         ],
         exercitii: [
+          { tip: "alege", q: "Ce este tema unui text?", opt: ["Subiectul general despre care e textul", "Numele autorului", "Locul acțiunii"], ok: 0,
+            ex: "Tema e subiectul general: prietenia, copilăria, curajul etc." },
           { tip: "alege", q: "Care <b>nu</b> poate fi tema textului „Vizită…”?", opt: ["Educația copiilor", "Relația dintre copii și părinți", "Copilăria", "Agricultura"], ok: 3,
-            ex: "Agricultura e doar pomenită într-o discuție de politețe. Celelalte trei sunt teme potrivite." },
-          { tip: "alege", q: "Ce sugerează punctele de suspensie din titlu?", opt: ["Că textul nu e terminat", "Că vizita nu a fost una obișnuită", "Că autorul a uitat titlul"], ok: 1,
-            ex: "Punctele de suspensie lasă loc gândului: a fost o vizită plină de peripeții." },
-          { tip: "alege", q: "De ce e amuzant când mama vorbește despre „educația” lui Ionel?", opt: ["Pentru că Ionel e foarte bine crescut", "Pentru că Ionel face exact contrariul a ceea ce ar arăta o educație bună", "Pentru că mama glumește"], ok: 1,
-            ex: "Contrastul dintre vorbele mamei și faptele lui Ionel creează ironia." },
-          { tip: "alege", q: "Ce determină cel mai mult comportamentul lui Ionel, după text?", opt: ["Mama îl răsfață și e prea îngăduitoare", "Musafirul e rău cu el", "Jupâneasa îl ceartă"], ok: 0,
-            ex: "Mama îl iartă, îl sărută și chiar îl admiră când fumează." }
+            ex: "Agricultura e doar pomenită într-o discuție de politețe." },
+          { tip: "alege", q: "Ce este ironia?", opt: ["Când vorbele spun una, dar se înțelege contrariul", "O glumă despre animale", "O greșeală de scriere"], ok: 0,
+            ex: "De exemplu, spui „Ce vreme frumoasă!” când plouă torențial." },
+          { tip: "alege", q: "Cum îți susții părerea despre tema unui text?", opt: ["Cu exemple din text", "Spunând doar că așa crezi", "Repetând titlul"], ok: 0,
+            ex: "Orice temă propusă se sprijină pe întâmplări sau citate din text." }
         ],
         recap: [
-          "Tema e subiectul general: aici, educația copiilor (și relația copii–părinți, copilăria).",
-          "Titlul „Vizită…” sugerează o vizită neobișnuită.",
-          "Textul e ironic: vorbele mamei despre educație nu se potrivesc cu faptele lui Ionel."
+          "Tema e subiectul general al textului; un text poate avea mai multe teme.",
+          "Orice temă o susții cu dovezi din text.",
+          "Ironia: vorbele spun una, dar se înțelege altceva."
         ],
         parinte: {
           stie: [
             "Să propună o temă și s-o susțină cu două dovezi din text.",
-            "Rolul punctelor de suspensie din titlu.",
-            "Ce înseamnă ironia, pe exemplul mamei."
+            "Ce înseamnă ironia.",
+            "Să-și spună părerea despre text cu un exemplu."
           ],
           greseli: [
             "Confundă tema cu rezumatul.",
@@ -1631,18 +2602,18 @@ DATA["Română"] = {
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Care dintre cuvinte este verb?", opt: ["sabie", "roșu", "sună", "ea"], ok: 2,
-            ex: "„sună” arată o acțiune. Sabie e substantiv, roșu adjectiv, ea pronume." },
-          { tip: "potrivire", q: "Potrivește verbul cu timpul lui.", perechi: [["a adus", "trecut"], ["trântește", "prezent"], ["va observa", "viitor"]],
-            ex: "a adus – trecut; trântește – prezent; va observa – viitor." },
-          { tip: "alege", q: "La ce persoană și număr e verbul „vorbeau”?", opt: ["I, singular", "a II-a, plural", "a III-a, plural", "a III-a, singular"], ok: 2,
-            ex: "Ei/ele vorbeau: persoana a III-a, numărul plural." },
-          { tip: "alege", q: "În „Pot vorbi limba engleză.” care e verbul la infinitiv?", opt: ["Pot", "vorbi", "limba"], ok: 1,
-            ex: "„Pot” e predicat verbal; „vorbi” e infinitiv fără „a”, pentru că vine după a putea." },
-          { tip: "alege", q: "Care e forma negativă corectă pentru „El face gălăgie.”?", opt: ["El face nu gălăgie.", "El nu face gălăgie.", "Nu el face gălăgie."], ok: 1,
+          { tip: "alege", q: "Care dintre cuvinte este verb?", opt: ["minge", "alb", "citește", "noi"], ok: 2,
+            ex: "„citește” arată o acțiune. Minge e substantiv, alb adjectiv, noi pronume." },
+          { tip: "potrivire", q: "Potrivește verbul cu timpul lui.", perechi: [["am jucat", "trecut"], ["desenează", "prezent"], ["vom pleca", "viitor"]],
+            ex: "am jucat – trecut; desenează – prezent; vom pleca – viitor." },
+          { tip: "alege", q: "La ce persoană și număr e verbul „alergați”?", opt: ["I, plural", "a II-a, plural", "a III-a, plural", "a II-a, singular"], ok: 1,
+            ex: "Voi alergați: persoana a II-a, numărul plural." },
+          { tip: "alege", q: "În „Pot înota foarte repede.” care e verbul la infinitiv?", opt: ["Pot", "înota", "repede"], ok: 1,
+            ex: "„Pot” e predicat verbal; „înota” e infinitiv fără „a”, pentru că vine după a putea." },
+          { tip: "alege", q: "Care e forma negativă corectă pentru „Mihai aleargă în parc.”?", opt: ["Mihai aleargă nu în parc.", "Mihai nu aleargă în parc.", "Nu Mihai aleargă în parc."], ok: 1,
             ex: "„nu” se pune înaintea verbului și se analizează împreună cu el." },
-          { tip: "alege", q: "Care cuvânt e intrusul: auzea, a mers, răspunde, <b>soldat</b>, strigă?", opt: ["auzea", "a mers", "soldat", "strigă"], ok: 2,
-            ex: "„soldat” e substantiv; celelalte sunt verbe." }
+          { tip: "alege", q: "Care cuvânt e intrusul: scrie, a cântat, <b>fereastră</b>, vom merge, citeau?", opt: ["scrie", "a cântat", "fereastră", "citeau"], ok: 2,
+            ex: "„fereastră” e substantiv; celelalte sunt verbe." }
         ],
         recap: [
           "Verbul arată acțiune, stare sau existență și se schimbă după timp, persoană și număr.",
@@ -1681,13 +2652,13 @@ DATA["Română"] = {
             <p>Terminațiile care arată persoana și numărul se numesc <b>desinențe</b>.</p>` },
           { h: "Prezentul poate arăta și altceva", html: `
             <div class="rules">
-              <div class="rule"><span class="f">trecut</span><span>Mihai Viteazul <b>câștigă</b> bătălia de la Călugăreni în 1595.</span></div>
-              <div class="rule"><span class="f">viitor</span><span>Mâine <b>plec</b> la munte.</span></div>
-              <div class="rule"><span class="f">adevăr general</span><span>Triunghiul <b>are</b> trei laturi.</span></div>
+              <div class="rule"><span class="f">trecut</span><span>În 1600, Mihai Viteazul <b>unește</b> cele trei țări.</span></div>
+              <div class="rule"><span class="f">viitor</span><span>Mâine <b>plec</b> la antrenament.</span></div>
+              <div class="rule"><span class="f">adevăr general</span><span>Pământul se <b>învârte</b> în jurul Soarelui.</span></div>
             </div>` },
           { h: "Forme corecte", html: `
-            <p>Eu <b>văd</b> (nu văz), eu <b>cred</b> (nu crez), eu <b>vin</b> (nu viu), eu <b>copiez</b> (nu copii).</p>
-            <p>El <b>aranjează</b> (nu aranjază), el <b>creează</b>, el <b>îndeamnă</b>.</p>` }
+            <p>Unele verbe au forme pe care le greșim des. Când nu ești sigură, verifică în <b>DOOM</b> (dicționarul ortografic).</p>
+            <p>Exemple: eu <b>spun</b> (nu spui), tu <b>știi</b> (cu doi i), el <b>agreează</b>, el <b>lucrează</b>.</p>` }
         ],
         exemple: [
           { titlu: "Conjugă „a merge” la indicativ prezent", pasi: [
@@ -1697,14 +2668,14 @@ DATA["Română"] = {
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Care serie are <b>numai</b> verbe la modul indicativ?", opt: ["Alergi. Cântăm. Discutați! Țip.", "Adaug. Expune. Răstoarnă. Strigați.", "Auzim. Iese. Îngrijiți. Suie!"], ok: 1,
-            ex: "„Discutați!” și „Suie!” sunt la imperativ (ordin). A doua serie are doar acțiuni sigure." },
-          { tip: "alege", q: "Forma corectă la persoana I, singular:", opt: ["eu văz", "eu văd"], ok: 1, ex: "Corect: eu văd." },
-          { tip: "alege", q: "Forma corectă la persoana a III-a, singular:", opt: ["aranjază", "aranjează"], ok: 1, ex: "Corect: el aranjează." },
-          { tip: "potrivire", q: "Ce valoare are prezentul?", perechi: [["Mâine plec la munte.", "viitor"], ["Triunghiul are trei laturi.", "adevăr general"], ["Mihai Viteazul câștigă bătălia în 1595.", "trecut"]],
-            ex: "Cuvintele „mâine”, „1595” și o regulă care e mereu adevărată schimbă sensul prezentului." },
-          { tip: "cuvant", q: "Completează la prezent (a crea, pers. a III-a, singular): „Scriitorul … un personaj interesant.”", ok: ["creează"],
-            ex: "El creează, cu doi de „e”: cre-ea-ză." }
+          { tip: "alege", q: "Care serie are <b>numai</b> verbe la modul indicativ?", opt: ["Citești. Dansăm. Scrieți! Râd.", "Lucrez. Aleargă. Desenăm. Vorbiți.", "Mergem. Stai! Înoată. Cânt."], ok: 1,
+            ex: "„Scrieți!” și „Stai!” sunt ordine (imperativ). A doua serie are doar acțiuni sigure." },
+          { tip: "alege", q: "Forma corectă la persoana I, singular:", opt: ["eu spui", "eu spun"], ok: 1, ex: "Corect: eu spun. „Spui” e forma pentru tu." },
+          { tip: "alege", q: "Forma corectă la persoana a III-a, singular:", opt: ["agrează", "agreează"], ok: 1, ex: "Corect: el agreează (de la a agrea)." },
+          { tip: "potrivire", q: "Ce valoare are prezentul?", perechi: [["Diseară mergem la film.", "viitor"], ["Apa fierbe la 100 de grade.", "adevăr general"], ["În 1859, Cuza unește Principatele.", "trecut"]],
+            ex: "„Diseară”, un fapt mereu adevărat și anul 1859 schimbă sensul prezentului." },
+          { tip: "cuvant", q: "Completează la prezent (a ști, pers. a II-a, singular): „Tu … răspunsul.”", ok: ["știi"],
+            ex: "Tu știi, cu doi de „i”." }
         ],
         recap: [
           "Modul indicativ arată acțiuni sigure, reale.",
@@ -1718,13 +2689,13 @@ DATA["Română"] = {
             "Formele corecte frecvent greșite."
           ],
           greseli: [
-            "„văz”, „crez”, „viu” în loc de văd, cred, vin.",
-            "„aranjază” în loc de aranjează; „crează” în loc de creează.",
+            "Forme regionale la persoana I (ex. „eu spui” în loc de „eu spun”).",
+            "Forme cu -ază în loc de -ează (ex. „agrează” în loc de „agreează”).",
             "Confundă imperativul (Stai!) cu indicativul (Stai acolo.)."
           ],
           intrebari: [
             "„Conjugă-mi «a dormi» la prezent.”",
-            "„Cum spui corect: el crează sau el creează?”",
+            "„Cum spui corect: el agrează sau el agreează?”",
             "„De ce «Pământul se învârte» e la prezent, deși era și ieri?”"
           ]
         }
@@ -1742,7 +2713,7 @@ DATA["Română"] = {
             <div class="ex-step">mergeam · mergeai · mergea · mergeam · mergeați · mergeau</div>` },
           { h: "Greșeli de evitat", html: `
             <p>Corect: <b>voiam</b>, voiai, voia (de la a voi). Greșit: <s>vroiam</s>.</p>
-            <p>Corect: o <b>iubea</b> (nu iubia), <b>înghesuia</b> (nu înghesuea).</p>` }
+            <p>Atenție la verbele terminate în -i: el <b>citea</b>, ea <b>scria</b>.</p>` }
         ],
         exemple: [
           { titlu: "Găsește imperfectul: „Alunecam pe role prin parc. Priveam frunzele. Deodată, a apărut un băiat pe bicicletă.”", pasi: [
@@ -1752,29 +2723,29 @@ DATA["Română"] = {
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Care formă e corectă?", opt: ["Vroiam o tabletă nouă.", "Voiam o tabletă nouă."], ok: 1, ex: "De la a voi: voiam. „Vroiam” e greșit." },
-          { tip: "numar", q: "Câte verbe la imperfect sunt aici? „Bătea vântul și cădeau picături de ploaie. Mergeam grăbit spre școală, când am auzit un miorlăit. O pisicuță plângea lângă un bloc. Am luat-o acasă, deși presimțeam reproșul mamei.”", ok: 5,
-            ex: "bătea, cădeau, mergeam, plângea, presimțeam = 5. „am auzit” și „am luat” sunt la perfect compus." },
-          { tip: "alege", q: "Care e intrusul: dormeam, învăța, <b>laudă</b>, săreai, terminam?", opt: ["dormeam", "laudă", "săreai", "terminam"], ok: 1,
-            ex: "„laudă” e la prezent; celelalte sunt la imperfect." },
-          { tip: "cuvant", q: "Trece la imperfect: „Ea miorlăie la ușă.” → „Ea … la ușă.”", ok: ["miorlaia", "miorlăia"],
-            ex: "Ea miorlăia la ușă." },
-          { tip: "alege", q: "Scrie corect:", opt: ["Făt-Frumos o iubia pe Ileana.", "Făt-Frumos o iubea pe Ileana."], ok: 1, ex: "Corect: iubea (cu -ea-)." }
+          { tip: "alege", q: "Care formă e corectă?", opt: ["Ei vroiau să plece.", "Ei voiau să plece."], ok: 1, ex: "De la a voi: voiau. Formele cu r sunt greșite." },
+          { tip: "numar", q: "Câte verbe la imperfect sunt aici? „Era o zi senină. Copiii se jucau în curte, iar bunica citea pe bancă. Deodată, a început să plouă. Toți au fugit în casă, unde mirosea a cozonac.”", ok: 4,
+            ex: "era, se jucau, citea, mirosea = 4. „a început” și „au fugit” sunt la perfect compus." },
+          { tip: "alege", q: "Care e intrusul: alergam, citea, <b>scrie</b>, dormeau, săreai?", opt: ["alergam", "scrie", "dormeau", "săreai"], ok: 1,
+            ex: "„scrie” e la prezent; celelalte sunt la imperfect." },
+          { tip: "cuvant", q: "Trece la imperfect: „Câinele latră la poștaș.” → „Câinele … la poștaș.”", ok: ["lătra"],
+            ex: "Câinele lătra la poștaș." },
+          { tip: "alege", q: "Scrie corect:", opt: ["Ea scriea o scrisoare.", "Ea scria o scrisoare."], ok: 1, ex: "Corect: scria." }
         ],
         recap: [
           "Imperfectul = trecut care dura sau se repeta.",
           "Se recunoaște după -a- sau -ea-: cântam, mergeam.",
-          "Corect: voiam (nu vroiam), iubea, înghesuia."
+          "Corect: voiam (nu vroiam)."
         ],
         parinte: {
           stie: [
             "Ce exprimă imperfectul și unde apare în povestiri.",
             "Conjugarea la imperfect.",
-            "Formele corecte: voiam, iubea."
+            "Forma corectă: voiam."
           ],
           greseli: [
             "„vroiam”.",
-            "„iubia”, „înghesuea”.",
+            "Scrie greșit terminațiile (ex. „scriea” în loc de „scria”).",
             "Confundă imperfectul cu perfectul compus."
           ],
           intrebari: [
@@ -1797,8 +2768,8 @@ DATA["Română"] = {
             <div class="ex-step">am cântat · ai cântat · a cântat · am cântat · ați cântat · au cântat</div>` }
         ],
         exemple: [
-          { titlu: "Analizează „am auzit” din „Ieri, am auzit un sunet ciudat.”", pasi: [
-            "„am” = auxiliarul a avea; „auzit” = participiul lui a auzi",
+          { titlu: "Analizează „am câștigat” din „Ieri am câștigat meciul.”", pasi: [
+            "„am” = auxiliarul a avea; „câștigat” = participiul lui a câștiga",
             "Modul indicativ, timpul perfect compus",
             "Persoana I, numărul singular",
             "În propoziție: predicat verbal"
@@ -1806,14 +2777,14 @@ DATA["Română"] = {
         ],
         exercitii: [
           { tip: "alege", q: "Din ce se formează perfectul compus?", opt: ["a vrea + infinitiv", "a avea + participiu", "a fi + infinitiv"], ok: 1, ex: "am + cântat = am cântat." },
-          { tip: "alege", q: "În „Dorin are o tabletă nouă.” verbul a avea este:", opt: ["auxiliar", "predicativ"], ok: 1,
-            ex: "E singur predicat, deci predicativ. În „au jucat” ar fi auxiliar." },
-          { tip: "alege", q: "În „Caietul luat ieri are 100 de file.” cuvântul „luat” are valoare:", opt: ["verbală", "de adjectiv"], ok: 1,
-            ex: "Fără auxiliar, participiul arată o însușire a caietului: e adjectiv." },
-          { tip: "alege", q: "Intrusul: ați colaborat, am schimbat, ai șoptit, a venit, <b>a zâmbi</b>", opt: ["ai șoptit", "a venit", "a zâmbi", "ați colaborat"], ok: 2,
-            ex: "„a zâmbi” e infinitiv; celelalte sunt la perfect compus." },
-          { tip: "cuvant", q: "Trece la perfect compus: „Sora mea primește o trusă.” → „Sora mea … o trusă.”", ok: ["a primit"],
-            ex: "Sora mea a primit o trusă." }
+          { tip: "alege", q: "În „Bunica are o grădină frumoasă.” verbul a avea este:", opt: ["auxiliar", "predicativ"], ok: 1,
+            ex: "E singur predicat, deci predicativ. În „au plantat” ar fi auxiliar." },
+          { tip: "alege", q: "În „Am citit o carte împrumutată de la bibliotecă.” cuvântul „împrumutată” are valoare:", opt: ["verbală", "de adjectiv"], ok: 1,
+            ex: "Fără auxiliar, participiul arată o însușire a cărții: e adjectiv." },
+          { tip: "alege", q: "Intrusul: am scris, ai citit, <b>a dormi</b>, au cântat, ați venit", opt: ["ai citit", "a dormi", "au cântat", "ați venit"], ok: 1,
+            ex: "„a dormi” e infinitiv; celelalte sunt la perfect compus." },
+          { tip: "cuvant", q: "Trece la perfect compus: „Fratele meu desenează un dragon.” → „Fratele meu … un dragon.”", ok: ["a desenat"],
+            ex: "Fratele meu a desenat un dragon." }
         ],
         recap: [
           "A avea poate fi auxiliar (ajută la formarea timpului) sau predicativ (singur predicat).",
@@ -1861,14 +2832,14 @@ DATA["Română"] = {
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Care verb e la perfect simplu?", opt: ["ascultară", "învățaseși", "ascultau", "au ascultat"], ok: 0,
-            ex: "ascultară = perfect simplu (ei). învățaseși = mai-mult-ca-perfect, ascultau = imperfect, au ascultat = perfect compus." },
-          { tip: "alege", q: "Forma corectă (tu, mai-mult-ca-perfect):", opt: ["plecasei", "plecaseși"], ok: 1, ex: "La persoana a II-a singular: plecaseși, cu -și." },
-          { tip: "alege", q: "Forma corectă (eu, perfect simplu, a dori):", opt: ["eu dori", "eu dorii"], ok: 1, ex: "Eu dorii: un i arată timpul, al doilea e desinența." },
+          { tip: "alege", q: "Care verb e la perfect simplu?", opt: ["plecară", "plecaseși", "plecau", "au plecat"], ok: 0,
+            ex: "plecară = perfect simplu (ei). plecaseși = mai-mult-ca-perfect, plecau = imperfect, au plecat = perfect compus." },
+          { tip: "alege", q: "Forma corectă (tu, mai-mult-ca-perfect):", opt: ["citisei", "citiseși"], ok: 1, ex: "La persoana a II-a singular: citiseși, cu -și." },
+          { tip: "alege", q: "Forma corectă (eu, perfect simplu, a citi):", opt: ["eu citi", "eu citii"], ok: 1, ex: "Eu citii: un i arată timpul, al doilea e desinența." },
           { tip: "alege", q: "Ce exprimă mai-mult-ca-perfectul?", opt: ["O acțiune viitoare", "O acțiune trecută terminată înaintea altei acțiuni trecute", "Un ordin"], ok: 1,
             ex: "E „trecutul dinaintea trecutului”." },
-          { tip: "cuvant", q: "Scrie mai-mult-ca-perfectul, pers. a II-a singular, de la „a primi”: „Când ne-am întâlnit, (tu) … deja jocul.”", ok: ["primiseși"],
-            ex: "primiseși: primi + se + și." }
+          { tip: "cuvant", q: "Scrie mai-mult-ca-perfectul, pers. a II-a singular, de la „a câștiga”: „Când am ajuns, (tu) … deja meciul.”", ok: ["câștigaseși"],
+            ex: "câștigaseși: câștiga + se + și." }
         ],
         recap: [
           "Perfectul simplu = timpul poveștilor (plecă, întâlni); în Oltenia se folosește și în vorbire.",
@@ -1911,28 +2882,28 @@ DATA["Română"] = {
             <p>O acțiune viitoare terminată <b>înaintea altei acțiuni viitoare</b>: <i>Când vei sosi, <b>voi fi terminat</b> compunerea.</i></p>
             <p>Se formează: <b>a vrea + a fi + participiu</b>. Azi se folosește rar.</p>` },
           { h: "Greșeli frecvente", html: `
-            <p>Corect: va <b>apărea</b> (nu va apare), vor <b>plăcea</b> (nu vor place), vor <b>scădea</b>, va <b>crede</b> (nu va credea), va <b>face</b> (nu va făcea).</p>` }
+            <p>După va/vor vine <b>infinitivul exact</b>: va <b>vedea</b> (nu va vede), va <b>putea</b>, vor <b>rămâne</b> (nu vor rămânea). Când nu ești sigură, caută infinitivul în dicționar.</p>` }
         ],
         exemple: [
-          { titlu: "Corectează: „Cartea va apare luna viitoare.”", pasi: [
+          { titlu: "Corectează: „Ana va vede filmul.”", pasi: [
             "Viitorul = va + infinitiv",
-            "Infinitivul verbului este „a apărea”",
-            "Corect: Cartea va apărea luna viitoare."
+            "Infinitivul verbului este „a vedea”",
+            "Corect: Ana va vedea filmul."
           ] }
         ],
         exercitii: [
           { tip: "alege", q: "Din ce se formează viitorul standard?", opt: ["a avea + participiu", "a vrea + infinitiv", "a fi + participiu"], ok: 1, ex: "voi + cânta = voi cânta." },
-          { tip: "alege", q: "Forma corectă:", opt: ["Copiilor le vor place prăjiturile.", "Copiilor le vor plăcea prăjiturile."], ok: 1, ex: "Infinitivul e „a plăcea”, deci vor plăcea." },
-          { tip: "alege", q: "Forma corectă:", opt: ["El va făcea tema.", "El va face tema."], ok: 1, ex: "Infinitivul e „a face”, deci va face." },
+          { tip: "alege", q: "Forma corectă:", opt: ["Vom rămânea acasă.", "Vom rămâne acasă."], ok: 1, ex: "Infinitivul e „a rămâne”, deci vom rămâne." },
+          { tip: "alege", q: "Forma corectă:", opt: ["El va pute veni.", "El va putea veni."], ok: 1, ex: "Infinitivul e „a putea”, deci va putea." },
           { tip: "potrivire", q: "Potrivește forma de viitor cu felul ei.", perechi: [["voi merge", "standard"], ["o să merg", "limbă vorbită"], ["oi merge", "popular"]],
             ex: "voi merge – standard; o să merg – limbă vorbită; oi merge – popular." },
-          { tip: "alege", q: "În „Când vei sosi, voi fi terminat compunerea.”, „voi fi terminat” este:", opt: ["viitor standard", "viitor anterior", "perfect compus"], ok: 1,
+          { tip: "alege", q: "În „Până vii tu, eu voi fi spălat vasele.”, „voi fi spălat” este:", opt: ["viitor standard", "viitor anterior", "perfect compus"], ok: 1,
             ex: "a vrea + a fi + participiu = viitor anterior." }
         ],
         recap: [
           "Viitorul standard: a vrea + infinitiv (voi cânta).",
           "În vorbire: o să cânt, am să cânt; popular: oi cânta.",
-          "Viitorul anterior: voi fi cântat. Atenție: va apărea, vor plăcea, va face."
+          "Viitorul anterior: voi fi cântat. După va/vor pui infinitivul corect: va vedea, vor rămâne."
         ],
         parinte: {
           stie: [
@@ -1941,13 +2912,13 @@ DATA["Română"] = {
             "Ortograme: voi/v-oi, va/v-a, vom/v-om, vor/v-or."
           ],
           greseli: [
-            "„va apare”, „vor place”, „va făcea”.",
+            "Infinitiv greșit după va/vor (ex. „va vede”, „vor rămânea”).",
             "„v-a” în loc de „va” la viitor („El v-a merge” e greșit).",
             "Confundă viitorul anterior cu perfectul compus."
           ],
           intrebari: [
             "„Ce vei face în vacanță? Spune-mi 3 verbe la viitor.”",
-            "„Cum se spune corect: va scade sau va scădea?”",
+            "„Cum se spune corect: va vede sau va vedea?”",
             "„Unde se scrie cu cratimă: va sau v-a?”"
           ]
         }
@@ -1961,42 +2932,42 @@ DATA["Română"] = {
             <div class="ex-step">Cântă! Cântați! · Mergi! Mergeți! · Dormi! Dormiți!</div>` },
           { h: "Forma negativă", html: `
             <p>Singular: <b>nu + infinitiv</b> → <i>Nu cânta!</i> · Plural: <b>nu + imperativ</b> → <i>Nu cântați!</i></p>
-            <p><i>Vino!</i> → <i>Nu veni!</i> · <i>Du câinele!</i> → <i>Nu duce câinele!</i></p>` },
+            <p><i>Adu cartea!</i> → <i>Nu aduce cartea!</i> · <i>Deschideți ușa!</i> → <i>Nu deschideți ușa!</i></p>` },
           { h: "Forme speciale", html: `
             <p>Unele verbe au forme scurte: <b>Vino! Fă! Du! Zi! Refă! Adu!</b></p>
             <p><b>A fi</b>: <b>Fii</b> la timp la antrenament! (doi i) · <b>Nu fi</b> trist! (un i)</p>
-            <p><i>Scrieți tema!</i> (voi, imperativ) ≠ <i>Scrie-ți tema!</i> (tu, scrie tema ta).</p>` }
+            <p><i>Faceți patul!</i> (voi, imperativ) ≠ <i>Fă-ți patul!</i> (tu, fă patul tău).</p>` }
         ],
         exemple: [
-          { titlu: "Trece la negativ: „Fă o prăjitură!”", pasi: [
+          { titlu: "Trece la negativ: „Deschide fereastra!”", pasi: [
             "E persoana a II-a singular",
-            "Negativ singular = nu + infinitiv (a face)",
-            "Nu face o prăjitură!"
+            "Negativ singular = nu + infinitiv (a deschide)",
+            "Nu deschide fereastra!"
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "Forma corectă:", opt: ["Fi acasă la ora stabilită!", "Fii acasă la ora stabilită!"], ok: 1, ex: "Imperativ afirmativ: Fii! (doi i)." },
-          { tip: "alege", q: "Forma corectă:", opt: ["Duci rufele la spălat!", "Du rufele la spălat!"], ok: 1, ex: "Imperativul lui a duce: Du!" },
-          { tip: "alege", q: "Forma negativă pentru „Vino la noi!”:", opt: ["Nu vino la noi!", "Nu veni la noi!"], ok: 1, ex: "Negativ singular = nu + infinitiv: Nu veni!" },
-          { tip: "alege", q: "Scrie corect:", opt: ["Veni-ți la joacă!", "Veniți la joacă!"], ok: 1, ex: "Imperativ plural: Veniți!, fără cratimă." },
+          { tip: "alege", q: "Forma corectă:", opt: ["Fi atent la antrenor!", "Fii atent la antrenor!"], ok: 1, ex: "Imperativ afirmativ: Fii! (doi i)." },
+          { tip: "alege", q: "Forma corectă:", opt: ["Faci curat în cameră!", "Fă curat în cameră!"], ok: 1, ex: "Imperativul lui a face: Fă!" },
+          { tip: "alege", q: "Forma negativă pentru „Sari!”:", opt: ["Nu sari!", "Nu sări!"], ok: 1, ex: "Negativ singular = nu + infinitiv (a sări): Nu sări!" },
+          { tip: "alege", q: "Scrie corect (vă rog pe voi):", opt: ["Spune-ți povestea!", "Spuneți povestea!"], ok: 1, ex: "Imperativ plural: Spuneți!, fără cratimă." },
           { tip: "alege", q: "Pentru ce persoană are imperativul forme?", opt: ["Toate persoanele", "Doar persoana a II-a", "Doar persoana a III-a"], ok: 1, ex: "Imperativul se adresează celui cu care vorbim: tu, voi." },
-          { tip: "alege", q: "Ce înseamnă „Scrie-ți tema!”?", opt: ["Voi, scrieți tema!", "Tu, scrie tema ta!"], ok: 1, ex: "„-ți” e pronume (ție/a ta). „Scrieți!” e imperativ plural." }
+          { tip: "alege", q: "Ce înseamnă „Fă-ți patul!”?", opt: ["Tu, fă patul tău!", "Voi, faceți patul!"], ok: 0, ex: "„-ți” e pronume (al tău). Pentru voi s-ar spune „Faceți patul!”." }
         ],
         recap: [
           "Imperativul = ordin, îndemn, sfat, rugăminte; doar persoana a II-a.",
           "Negativ: singular nu + infinitiv (Nu cânta!), plural nu + imperativ (Nu cântați!).",
-          "Forme speciale: Vino! Fă! Du! Zi! Fii! (doi i) / Nu fi! (un i)."
+          "Forme scurte: Vino! Fă! Du! Zi! Adu! · Fii! (doi i) / Nu fi! (un i)."
         ],
         parinte: {
           stie: [
             "Formele afirmative și negative.",
             "Formele scurte: vino, fă, du, zi, adu, refă.",
-            "Fii / nu fi; Scrieți / Scrie-ți."
+            "Fii / nu fi; Faceți / Fă-ți."
           ],
           greseli: [
             "„Fi atent!” în loc de „Fii atent!”.",
-            "„Nu vino!” în loc de „Nu veni!”.",
-            "Cratimă greșită: „Veni-ți!”."
+            "Negativ greșit: „Nu adu!” în loc de „Nu aduce!”.",
+            "Cratimă greșită la plural: „Spune-ți!” în loc de „Spuneți!”."
           ],
           intrebari: [
             "„Spune-mi regulile jocului tău preferat, cu verbe la imperativ.”",
@@ -2127,6 +3098,171 @@ DATA["Română"] = {
       { id: "r-U6-L8", cod: "L8", titlu: "Enunțul. Tipuri de enunț", pag: 185 },
       { id: "r-U6-L9", cod: "L9", titlu: "Prezentarea textului: desene, grafice, fotografii, scheme", pag: 187 },
       { id: "r-U6-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea VI", pag: 189 }
+    ] }
+  ]
+};
+
+// Educație tehnologică și aplicații practice, clasa a V-a — Editura Aramis (M. Mocanu, M. Dache, L.-I. Săndulescu)
+// Cuprinsul și paginile sunt luate din manual. Lecțiile și exercițiile sunt scrise de noi.
+DATA["Ed. Tehnologică"] = {
+  manual: "https://www.manual.digital/66258.pdf",
+  unitati: [
+    { titlu: "Unitatea 1 · Produse alimentare", lectii: [
+      { id: "t-1.1", cod: "1.1", titlu: "Alimentația omului, satisfacerea nevoii de hrană", pag: 10,
+        sub: "De ce mâncăm și de ce variat",
+        invata: [
+          { h: "Nevoia de hrană", html: `
+            <p>Hrana e o <b>nevoie fundamentală</b>, ca respirația, apa și somnul. Psihologul Abraham Maslow a pus aceste nevoi la <b>baza piramidei nevoilor</b>.</p>
+            <p>De obicei avem trei mese principale: <b>micul dejun</b>, <b>prânzul</b> și <b>cina</b>.</p>` },
+          { h: "Ce sunt alimentele", html: `
+            <p>Alimentele ne dau <b>energie</b> și <b>substanțe hrănitoare</b> pentru creștere și refacerea corpului.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">minerale</span><span>apa, sarea</span></div>
+              <div class="rule"><span class="f">vegetale</span><span>fructe, legume, cereale</span></div>
+              <div class="rule"><span class="f">animale</span><span>lapte, ouă, carne, pește</span></div>
+            </div>` },
+          { h: "Variat și cu măsură", html: `
+            <p><b>Niciun aliment nu le conține pe toate</b>, de aceea mâncarea trebuie să fie variată.</p>
+            <p>Nevoia de hrană depinde de vârstă, de activitate și de mediu. Un copil care face sport are nevoie de mai multă energie decât unul care stă mult pe scaun.</p>
+            <p>Multă mâncare se aruncă: fă-ți o <b>listă de cumpărături</b> și gătește cât trebuie.</p>` }
+        ],
+        exemple: [
+          { titlu: "Gustarea unei sportive după antrenament", pasi: [
+            "Corpul a consumat energie și apă",
+            "Apă, pentru că a transpirat",
+            "Un fruct și un iaurt: vegetal + animal, adică variat",
+            "Nu dulciuri multe: energie rapidă, dar puține substanțe hrănitoare"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "De ce trebuie să mâncăm variat?", opt: ["Pentru că e mai gustos", "Pentru că niciun aliment nu conține toate substanțele hrănitoare", "Pentru că așa e moda"], ok: 1, ex: "Fiecare aliment aduce altceva." },
+          { tip: "potrivire", q: "Potrivește alimentul cu originea lui.", perechi: [["sarea", "minerală"], ["morcovul", "vegetală"], ["brânza", "animală"]], ex: "Sare – minerală, morcov – vegetală, brânză – animală." },
+          { tip: "alege", q: "Unde se află nevoia de hrană în piramida lui Maslow?", opt: ["La bază, printre nevoile corpului", "În vârf", "Nu apare"], ok: 0, ex: "E o nevoie fiziologică, de bază." },
+          { tip: "alege", q: "Cine are nevoie de mai multă energie?", opt: ["Un copil care face sport zilnic", "Un copil care se uită mult la televizor"], ok: 0, ex: "Activitatea fizică consumă mai multă energie." }
+        ],
+        recap: ["Hrana e o nevoie fundamentală, la baza piramidei lui Maslow.", "Alimentele sunt de origine minerală, vegetală sau animală.", "Mâncăm variat, cu măsură, și nu risipim."],
+        parinte: {
+          stie: ["Cele trei origini ale alimentelor.", "De ce alimentația trebuie să fie variată.", "De ce depinde nevoia de hrană."],
+          greseli: ["Crede că apa nu e aliment.", "Crede că un singur aliment „sănătos” ajunge.", "Încurcă originea mierii (e animală, de la albine)."],
+          intrebari: ["„Ce ai mâncat azi de origine animală?”", "„Fă o listă de cumpărături pentru o zi.”", "„De ce un sportiv mănâncă mai mult?”"]
+        }
+      },
+      { id: "t-1.2", cod: "1.2", titlu: "Alimente de origine minerală", pag: 13,
+        sub: "Apa și sarea",
+        invata: [
+          { h: "Apa", html: `
+            <p>Apa și sarea sunt alimente <b>minerale</b>, pentru că vin din scoarța Pământului.</p>
+            <p>Apa de băut trebuie să fie <b>potabilă</b>: <b>incoloră</b> (fără culoare), <b>inodoră</b> (fără miros), <b>insipidă</b> (fără gust) și fără microbi.</p>
+            <p>Corpul nostru e aproximativ <b>trei sferturi apă</b>. Un adult are nevoie zilnic de aproximativ 1,5–2 litri. <b>Setea</b> e semnalul că ai nevoie de apă.</p>` },
+          { h: "Ce face apa în corp", html: `
+            <p>Reglează temperatura (prin transpirație), transportă hrana și oxigenul la celule, elimină deșeurile, protejează organele.</p>` },
+          { h: "Sarea", html: `
+            <p>Sarea e făcută din <b>sodiu</b> și <b>clor</b>. Se extrage din <b>saline</b> (ex. Salina Turda) sau din apa mării, prin evaporare.</p>
+            <p>Puțină sare e bună. <b>Prea multă</b> e dăunătoare inimii. Atenție la mezeluri, murături, conserve: au multă sare.</p>
+            <p>Sarea de masă e îmbogățită cu <b>iod</b>.</p>` }
+        ],
+        exemple: [
+          { titlu: "E potabilă apa dintr-un râu limpede?", pasi: [
+            "Pare incoloră și fără miros",
+            "Dar poate avea microbi pe care nu-i vezi",
+            "Deci nu e sigur potabilă",
+            "Trebuie filtrată și fiartă înainte să o bei"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Ce înseamnă „inodoră”?", opt: ["Fără culoare", "Fără miros", "Fără gust"], ok: 1, ex: "Incoloră = fără culoare, inodoră = fără miros, insipidă = fără gust." },
+          { tip: "alege", q: "De ce apa și sarea sunt alimente minerale?", opt: ["Pentru că vin din scoarța Pământului", "Pentru că sunt albe", "Pentru că se vând în magazin"], ok: 0, ex: "Nu vin nici din plante, nici de la animale." },
+          { tip: "alege", q: "Din ce este alcătuită sarea?", opt: ["Hidrogen și oxigen", "Sodiu și clor", "Fier și calciu"], ok: 1, ex: "Hidrogen și oxigen formează apa." },
+          { tip: "alege", q: "Care aliment are multă sare?", opt: ["Mărul", "Salamul", "Laptele"], ok: 1, ex: "Mezelurile au multă sare adăugată." },
+          { tip: "alege", q: "Ce parte din corpul nostru e apă, aproximativ?", opt: ["O zecime", "Jumătate", "Trei sferturi"], ok: 2, ex: "Aproximativ trei sferturi." }
+        ],
+        recap: ["Apa potabilă: incoloră, inodoră, insipidă, fără microbi.", "Apa reglează temperatura, transportă hrana și elimină deșeurile.", "Sarea (sodiu + clor) se ia din saline sau din mare; puțină e bună, multă e dăunătoare."],
+        parinte: {
+          stie: ["Însușirile apei potabile.", "Rolurile apei în corp.", "De unde vine sarea și de ce cu măsură."],
+          greseli: ["Crede că apa limpede e sigur potabilă.", "Confundă incolor/inodor/insipid.", "Nu știe că mezelurile au multă sare."],
+          intrebari: ["„Câtă apă bei la antrenament?”", "„De ce transpirăm?”", "„Unde e cea mai apropiată salină?” (Ocnele Mari, Vâlcea)"]
+        }
+      },
+      { id: "t-1.3", cod: "1.3", titlu: "Alimente de origine vegetală în stare proaspătă", pag: 16,
+        sub: "Fructe și legume",
+        invata: [
+          { h: "Fructele", html: `
+            <p>Au multă apă, zaharuri, minerale și vitamine.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">semințoase</span><span>mere, pere, gutui</span></div>
+              <div class="rule"><span class="f">sâmburoase</span><span>caise, prune, piersici, cireșe, vișine</span></div>
+              <div class="rule"><span class="f">bace</span><span>semințe mici în pulpă: struguri, căpșuni, zmeură, afine</span></div>
+              <div class="rule"><span class="f">nucifere</span><span>coajă tare: nuci, alune, migdale</span></div>
+            </div>
+            <p>După origine: <b>autohtone</b> (de la noi), <b>subtropicale</b> (lămâi, portocale), <b>tropicale</b> (banane, ananas).</p>` },
+          { h: "Legumele", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">rădăcinoase</span><span>morcov, pătrunjel, țelină, sfeclă</span></div>
+              <div class="rule"><span class="f">bulboase</span><span>ceapă, usturoi, praz</span></div>
+              <div class="rule"><span class="f">frunzoase</span><span>salată, spanac, lobodă</span></div>
+              <div class="rule"><span class="f">vărzoase</span><span>varză, conopidă, gulie</span></div>
+              <div class="rule"><span class="f">păstăioase</span><span>fasole păstăi, mazăre</span></div>
+              <div class="rule"><span class="f">solano-fructoase</span><span>roșii, ardei, vinete</span></div>
+              <div class="rule"><span class="f">tuberculifere</span><span>cartof</span></div>
+            </div>` },
+          { h: "Cum le consumăm", html: `
+            <p>Proaspete sunt cele mai sănătoase; prin fierbere pierd o parte din vitamine. Se recomandă <b>cinci porții pe zi</b> de fructe și legume (o porție ≈ cât încape în palmă).</p>
+            <p>Se păstrează în spații răcoroase, aerisite; căldura distruge vitamina C, iar umezeala prea mare face să apară mucegaiul.</p>` }
+        ],
+        exemple: [
+          { titlu: "În ce grupă e vânăta?", pasi: [
+            "Mâncăm fructul plantei",
+            "Seamănă cu roșia și ardeiul",
+            "Deci e legumă solano-fructoasă"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește fructul cu grupa lui.", perechi: [["gutuia", "semințoase"], ["piersica", "sâmburoase"], ["afinele", "bace"], ["alunele", "nucifere"]], ex: "Gutui – semințos, piersic – sâmburos, afine – bace, alune – nucifere." },
+          { tip: "potrivire", q: "Potrivește leguma cu grupa ei.", perechi: [["prazul", "bulboase"], ["conopida", "vărzoase"], ["mazărea", "păstăioase"], ["sfecla", "rădăcinoase"]], ex: "Praz – bulbos, conopidă – vărzoasă, mazăre – păstăioasă, sfeclă – rădăcinoasă." },
+          { tip: "alege", q: "Bananele sunt fructe:", opt: ["autohtone", "subtropicale", "tropicale"], ok: 2, ex: "Cresc în zonele calde, tropicale." },
+          { tip: "numar", q: "Câte porții de fructe și legume se recomandă pe zi?", ok: 5, ex: "Cinci porții, fiecare cam cât încape în palmă." },
+          { tip: "alege", q: "Ce distruge căldura din fructe și legume?", opt: ["Vitamina C", "Apa din sare", "Celuloza"], ok: 0, ex: "Temperaturile ridicate distrug vitamina C." }
+        ],
+        recap: ["Fructe: semințoase, sâmburoase, bace, nucifere; autohtone, subtropicale, tropicale.", "Legumele se grupează după ce parte mâncăm și după familie.", "Cinci porții pe zi, de preferat proaspete; păstrate la răcoare și aerisit."],
+        parinte: {
+          stie: ["Grupele de fructe.", "Grupele principale de legume.", "Regula celor 5 porții."],
+          greseli: ["Pune căpșunile la sâmburoase.", "Crede că fierberea nu schimbă nimic.", "Confundă subtropical cu tropical."],
+          intrebari: ["„Câte porții de fructe și legume ai mâncat azi?”", "„E strugurele bacă sau sâmburos?”", "„Ce fructe tropicale cunoști?”"]
+        }
+      },
+      { id: "t-1.4", cod: "1.4", titlu: "Alimente de origine vegetală prelucrate", pag: 19 },
+      { id: "t-1.5", cod: "1.5", titlu: "Alimente de origine animală", pag: 22 },
+      { id: "t-1.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 1", pag: 26 }
+    ] },
+    { titlu: "Unitatea 2 · Procese tehnologice simple de cultivare a plantelor", lectii: [
+      { id: "t-2.1", cod: "2.1", titlu: "Factorii de mediu care influențează cultivarea plantelor", pag: 30 },
+      { id: "t-2.2", cod: "2.2", titlu: "Cultivarea plantelor. Promovarea producției vegetale", pag: 33 },
+      { id: "t-2.3", cod: "2.3", titlu: "Plante de câmp, legume, pomi și viță-de-vie: particularități", pag: 36 },
+      { id: "t-2.4", cod: "2.4", titlu: "Profesii din domeniul cultivării plantelor. Securitatea muncii", pag: 44 },
+      { id: "t-2.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 2", pag: 45 }
+    ] },
+    { titlu: "Unitatea 3 · Elemente de tehnologia creșterii animalelor", lectii: [
+      { id: "t-3.1", cod: "3.1", titlu: "Factorii de mediu care influențează creșterea animalelor", pag: 48 },
+      { id: "t-3.2", cod: "3.2", titlu: "Creșterea animalelor domestice și a animalelor de companie", pag: 53 },
+      { id: "t-3.3", cod: "3.3", titlu: "Profesii din domeniul zootehnic. Securitatea muncii", pag: 59 },
+      { id: "t-3.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 3. Evaluare semestrială", pag: 61 }
+    ] },
+    { titlu: "Unitatea 4 · Calitatea produselor alimentare și a serviciilor de alimentație", lectii: [
+      { id: "t-4.1", cod: "4.1", titlu: "Calitatea alimentelor. Caracteristici organoleptice", pag: 66 },
+      { id: "t-4.2", cod: "4.2", titlu: "Ambalarea și etichetarea produselor alimentare", pag: 69 },
+      { id: "t-4.3", cod: "4.3", titlu: "Valoarea nutritivă, energetică și estetică a alimentelor", pag: 73 },
+      { id: "t-4.4", cod: "4.4", titlu: "Calitatea serviciilor din alimentație. Protecția consumatorului", pag: 78 },
+      { id: "t-4.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 4", pag: 83 }
+    ] },
+    { titlu: "Unitatea 5 · Tehnologii de preparare a hranei", lectii: [
+      { id: "t-5.1", cod: "5.1", titlu: "Bucătăria: vase, ustensile, aparate", pag: 86 },
+      { id: "t-5.2", cod: "5.2", titlu: "Prepararea și conservarea alimentelor. Igienă și securitate", pag: 89 },
+      { id: "t-5.3", cod: "5.3", titlu: "Meniul: structură și tipuri", pag: 93 },
+      { id: "t-5.4", cod: "5.4", titlu: "Aranjarea și servirea mesei", pag: 97 },
+      { id: "t-5.5", cod: "5.5", titlu: "Tehnologii tradiționale și moderne de preparare", pag: 101 },
+      { id: "t-5.6", cod: "5.6", titlu: "Alimentația și sănătatea. Obiceiuri alimentare ale elevilor", pag: 104 },
+      { id: "t-5.7", cod: "5.7", titlu: "Profesii din domeniul preparării și servirii alimentelor", pag: 106 },
+      { id: "t-5.RE", cod: "R", titlu: "Recapitulare, proiect final și evaluare finală", pag: 107 }
     ] }
   ]
 };
