@@ -238,6 +238,7 @@ sup { font-size: .62em; line-height: 0; }
 .q { font-weight: 800; font-size: 20px; }
 .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; }
 .opt { border: 3px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 14px; padding: 14px; font-weight: 800; font-size: 22px; cursor: pointer; min-height: 60px; font-family: var(--f-display); }
+.opt.long { font-family: var(--f-body); font-size: 17px; text-align: left; line-height: 1.3; }
 .opt.good { border-color: var(--ok); background: var(--ok-bg); }
 .opt.bad { border-color: var(--late); background: var(--late-bg); }
 .opt.sel { border-color: var(--pen); }
@@ -257,6 +258,41 @@ details.parent { background: var(--sheet); border: 1px dashed var(--line); borde
 details.parent summary { cursor: pointer; font-family: var(--f-display); font-weight: 700; font-size: 20px; }
 details.parent h4 { margin: 14px 0 6px; font-size: 16px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+
+.checkins { display: grid; gap: 14px; }
+.checkin { border-top: 6px solid var(--pen); }
+.checkin .opts { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+.checkin .opt { font-family: var(--f-body); font-size: 17px; text-align: left; display: grid; gap: 2px; }
+.checkin .opt small { font-weight: 600; color: var(--muted); font-size: 14px; }
+.checkin .pick { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+select { font: inherit; font-size: 17px; color: var(--ink); background: var(--paper); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px; max-width: 100%; min-height: 48px; }
+.unit { border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+.unit > summary { cursor: pointer; padding: 12px 14px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+.unit > summary::-webkit-details-marker { display: none; }
+.unit > summary .cnt { color: var(--muted); font-size: 14px; white-space: nowrap; }
+.unit .lessons { padding: 0 10px 10px; }
+.lesson.here { border: 2px solid var(--pen); background: var(--sheet); }
+.lesson.past .t { color: var(--muted); }
+.lesson.nolx { cursor: default; }
+.lesson .t { display: grid; gap: 2px; min-width: 0; }
+.lesson .t small { color: var(--muted); font-weight: 700; font-size: 13px; }
+.lesson .n { font-size: 15px; min-width: 3.2ch; }
+.raport { display: grid; gap: 8px; justify-items: start; margin-top: 18px; }
+.raport textarea { width: 100%; min-height: 160px; font: inherit; font-size: 15px; padding: 10px; border-radius: 12px; border: 2px solid var(--line); background: var(--paper); color: var(--ink); }
+.recap-row { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); text-align: left; font: inherit; color: inherit; width: 100%; cursor: pointer; }
+.recap-row .t { display: grid; gap: 2px; min-width: 0; }
+.recap-row .t small { color: var(--muted); font-weight: 700; font-size: 13px; }
+#viewMaterie .cols { grid-template-columns: 1fr; }
+#viewMaterie select, .checkin select { width: 100%; }
+.checkin .pick select { flex: 1 1 260px; width: auto; min-width: 0; }
+.unit { min-width: 0; }
+.recap-row .go { color: var(--pen); font-weight: 800; white-space: nowrap; }
+.recap-row.nolx { cursor: default; }
+.ord-pool { grid-template-columns: 1fr; }
+.opt.ord { font-family: var(--f-body); font-size: 17px; text-align: left; min-height: 52px; }
+.ord-done:empty { display: none; }
+.ord-done li { background: var(--ok-bg); color: var(--ok); border-radius: 10px; padding: 6px 10px; font-size: 16px; }
+.wordrow input { width: min(100%, 320px); font-family: var(--f-body); font-size: 22px; }
 
 .viewer { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.85); display: grid; place-items: center; padding: 20px; cursor: zoom-out; }
 .viewer img { max-width: 100%; max-height: 100%; border-radius: 8px; }
@@ -281,6 +317,11 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 
   <div id="viewMaterii" hidden>
     <div class="tiles" id="tiles"></div>
+    <div class="raport">
+      <button class="btn ghost" type="button" id="raportBtn">📋 Raport pentru tata</button>
+      <span class="hint" id="raportMsg"></span>
+      <textarea id="raportTxt" readonly hidden aria-label="Raport"></textarea>
+    </div>
   </div>
 
   <div id="viewMaterie" class="detail" hidden>
@@ -294,7 +335,11 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
     <div class="cols">
       <section class="list main" aria-labelledby="hLessons">
         <div class="list-head"><h2 id="hLessons">Lecții</h2></div>
-        <div class="sub">În ordinea din școală</div>
+        <div class="sub">Din cuprinsul manualului</div>
+        <div class="field" id="dClasaBox" hidden>
+          <label class="lbl" for="dClasa">La clasă suntem la</label>
+          <select id="dClasa"></select>
+        </div>
         <div class="lessons" id="dLessons"></div>
       </section>
       <section class="list" aria-labelledby="hDTeme">
@@ -306,6 +351,8 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 
   <div id="viewLectie" class="lx" hidden></div>
 
+  <div id="checkins" class="checkins" hidden></div>
+
   <div class="cols" id="viewTeme">
     <div class="col">
       <section class="list main" aria-labelledby="hNext">
@@ -315,6 +362,11 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
         </div>
         <div class="sub" id="subNext"></div>
         <div class="items" id="listNext"></div>
+      </section>
+      <section class="list" id="secRecap" hidden aria-labelledby="hRecap">
+        <div class="list-head"><h2 id="hRecap">Recapitulare pentru mâine</h2></div>
+        <div class="sub">Ultima lecție făcută la clasă, la materiile de mâine</div>
+        <div class="items" id="listRecap"></div>
       </section>
     </div>
     <div class="col">
@@ -412,42 +464,53 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
   // Materiile din meniu (cu lecții interactive)
   const MAIN = ["Română", "Matematică", "Engleză", "Franceză", "Istorie", "Geografie", "Biologie", "Informatică", "Ed. Socială"];
   // Lecțiile se adaugă aici, în ordinea din școală: { titlu: "...", data: "2026-09-08" }
-  const MANUALE = {
-    "Matematică": "https://manuale.edu.ro/manuale/Clasa%20a%20V-a/Matematica/UEFSQUxFTEEgNDU/A1255.pdf"
-  };
-  const LECTII = {
-    "Matematică": [
-      {
-        id: "puteri-1",
-        titlu: "Puterea unui număr natural",
-        sub: "Baza, exponentul, pătratul, cubul și puterile speciale",
+  const DATA = {};
+// Matematică, clasa a V-a — Editura Paralela 45 (D.-I. Voiculescu și colab.)
+// Cuprinsul și paginile sunt luate din manual. Lecțiile interactive sunt scrise după manual.
+DATA["Matematică"] = {
+  manual: "https://manuale.edu.ro/manuale/Clasa%20a%20V-a/Matematica/UEFSQUxFTEEgNDU/A1255.pdf",
+  unitati: [
+    { titlu: "Început de an", lectii: [
+      { id: "m-RI", cod: "R", titlu: "Recapitulare și evaluare inițială", pag: 11 }
+    ] },
+    { titlu: "Unitatea 1 · Operații cu numere naturale", lectii: [
+      { id: "m-I.1", cod: "I.1", titlu: "Scrierea și citirea numerelor naturale", pag: 14 },
+      { id: "m-I.2", cod: "I.2", titlu: "Reprezentarea pe axa numerelor", pag: 17 },
+      { id: "m-I.3", cod: "I.3", titlu: "Compararea și ordonarea numerelor naturale", pag: 18 },
+      { id: "m-I.4", cod: "I.4", titlu: "Aproximări. Estimări. Rotunjiri", pag: 19 },
+      { id: "m-I.5", cod: "I.5", titlu: "Adunarea numerelor naturale. Proprietăți", pag: 21 },
+      { id: "m-I.6", cod: "I.6", titlu: "Scăderea numerelor naturale", pag: 24 },
+      { id: "m-I.7", cod: "I.7", titlu: "Înmulțirea numerelor naturale. Proprietăți", pag: 27 },
+      { id: "m-I.8", cod: "I.8", titlu: "Factor comun", pag: 29 },
+      { id: "m-I.9", cod: "I.9", titlu: "Împărțirea exactă (cu rest 0)", pag: 31 },
+      { id: "m-I.10", cod: "I.10", titlu: "Împărțirea cu rest", pag: 33 },
+      { id: "m-I.R1", cod: "R", titlu: "Recapitulare (I.1–I.10)", pag: 35 },
+
+      { id: "m-I.11", cod: "I.11", titlu: "Puterea cu exponent natural a unui număr natural", pag: 36,
+        sub: "Baza, exponentul și puterile speciale",
         invata: [
           { h: "Ce este o putere?", html: `
             <p>Când înmulțim <b>același număr</b> cu el însuși de mai multe ori, scriem mai scurt, ca putere:</p>
             <div class="big">2 · 2 · 2 · 2 · 2 = 2<sup>5</sup> = 32</div>
             <div class="parts">
-              <span class="part"><b>2</b> = baza: numărul care se înmulțește</span>
-              <span class="part"><b>5</b> = exponentul: de câte ori apare baza</span>
+              <span class="part"><b>2</b> = baza: ce număr se înmulțește</span>
+              <span class="part"><b>5</b> = exponentul: de câte ori se înmulțește baza</span>
             </div>
-            <p>Se citește „doi la puterea a cincea”. Atenție: 2<sup>5</sup> <b>nu</b> înseamnă 2 · 5.</p>` },
-          { h: "Pătratul și cubul", html: `
-            <div class="row">
-              <div class="sq" aria-label="Un pătrat de 4 pe 4 pătrățele">${"<span></span>".repeat(16)}</div>
-              <div style="display:grid;gap:8px;min-width:0">
-                <p><b>a<sup>2</sup></b> se citește „a la pătrat”. Un pătrat cu latura de 4 pătrățele are 4<sup>2</sup> = 4 · 4 = <b>16</b> pătrățele.</p>
-                <p><b>a<sup>3</sup></b> se citește „a la cub”. Un cub cu latura 3 e făcut din 3<sup>3</sup> = 3 · 3 · 3 = <b>27</b> de cubulețe.</p>
-              </div>
-            </div>` },
+            <p>Se citește „2 la puterea 5”. Atenție: 2<sup>5</sup> <b>nu</b> înseamnă 2 · 5.</p>` },
+          { h: "Banii de buzunar ai lui Mihai (din manual)", html: `
+            <p>Mihai cere 1 leu în prima zi și apoi în fiecare zi <b>dublu</b> față de ziua dinainte: 1, 2, 4, 8, 16, 32, 64… În a 7-a zi primește 2 · 2 · 2 · 2 · 2 · 2 = 2<sup>6</sup> = <b>64</b> de lei.</p>
+            <p>Puterile cresc foarte repede! Doar în prima săptămână strânge 1 + 2 + 4 + 8 + 16 + 32 + 64 = <b>127</b> de lei, mai mult decât cei 100 de lei pe săptămână de până atunci.</p>` },
           { h: "Puteri speciale", html: `
             <div class="rules">
-              <div class="rule"><span class="f">a<sup>1</sup> = a</span><span>Exponentul 1 lasă numărul neschimbat: 7<sup>1</sup> = 7.</span></div>
-              <div class="rule"><span class="f">a<sup>0</sup> = 1</span><span>Orice număr diferit de 0, la puterea 0, dă 1: 9<sup>0</sup> = 1. (0<sup>0</sup> nu are sens.)</span></div>
-              <div class="rule"><span class="f">1<sup>n</sup> = 1</span><span>1 înmulțit cu 1 rămâne 1: 1<sup>8</sup> = 1.</span></div>
-              <div class="rule"><span class="f">0<sup>n</sup> = 0</span><span>Pentru n diferit de 0: 0<sup>4</sup> = 0.</span></div>
+              <div class="rule"><span class="f">a<sup>1</sup> = a</span><span>Exponentul 1 lasă numărul neschimbat: 9<sup>1</sup> = 9.</span></div>
+              <div class="rule"><span class="f">a<sup>0</sup> = 1</span><span>Orice număr diferit de 0, la puterea 0, dă 1: 2025<sup>0</sup> = 1. (0<sup>0</sup> nu are sens.)</span></div>
+              <div class="rule"><span class="f">1<sup>n</sup> = 1</span><span>1 înmulțit cu 1 rămâne 1: 1<sup>2026</sup> = 1.</span></div>
+              <div class="rule"><span class="f">0<sup>n</sup> = 0</span><span>Pentru n diferit de 0: 0<sup>2023</sup> = 0.</span></div>
               <div class="rule"><span class="f">10<sup>n</sup></span><span>1 urmat de n zerouri: 10<sup>3</sup> = 1 000.</span></div>
             </div>` },
-          { h: "Din sport", html: `
-            <p>La un turneu eliminatoriu, după fiecare tur rămân jumătate dintre echipe. Dacă pornesc <b>16 = 2<sup>4</sup></b> echipe, turneul are <b>4 tururi</b>: 16 → 8 → 4 → 2 → 1 câștigătoare.</p>` }
+          { h: "Ordinea operațiilor", html: `
+            <p>Ridicarea la putere este operație de <b>ordinul al treilea</b>: se face <b>înaintea</b> înmulțirii și împărțirii, care se fac înaintea adunării și scăderii.</p>
+            <div class="big">3<sup>2</sup> + 2<sup>3</sup> − 5 = 9 + 8 − 5 = 12</div>` }
         ],
         exemple: [
           { titlu: "Calculează 3<sup>4</sup>", pasi: [
@@ -457,55 +520,1626 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
             "27 · 3 = 81",
             "3<sup>4</sup> = 81"
           ] },
-          { titlu: "Calculează 2 + 3<sup>2</sup>", pasi: [
-            "Puterile se calculează primele, înaintea înmulțirii și adunării",
-            "3<sup>2</sup> = 3 · 3 = 9",
-            "2 + 9 = 11",
-            "2 + 3<sup>2</sup> = 11"
+          { titlu: "Calculează 1 000 − 10<sup>2</sup> + 7<sup>0</sup> − 100<sup>1</sup>", pasi: [
+            "Întâi puterile: 10<sup>2</sup> = 100, 7<sup>0</sup> = 1, 100<sup>1</sup> = 100",
+            "Rescriem: 1 000 − 100 + 1 − 100",
+            "De la stânga la dreapta: 1 000 − 100 = 900; 900 + 1 = 901; 901 − 100 = 801",
+            "Rezultat: 801"
           ] }
         ],
         exercitii: [
-          { tip: "alege", q: "În 2<sup>5</sup>, care este <b>baza</b>?", opt: ["2", "5", "10", "32"], ok: 0,
-            ex: "Baza este numărul care se înmulțește: 2. Exponentul 5 arată de câte ori." },
-          { tip: "numar", q: "Scrie ca putere: 3 · 3 · 3 · 3 = 3<sup>?</sup>", ok: 4,
-            ex: "Numărul 3 apare de 4 ori, deci exponentul este 4: 3<sup>4</sup>." },
+          { tip: "alege", q: "În 7<sup>3</sup>, care este <b>baza</b>?", opt: ["7", "3", "21", "343"], ok: 0,
+            ex: "Baza este numărul care se înmulțește: 7. Exponentul 3 arată de câte ori: 7 · 7 · 7." },
+          { tip: "numar", q: "Scrie ca putere: 11 · 11 · 11 · 11 = 11<sup>?</sup>", ok: 4,
+            ex: "11 apare de 4 ori ca factor, deci exponentul este 4: 11<sup>4</sup>." },
           { tip: "numar", q: "Calculează: 2<sup>4</sup> = ?", ok: 16,
             ex: "2<sup>4</sup> = 2 · 2 · 2 · 2 = 16. Greșeala frecventă e 2 · 4 = 8." },
-          { tip: "potrivire", q: "Potrivește fiecare putere cu rezultatul ei.", perechi: [
-              ["5<sup>2</sup>", "25"], ["4<sup>3</sup>", "64"], ["7<sup>1</sup>", "7"], ["9<sup>0</sup>", "1"], ["10<sup>3</sup>", "1000"]
+          { tip: "potrivire", q: "Potrivește fiecare calcul cu rezultatul lui.", perechi: [
+              ["2 · 2 · 2", "8"], ["5<sup>2</sup>", "25"], ["6<sup>1</sup>", "6"], ["1<sup>5</sup>", "1"], ["0<sup>4</sup>", "0"]
             ],
-            ex: "5<sup>2</sup> = 25, 4<sup>3</sup> = 64, 7<sup>1</sup> = 7, 9<sup>0</sup> = 1, 10<sup>3</sup> = 1000." },
-          { tip: "alege", q: "Care este mai mare: 2<sup>3</sup> sau 3<sup>2</sup>?", opt: ["2<sup>3</sup>", "3<sup>2</sup>", "Sunt egale"], ok: 1,
-            ex: "2<sup>3</sup> = 8 și 3<sup>2</sup> = 9, deci 3<sup>2</sup> este mai mare." }
+            ex: "2 · 2 · 2 = 8, 5<sup>2</sup> = 25, 6<sup>1</sup> = 6, 1<sup>5</sup> = 1 și 0<sup>4</sup> = 0." },
+          { tip: "numar", q: "Calculează: 3<sup>2</sup> + 2<sup>3</sup> − 5 = ?", ok: 12,
+            ex: "Întâi puterile: 9 + 8 − 5 = 12." },
+          { tip: "numar", q: "Calculează: 5 · 9<sup>0</sup> = ?", ok: 5,
+            ex: "9<sup>0</sup> = 1, deci 5 · 1 = 5." }
         ],
         recap: [
-          "a<sup>n</sup> înseamnă a înmulțit cu el însuși de n ori. Baza se înmulțește, exponentul numără.",
-          "a<sup>2</sup> e „la pătrat”, a<sup>3</sup> e „la cub”.",
-          "a<sup>1</sup> = a, a<sup>0</sup> = 1, 1<sup>n</sup> = 1, iar 10<sup>n</sup> e 1 urmat de n zerouri."
+          "a<sup>n</sup> = a · a · … · a (de n ori). Baza se înmulțește, exponentul numără de câte ori.",
+          "a<sup>1</sup> = a, a<sup>0</sup> = 1 (a ≠ 0), 1<sup>n</sup> = 1, 0<sup>n</sup> = 0 (n ≠ 0), 10<sup>n</sup> = 1 urmat de n zerouri.",
+          "Puterile se calculează primele, înainte de înmulțiri, împărțiri, adunări și scăderi."
         ],
         parinte: {
           stie: [
-            "Să recunoască baza și exponentul și să scrie o înmulțire repetată ca putere.",
-            "Să calculeze puteri mici (până la aproximativ 10<sup>3</sup>, 2<sup>6</sup>, 3<sup>4</sup>).",
+            "Să recunoască baza și exponentul și să scrie un produs de factori egali ca putere.",
+            "Să calculeze puteri mici: 2<sup>5</sup>, 3<sup>4</sup>, 10<sup>3</sup>, 5<sup>3</sup>.",
             "Puterile speciale: exponent 1, exponent 0, baza 1, baza 0, baza 10.",
-            "Că puterile se calculează înaintea înmulțirii și adunării."
+            "Ordinea operațiilor: puterile se fac primele."
           ],
           greseli: [
             "Înmulțește baza cu exponentul: 2<sup>4</sup> = 8 în loc de 16.",
             "Crede că a<sup>0</sup> = 0. Corect: a<sup>0</sup> = 1.",
-            "Inversează baza cu exponentul: 2<sup>3</sup> și 3<sup>2</sup> nu sunt egale (8 și 9).",
-            "Face adunarea înaintea puterii: 2 + 3<sup>2</sup> = 25 în loc de 11."
+            "Face adunarea înaintea puterii: 1 + 2<sup>3</sup> = 27 în loc de 9."
           ],
           intrebari: [
-            "„Ce înseamnă 3 la puterea a 4-a? Scrie-mi-o ca înmulțire.”",
-            "„Cât face 5<sup>0</sup>? Dar 0<sup>5</sup>?”",
-            "„Câte zerouri are 10<sup>6</sup>?”",
-            "„Dacă la un turneu sunt 32 de echipe, câte tururi are? Scrie 32 ca putere a lui 2.”"
+            "„Ce înseamnă 3 la puterea 4? Scrie-mi-o ca înmulțire.”",
+            "„Cât face 7<sup>0</sup>? Dar 0<sup>7</sup>?”",
+            "„Câte zerouri are 10<sup>6</sup>?”"
           ]
         }
-      }
-    ]
-  };
+      },
+
+      { id: "m-I.12", cod: "I.12", titlu: "Pătratul și cubul unui număr natural", pag: 38,
+        sub: "Pătrate perfecte și cuburi perfecte",
+        invata: [
+          { h: "Pătratul unui număr", html: `
+            <div class="row">
+              <div class="sq" aria-label="Un pătrat de 4 pe 4 pătrățele">${"<span></span>".repeat(16)}</div>
+              <div style="display:grid;gap:8px;min-width:0">
+                <p>Puterea a doua se numește <b>pătrat</b>. Ca să acoperi un pătrat cu latura 4 ai nevoie de 4<sup>2</sup> = 4 · 4 = <b>16</b> pătrățele mici.</p>
+                <p>Se citește „4 la pătrat este 16” sau „16 este pătratul lui 4”.</p>
+              </div>
+            </div>` },
+          { h: "Cubul unui număr", html: `
+            <p>Puterea a treia se numește <b>cub</b>. Ca să umpli un cub cu latura 4 ai nevoie de 4<sup>3</sup> = 4 · 4 · 4 = <b>64</b> de cubulețe mici.</p>
+            <p>Se citește „4 la cub este 64” sau „64 este cubul lui 4”.</p>` },
+          { h: "Pătrate perfecte și cuburi perfecte", html: `
+            <p><b>Pătrat perfect</b> = un număr care se poate scrie ca pătratul unui număr natural: 0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100…</p>
+            <p><b>Cub perfect</b> = un număr care se poate scrie ca puterea a treia: 0, 1, 8, 27, 64, 125…</p>
+            <p>Truc: un pătrat perfect se termină <b>doar</b> în 0, 1, 4, 5, 6 sau 9. Dacă un număr se termină în <b>2, 3, 7 sau 8</b>, sigur nu e pătrat perfect.</p>
+            <p>Atenție: nu orice număr terminat în 0, 1, 4, 5, 6, 9 e pătrat perfect (10, 31, 44 nu sunt).</p>` },
+          { h: "Între două pătrate perfecte vecine", html: `
+            <p>Un număr aflat <b>între două pătrate perfecte consecutive</b> nu este pătrat perfect.</p>
+            <div class="big">7<sup>2</sup> = 49 &lt; 56 &lt; 64 = 8<sup>2</sup></div>
+            <p>Deci 56 nu e pătrat perfect.</p>` }
+        ],
+        exemple: [
+          { titlu: "Scrie 144 ca putere cu exponentul 2", pasi: [
+            "Căutăm un număr care, înmulțit cu el însuși, dă 144",
+            "12 · 12 = 144",
+            "144 = 12<sup>2</sup>, deci 144 este pătrat perfect"
+          ] },
+          { titlu: "Arată că 72 nu este pătrat perfect", pasi: [
+            "Căutăm pătratele perfecte vecine: 8<sup>2</sup> = 64 și 9<sup>2</sup> = 81",
+            "64 &lt; 72 &lt; 81",
+            "72 e între două pătrate perfecte consecutive, deci nu e pătrat perfect"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Calculează: 6<sup>2</sup> = ?", ok: 36, ex: "6<sup>2</sup> = 6 · 6 = 36." },
+          { tip: "numar", q: "Calculează: 5<sup>3</sup> = ?", ok: 125, ex: "5<sup>3</sup> = 5 · 5 · 5 = 25 · 5 = 125." },
+          { tip: "alege", q: "Care număr <b>nu</b> poate fi pătrat perfect, doar uitându-te la ultima cifră?", opt: ["49", "117", "196", "225"], ok: 1,
+            ex: "117 se termină în 7. Pătratele perfecte nu se termină niciodată în 2, 3, 7 sau 8." },
+          { tip: "numar", q: "343 este un cub perfect: 343 = ?<sup>3</sup>", ok: 7, ex: "7 · 7 · 7 = 49 · 7 = 343, deci 343 = 7<sup>3</sup>." },
+          { tip: "potrivire", q: "Potrivește fiecare număr cu scrierea lui ca putere.", perechi: [
+              ["16", "4<sup>2</sup>"], ["81", "9<sup>2</sup>"], ["27", "3<sup>3</sup>"], ["100", "10<sup>2</sup>"], ["8", "2<sup>3</sup>"]
+            ], ex: "16 = 4<sup>2</sup>, 81 = 9<sup>2</sup>, 27 = 3<sup>3</sup>, 100 = 10<sup>2</sup>, 8 = 2<sup>3</sup>." },
+          { tip: "alege", q: "Între ce pătrate perfecte se află 56?", opt: ["36 și 49", "49 și 64", "64 și 81", "25 și 36"], ok: 1,
+            ex: "7<sup>2</sup> = 49 &lt; 56 &lt; 64 = 8<sup>2</sup>, deci 56 nu e pătrat perfect." }
+        ],
+        recap: [
+          "a<sup>2</sup> = pătratul lui a; a<sup>3</sup> = cubul lui a.",
+          "Pătrat perfect = n<sup>2</sup> (0, 1, 4, 9, 16, 25…); cub perfect = n<sup>3</sup> (0, 1, 8, 27, 64, 125…).",
+          "Pătratele perfecte se termină doar în 0, 1, 4, 5, 6, 9. Un număr între n<sup>2</sup> și (n+1)<sup>2</sup> nu e pătrat perfect."
+        ],
+        parinte: {
+          stie: [
+            "Pătratele de la 1<sup>2</sup> la 15<sup>2</sup> (1, 4, 9, … 196) și cuburile de la 1<sup>3</sup> la 10<sup>3</sup>.",
+            "Ce înseamnă pătrat perfect și cub perfect.",
+            "Cele două metode prin care arăți că un număr NU e pătrat perfect: ultima cifră și încadrarea între pătrate vecine."
+          ],
+          greseli: [
+            "Confundă pătratul cu dublul: 6<sup>2</sup> = 12 în loc de 36.",
+            "Crede că orice număr terminat în 1, 4, 5, 6, 9 e pătrat perfect (ex. 31, 44).",
+            "Uită că 0 și 1 sunt și pătrate, și cuburi perfecte."
+          ],
+          intrebari: [
+            "„Spune-mi pătratele perfecte de la 1 la 100.”",
+            "„De ce 2 027 nu poate fi pătrat perfect?”",
+            "„Câte cubulețe îți trebuie pentru un cub cu latura 5?” (125)"
+          ]
+        }
+      },
+
+      { id: "m-I.13", cod: "I.13", titlu: "Reguli de calcul cu puteri", pag: 41,
+        sub: "Înmulțire, împărțire, putere la putere, produs și cât",
+        invata: [
+          { h: "De unde vin regulile", html: `
+            <p>2<sup>3</sup> · 2<sup>4</sup> = (2·2·2) · (2·2·2·2) = 2 înmulțit de <b>3 + 4 = 7</b> ori = 2<sup>7</sup>.</p>
+            <p>2<sup>8</sup> : 2<sup>3</sup>: din 8 factori de 2 „tăiem” 3, rămân <b>8 − 3 = 5</b> → 2<sup>5</sup>.</p>
+            <p>(2<sup>3</sup>)<sup>4</sup> = 2<sup>3</sup> · 2<sup>3</sup> · 2<sup>3</sup> · 2<sup>3</sup> = 2 de <b>3 · 4 = 12</b> ori → 2<sup>12</sup>.</p>` },
+          { h: "Cele 5 reguli", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">a<sup>m</sup> · a<sup>n</sup> = a<sup>m+n</sup></span><span>Aceeași bază, înmulțire → <b>aduni</b> exponenții. 3<sup>5</sup> · 3<sup>4</sup> = 3<sup>9</sup></span></div>
+              <div class="rule"><span class="f">a<sup>m</sup> : a<sup>n</sup> = a<sup>m−n</sup></span><span>Aceeași bază, împărțire → <b>scazi</b> exponenții. 7<sup>8</sup> : 7<sup>6</sup> = 7<sup>2</sup> = 49</span></div>
+              <div class="rule"><span class="f">(a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup></span><span>Putere la putere → <b>înmulțești</b> exponenții. (15<sup>6</sup>)<sup>2</sup> = 15<sup>12</sup></span></div>
+              <div class="rule"><span class="f">(a · b)<sup>n</sup> = a<sup>n</sup> · b<sup>n</sup></span><span>Puterea unui produs. (2 · 3)<sup>2</sup> = 4 · 9 = 36</span></div>
+              <div class="rule"><span class="f">(a : b)<sup>n</sup> = a<sup>n</sup> : b<sup>n</sup></span><span>Puterea unui cât. (35 : 7)<sup>4</sup> = 5<sup>4</sup> = 625</span></div>
+            </div>` },
+          { h: "Atenție la capcane", html: `
+            <p>Regulile merg <b>doar</b> la înmulțire și împărțire. La adunare nu: 2<sup>3</sup> + 2<sup>4</sup> = 8 + 16 = 24, <b>nu</b> 2<sup>7</sup>.</p>
+            <p>Un număr fără exponent are exponentul 1: 5<sup>4</sup> · 5 = 5<sup>4+1</sup> = 5<sup>5</sup>.</p>` }
+        ],
+        exemple: [
+          { titlu: "Calculează 11<sup>6</sup> · 11<sup>3</sup> · 11", pasi: [
+            "Aceeași bază (11), înmulțire → adunăm exponenții",
+            "11 are exponentul 1",
+            "6 + 3 + 1 = 10",
+            "11<sup>6</sup> · 11<sup>3</sup> · 11 = 11<sup>10</sup>"
+          ] },
+          { titlu: "Calculează (5<sup>2</sup>)<sup>3</sup> : 5<sup>4</sup>", pasi: [
+            "Putere la putere: (5<sup>2</sup>)<sup>3</sup> = 5<sup>2·3</sup> = 5<sup>6</sup>",
+            "Împărțire cu aceeași bază: 5<sup>6</sup> : 5<sup>4</sup> = 5<sup>6−4</sup> = 5<sup>2</sup>",
+            "5<sup>2</sup> = 25"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "2<sup>3</sup> · 2<sup>5</sup> = 2<sup>?</sup>", ok: 8, ex: "Aceeași bază, înmulțire: 3 + 5 = 8, deci 2<sup>8</sup>." },
+          { tip: "numar", q: "3<sup>6</sup> : 3<sup>5</sup> = ?", ok: 3, ex: "6 − 5 = 1, deci 3<sup>1</sup> = 3." },
+          { tip: "numar", q: "(5<sup>2</sup>)<sup>4</sup> = 5<sup>?</sup>", ok: 8, ex: "Putere la putere: 2 · 4 = 8, deci 5<sup>8</sup>." },
+          { tip: "numar", q: "2<sup>3</sup> · 5<sup>3</sup> = ?", ok: 1000, ex: "Puterea unui produs: 2<sup>3</sup> · 5<sup>3</sup> = (2 · 5)<sup>3</sup> = 10<sup>3</sup> = 1 000." },
+          { tip: "numar", q: "18<sup>6</sup> : 9<sup>6</sup> = 2<sup>?</sup>", ok: 6, ex: "Puterea unui cât: (18 : 9)<sup>6</sup> = 2<sup>6</sup>." },
+          { tip: "alege", q: "Cât face 2<sup>3</sup> + 2<sup>4</sup>?", opt: ["2<sup>7</sup>", "24", "2<sup>12</sup>", "14"], ok: 1,
+            ex: "La adunare nu se adună exponenții! 2<sup>3</sup> + 2<sup>4</sup> = 8 + 16 = 24." }
+        ],
+        recap: [
+          "Aceeași bază: la înmulțire aduni exponenții, la împărțire îi scazi.",
+          "Putere la putere: înmulțești exponenții. (a · b)<sup>n</sup> = a<sup>n</sup> · b<sup>n</sup>, (a : b)<sup>n</sup> = a<sup>n</sup> : b<sup>n</sup>.",
+          "Regulile NU se aplică la adunare și scădere."
+        ],
+        parinte: {
+          stie: [
+            "Cele 5 reguli și când se aplică fiecare.",
+            "Că un număr fără exponent are exponentul 1.",
+            "Să transforme baze: 9 = 3<sup>2</sup>, 8 = 2<sup>3</sup>, 81 = 3<sup>4</sup>, pentru exerciții mai grele."
+          ],
+          greseli: [
+            "Înmulțește exponenții în loc să-i adune: 2<sup>3</sup> · 2<sup>4</sup> = 2<sup>12</sup>.",
+            "Aplică regula la adunare: 2<sup>3</sup> + 2<sup>4</sup> = 2<sup>7</sup>.",
+            "Înmulțește și bazele: 3<sup>2</sup> · 3<sup>3</sup> = 9<sup>5</sup>."
+          ],
+          intrebari: [
+            "„Când aduni exponenții și când îi înmulțești?”",
+            "„De ce 5<sup>4</sup> · 5 dă 5<sup>5</sup>?”",
+            "„Scrie 9<sup>3</sup> ca putere a lui 3.” (3<sup>6</sup>)"
+          ]
+        }
+      },
+
+      { id: "m-I.14", cod: "I.14", titlu: "Compararea puterilor", pag: 43,
+        sub: "Aceeași bază sau același exponent",
+        invata: [
+          { h: "Aceeași bază", html: `
+            <p>Dacă bazele sunt egale, e mai mare puterea cu <b>exponentul mai mare</b>.</p>
+            <div class="big">3<sup>27</sup> &lt; 3<sup>29</sup></div>
+            <p>(baza 3 la amândouă, 27 &lt; 29)</p>` },
+          { h: "Același exponent", html: `
+            <p>Dacă exponenții sunt egali, e mai mare puterea cu <b>baza mai mare</b>.</p>
+            <div class="big">2<sup>27</sup> &lt; 3<sup>27</sup></div>
+            <p>Dacă și baza, și exponentul sunt mai mari, puterea e mai mare: 5<sup>207</sup> &lt; 7<sup>291</sup>.</p>` },
+          { h: "Când nu sunt egale nici bazele, nici exponenții", html: `
+            <p>Le aducem la <b>aceeași bază</b> sau la <b>același exponent</b>.</p>
+            <p>16<sup>20</sup> = (2<sup>4</sup>)<sup>20</sup> = 2<sup>80</sup> și 8<sup>26</sup> = (2<sup>3</sup>)<sup>26</sup> = 2<sup>78</sup>. Deci 16<sup>20</sup> &gt; 8<sup>26</sup>.</p>
+            <p>7<sup>200</sup> = 49<sup>100</sup> și 5<sup>300</sup> = 125<sup>100</sup>. Deci 7<sup>200</sup> &lt; 5<sup>300</sup>.</p>` }
+        ],
+        exemple: [
+          { titlu: "Compară 27<sup>15</sup> cu 9<sup>22</sup>", pasi: [
+            "Ambele baze sunt puteri ale lui 3: 27 = 3<sup>3</sup>, 9 = 3<sup>2</sup>",
+            "27<sup>15</sup> = (3<sup>3</sup>)<sup>15</sup> = 3<sup>45</sup>",
+            "9<sup>22</sup> = (3<sup>2</sup>)<sup>22</sup> = 3<sup>44</sup>",
+            "45 &gt; 44, deci 27<sup>15</sup> &gt; 9<sup>22</sup>"
+          ] },
+          { titlu: "Compară 2<sup>30</sup> cu 3<sup>20</sup>", pasi: [
+            "Aducem la același exponent, 10",
+            "2<sup>30</sup> = (2<sup>3</sup>)<sup>10</sup> = 8<sup>10</sup>",
+            "3<sup>20</sup> = (3<sup>2</sup>)<sup>10</sup> = 9<sup>10</sup>",
+            "8 &lt; 9, deci 2<sup>30</sup> &lt; 3<sup>20</sup>"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Compară 6<sup>20</sup> cu 6<sup>25</sup>.", opt: ["6<sup>20</sup> &lt; 6<sup>25</sup>", "6<sup>20</sup> &gt; 6<sup>25</sup>", "Sunt egale"], ok: 0,
+            ex: "Aceeași bază, 6. Exponentul 20 e mai mic decât 25, deci 6<sup>20</sup> &lt; 6<sup>25</sup>." },
+          { tip: "alege", q: "Compară 16<sup>10</sup> cu 18<sup>10</sup>.", opt: ["16<sup>10</sup> &lt; 18<sup>10</sup>", "16<sup>10</sup> &gt; 18<sup>10</sup>", "Sunt egale"], ok: 0,
+            ex: "Același exponent, 10. Baza 16 &lt; 18, deci 16<sup>10</sup> &lt; 18<sup>10</sup>." },
+          { tip: "numar", q: "Scrie 8<sup>30</sup> ca putere a lui 2: 8<sup>30</sup> = 2<sup>?</sup>", ok: 90,
+            ex: "8 = 2<sup>3</sup>, deci 8<sup>30</sup> = (2<sup>3</sup>)<sup>30</sup> = 2<sup>90</sup>." },
+          { tip: "alege", q: "Compară 8<sup>30</sup> cu 16<sup>22</sup>.", opt: ["8<sup>30</sup> &lt; 16<sup>22</sup>", "8<sup>30</sup> &gt; 16<sup>22</sup>", "Sunt egale"], ok: 1,
+            ex: "8<sup>30</sup> = 2<sup>90</sup> și 16<sup>22</sup> = (2<sup>4</sup>)<sup>22</sup> = 2<sup>88</sup>. 90 &gt; 88, deci 8<sup>30</sup> &gt; 16<sup>22</sup>." },
+          { tip: "alege", q: "Compară 4<sup>30</sup> cu 3<sup>40</sup>.", opt: ["4<sup>30</sup> &lt; 3<sup>40</sup>", "4<sup>30</sup> &gt; 3<sup>40</sup>", "Sunt egale"], ok: 0,
+            ex: "Aducem la exponentul 10: 4<sup>30</sup> = 64<sup>10</sup>, 3<sup>40</sup> = 81<sup>10</sup>. 64 &lt; 81, deci 4<sup>30</sup> &lt; 3<sup>40</sup>." }
+        ],
+        recap: [
+          "Aceeași bază → câștigă exponentul mai mare.",
+          "Același exponent → câștigă baza mai mare.",
+          "Altfel, aduci puterile la aceeași bază (ex. totul în puteri ale lui 2) sau la același exponent."
+        ],
+        parinte: {
+          stie: [
+            "Cele două reguli de comparare (bază egală, exponent egal).",
+            "Să scrie 4, 8, 16, 32, 64 ca puteri ale lui 2 și 9, 27, 81 ca puteri ale lui 3.",
+            "Să folosească regula putere la putere ca să schimbe baza sau exponentul."
+          ],
+          greseli: [
+            "Compară doar exponenții, chiar dacă bazele diferă.",
+            "Greșește la (a<sup>m</sup>)<sup>n</sup>, adună în loc să înmulțească.",
+            "Crede că 2<sup>30</sup> &gt; 3<sup>20</sup> fiindcă 30 &gt; 20."
+          ],
+          intrebari: [
+            "„Ce e mai mare, 2<sup>10</sup> sau 10<sup>2</sup>?” (1 024 &gt; 100)",
+            "„Cum scrii 16<sup>5</sup> ca putere a lui 2?” (2<sup>20</sup>)",
+            "„Ce faci când nici bazele, nici exponenții nu sunt egali?”"
+          ]
+        }
+      },
+
+      { id: "m-I.15", cod: "I.15", titlu: "Scrierea în baza 10. Scrierea în baza 2", pag: 45,
+        sub: "Descompunerea cu puteri ale lui 10 și sistemul binar",
+        invata: [
+          { h: "Baza 10", html: `
+            <p>Orice număr se descompune după cifrele lui și puterile lui 10:</p>
+            <div class="big">273 = 2 · 10<sup>2</sup> + 7 · 10<sup>1</sup> + 3 · 10<sup>0</sup></div>
+            <p>În baza 10 folosim cifrele 0–9. Așa scriem numerele în fiecare zi.</p>` },
+          { h: "Baza 2 (binar)", html: `
+            <p>În baza 2 avem doar cifrele <b>0 și 1</b>, iar pozițiile sunt puteri ale lui 2: …, 2<sup>4</sup> = 16, 2<sup>3</sup> = 8, 2<sup>2</sup> = 4, 2<sup>1</sup> = 2, 2<sup>0</sup> = 1.</p>
+            <div class="big">1101<sub>(2)</sub> = 8 + 4 + 0 + 1 = 13</div>
+            <p>Așa „gândesc” calculatoarele și tabletele: totul e făcut din 0 și 1.</p>` },
+          { h: "Din baza 10 în baza 2", html: `
+            <p>Împărțim repetat la 2 și notăm resturile. Numărul în baza 2 = <b>ultimul cât</b>, urmat de <b>resturi citite de jos în sus</b>.</p>
+            <p>35 : 2 = 17 rest 1 · 17 : 2 = 8 rest 1 · 8 : 2 = 4 rest 0 · 4 : 2 = 2 rest 0 · 2 : 2 = <b>1</b> rest 0</p>
+            <div class="big">35 = 100011<sub>(2)</sub></div>` }
+        ],
+        exemple: [
+          { titlu: "Descompune 19 045 în baza 10", pasi: [
+            "Cifrele: 1, 9, 0, 4, 5 (de la zeci de mii la unități)",
+            "1 · 10<sup>4</sup> + 9 · 10<sup>3</sup> + 0 · 10<sup>2</sup> + 4 · 10<sup>1</sup> + 5 · 10<sup>0</sup>"
+          ] },
+          { titlu: "Transformă 100111<sub>(2)</sub> în baza 10", pasi: [
+            "Pozițiile de la dreapta: 2<sup>0</sup>, 2<sup>1</sup>, 2<sup>2</sup>, 2<sup>3</sup>, 2<sup>4</sup>, 2<sup>5</sup>",
+            "1 · 32 + 0 · 16 + 0 · 8 + 1 · 4 + 1 · 2 + 1 · 1",
+            "32 + 4 + 2 + 1 = 39"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Scrie numărul: 5 · 10<sup>2</sup> + 6 · 10<sup>1</sup> + 0 · 10<sup>0</sup> = ?", ok: 560, ex: "500 + 60 + 0 = 560." },
+          { tip: "alege", q: "Care descompunere e corectă pentru 5 006?", opt: ["5 · 10<sup>3</sup> + 6 · 10<sup>0</sup>", "5 · 10<sup>4</sup> + 6", "5 · 10<sup>3</sup> + 6 · 10<sup>1</sup>"], ok: 0,
+            ex: "5 006 = 5 · 1 000 + 6 · 1 = 5 · 10<sup>3</sup> + 6 · 10<sup>0</sup>." },
+          { tip: "numar", q: "1101<sub>(2)</sub> = ? în baza 10", ok: 13, ex: "8 + 4 + 0 + 1 = 13." },
+          { tip: "numar", q: "110101<sub>(2)</sub> = ? în baza 10", ok: 53, ex: "32 + 16 + 0 + 4 + 0 + 1 = 53." },
+          { tip: "cuvant", q: "Scrie 54 în baza 2 (doar cifre 0 și 1):", ok: ["110110"],
+            ex: "54 = 32 + 16 + 4 + 2 = 110110<sub>(2)</sub>. Sau: 54:2=27 r0, 27:2=13 r1, 13:2=6 r1, 6:2=3 r0, 3:2=1 r1 → 110110." }
+        ],
+        recap: [
+          "Baza 10: fiecare cifră se înmulțește cu o putere a lui 10, după poziție.",
+          "Baza 2: doar cifrele 0 și 1; pozițiile valorează 1, 2, 4, 8, 16, 32…",
+          "Din baza 10 în baza 2: împărțiri succesive la 2, apoi ultimul cât și resturile, de jos în sus."
+        ],
+        parinte: {
+          stie: [
+            "Să descompună un număr în baza 10 cu puteri ale lui 10.",
+            "Puterile lui 2 până la 2<sup>7</sup> = 128.",
+            "Transformarea în ambele sensuri între baza 2 și baza 10."
+          ],
+          greseli: [
+            "Uită pozițiile cu cifra 0 (ex. la 5 006 sau 100100<sub>(2)</sub>).",
+            "Citește resturile de sus în jos, invers.",
+            "Începe numărarea pozițiilor de la stânga în loc de dreapta."
+          ],
+          intrebari: [
+            "„Cum se scrie 10 în baza 2?” (1010)",
+            "„De ce în baza 2 nu există cifra 2?”",
+            "„Cât valorează 11111<sub>(2)</sub>?” (31)"
+          ]
+        }
+      },
+
+      { id: "m-I.16", cod: "I.16", titlu: "Ordinea efectuării operațiilor. Paranteze", pag: 47,
+        sub: "Puteri, înmulțiri/împărțiri, adunări/scăderi; paranteze rotunde, pătrate, acolade",
+        invata: [
+          { h: "Ordinea operațiilor", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">1.</span><span><b>Puterile</b> (ordinul al treilea)</span></div>
+              <div class="rule"><span class="f">2.</span><span><b>Înmulțirile și împărțirile</b>, de la stânga la dreapta</span></div>
+              <div class="rule"><span class="f">3.</span><span><b>Adunările și scăderile</b>, de la stânga la dreapta</span></div>
+            </div>` },
+          { h: "Ordinea parantezelor", html: `
+            <p>Întâi parantezele <b>rotunde ( )</b>. După ce dispar, parantezele <b>pătrate [ ]</b> devin rotunde, iar <b>acoladele { }</b> devin pătrate. Repeți până nu mai rămâne nicio paranteză.</p>
+            <p>În fiecare paranteză respecți ordinea operațiilor de mai sus.</p>` }
+        ],
+        exemple: [
+          { titlu: "Calculează 13<sup>2</sup> − 2<sup>3</sup> · 15 + 7 · 6 : 3", pasi: [
+            "Puterile: 13<sup>2</sup> = 169, 2<sup>3</sup> = 8",
+            "169 − 8 · 15 + 7 · 6 : 3",
+            "Înmulțiri și împărțiri: 8 · 15 = 120; 7 · 6 = 42; 42 : 3 = 14",
+            "169 − 120 + 14",
+            "De la stânga: 169 − 120 = 49; 49 + 14 = 63"
+          ] },
+          { titlu: "Calculează [10<sup>3</sup> : (564 − 8<sup>3</sup> : 8) + 7]<sup>3</sup>", pasi: [
+            "Puterile din interior: 10<sup>3</sup> = 1 000, 8<sup>3</sup> = 512",
+            "Paranteza rotundă: 564 − 512 : 8 = 564 − 64 = 500",
+            "Paranteza pătrată devine rotundă: (1 000 : 500 + 7) = 2 + 7 = 9",
+            "9<sup>3</sup> = 729"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Calculează: 2 + 3 · 4 = ?", ok: 14, ex: "Întâi înmulțirea: 3 · 4 = 12, apoi 2 + 12 = 14." },
+          { tip: "numar", q: "Calculează: (2 + 3) · 4 = ?", ok: 20, ex: "Întâi paranteza: 5, apoi 5 · 4 = 20." },
+          { tip: "numar", q: "Calculează: 63 : 21 + 270 : 9 + 4 − 3 = ?", ok: 34, ex: "3 + 30 + 4 − 3 = 34." },
+          { tip: "numar", q: "Calculează: 2<sup>3</sup> · 12 − 250 : 50 + (71 − 59) = ?", ok: 103, ex: "8 · 12 = 96; 250 : 50 = 5; 71 − 59 = 12. Deci 96 − 5 + 12 = 103." },
+          { tip: "numar", q: "Calculează: [(23 − 18) · (17 + 8) − 25] : 4 + 7 = ?", ok: 32, ex: "(5 · 25 − 25) : 4 + 7 = (125 − 25) : 4 + 7 = 100 : 4 + 7 = 25 + 7 = 32." }
+        ],
+        recap: [
+          "Ordinea: puteri → înmulțiri și împărțiri → adunări și scăderi (de la stânga la dreapta).",
+          "Parantezele: întâi ( ), apoi [ ], apoi { }.",
+          "Scrie calculul pas cu pas, câte o operație pe rând."
+        ],
+        parinte: {
+          stie: [
+            "Ordinea operațiilor și a parantezelor.",
+            "Că înmulțirile și împărțirile au aceeași prioritate și se fac în ordinea scrierii.",
+            "Să rescrie exercițiul după fiecare pas."
+          ],
+          greseli: [
+            "Face operațiile strict de la stânga la dreapta: 2 + 3 · 4 = 20.",
+            "Face împărțirea înaintea unei înmulțiri scrise înaintea ei (ex. 12 : 3 · 2).",
+            "Sare peste puterile din interiorul parantezelor."
+          ],
+          intrebari: [
+            "„Ce faci primul în 5 + 2<sup>3</sup> · 2?” (puterea: 8, apoi 16, apoi 21)",
+            "„Când devin parantezele pătrate rotunde?”",
+            "„Cât face 12 : 3 · 2?” (8, nu 2)"
+          ]
+        }
+      },
+      { id: "m-I.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 1", pag: 48 }
+    ] },
+
+    { titlu: "Unitatea 2 · Metode aritmetice de rezolvare a problemelor", lectii: [
+      { id: "m-II.1", cod: "II.1", titlu: "Metoda reducerii la unitate", pag: 50,
+        sub: "Afli cât valorează „unul”, apoi calculezi ce ți se cere",
+        invata: [
+          { h: "Ideea metodei", html: `
+            <p>Alina plătește <b>55 de lei</b> pe <b>5 trandafiri</b>. Cât plătește pe 7?</p>
+            <p>Pasul-cheie: afli cât costă <b>unul</b>: 55 : 5 = 11 lei. Apoi 7 trandafiri: 7 · 11 = <b>77</b> de lei.</p>
+            <p>Scrie datele una sub alta, ca să vezi ușor ce se schimbă:</p>
+            <div class="ex-step">5 trandafiri ………… 55 lei<br>1 trandafir ………… 55 : 5 = 11 lei<br>7 trandafiri ………… 7 · 11 = 77 lei</div>` },
+          { h: "Două feluri de legături", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">↑ ↑</span><span><b>Direct proporționale</b>: una crește, și cealaltă crește de același număr de ori. Mai multe caiete → preț mai mare.</span></div>
+              <div class="rule"><span class="f">↑ ↓</span><span><b>Invers proporționale</b>: una crește, cealaltă scade. Mai mulți muncitori → mai puține zile.</span></div>
+            </div>
+            <p>Cea mai grea parte e să-ți dai seama ce fel de legătură e. Întreabă-te: „dacă am mai mulți, îmi trebuie mai mult sau mai puțin?”</p>` },
+          { h: "Din sport", html: `
+            <p>Dacă 3 alergători din ștafetă parcurg împreună 1 200 m (fiecare aceeași distanță), un alergător aleargă 1 200 : 3 = 400 m, iar 4 alergători ar parcurge 4 · 400 = 1 600 m.</p>` }
+        ],
+        exemple: [
+          { titlu: "5 seturi de pixuri costă 60 de lei. Cât costă 8 seturi?", pasi: [
+            "Mărimi direct proporționale (mai multe seturi → mai mulți bani)",
+            "1 set: 60 : 5 = 12 lei",
+            "8 seturi: 8 · 12 = 96 de lei"
+          ] },
+          { titlu: "4 muncitori fac un gard în 12 zile. În câte zile îl fac 6 muncitori?", pasi: [
+            "Mărimi invers proporționale (mai mulți muncitori → mai puține zile)",
+            "1 muncitor ar lucra de 4 ori mai mult: 12 · 4 = 48 de zile",
+            "6 muncitori: 48 : 6 = 8 zile"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Trei pachete conțin 24 de biscuiți. Câți biscuiți sunt în 5 pachete la fel?", ok: 40, ex: "1 pachet: 24 : 3 = 8 biscuiți. 5 pachete: 5 · 8 = 40." },
+          { tip: "numar", q: "11 ornamente costă 121 de lei. Cât costă 15 ornamente la fel?", ok: 165, ex: "1 ornament: 121 : 11 = 11 lei. 15 ornamente: 15 · 11 = 165 de lei." },
+          { tip: "alege", q: "Mai mulți robinete umplu același bazin. Cum sunt legate numărul de robinete și timpul?", opt: ["Direct proporționale", "Invers proporționale"], ok: 1,
+            ex: "Mai multe robinete → bazinul se umple mai repede. Una crește, cealaltă scade: invers proporționale." },
+          { tip: "numar", q: "6 muncitori renovează un apartament în 14 zile. În câte zile îl renovează 4 muncitori?", ok: 21, ex: "1 muncitor: 14 · 6 = 84 de zile. 4 muncitori: 84 : 4 = 21 de zile." },
+          { tip: "numar", q: "Din 56 kg de portocale se fac 7 litri de suc. Câți litri se fac din 96 kg?", ok: 12, ex: "1 litru: 56 : 7 = 8 kg. Din 96 kg: 96 : 8 = 12 litri." }
+        ],
+        recap: [
+          "Scrie datele una sub alta și află mai întâi cât valorează o unitate.",
+          "Direct proporționale: împarți ca să ajungi la 1, înmulțești ca să ajungi la cerință.",
+          "Invers proporționale: invers, înmulțești ca să ajungi la 1, apoi împarți."
+        ],
+        parinte: {
+          stie: [
+            "Să aranjeze datele pe două rânduri, cu aceeași mărime în aceeași coloană.",
+            "Să decidă dacă mărimile sunt direct sau invers proporționale.",
+            "Să verifice dacă rezultatul are sens (mai mulți muncitori → mai puține zile)."
+          ],
+          greseli: [
+            "Tratează orice problemă ca direct proporțională (la muncitori/robinete împarte în loc să înmulțească).",
+            "Sare peste pasul „1 bucată”.",
+            "Încurcă unitățile de măsură (kg cu g)."
+          ],
+          intrebari: [
+            "„Dacă vin mai mulți muncitori, termină mai repede sau mai încet?”",
+            "„Cât costă unul? Și cum afli?”",
+            "„Inventează-mi o problemă cu antrenamente: 3 antrenamente = 6 ore, câte ore au 5 antrenamente?”"
+          ]
+        }
+      },
+
+      { id: "m-II.2", cod: "II.2", titlu: "Metoda comparației", pag: 53,
+        sub: "Compari două situații ca să elimini o necunoscută",
+        invata: [
+          { h: "Ideea metodei", html: `
+            <p>George: 5 stilouri + 4 caiete = 120 lei. Alina: 5 stilouri + 5 caiete = 125 lei.</p>
+            <p>Amândoi au 5 stilouri. Diferența de 5 lei vine din <b>caietul în plus</b> → un caiet costă 5 lei.</p>
+            <p>Apoi: 5 caiete = 25 lei, stilourile Alinei = 125 − 25 = 100 lei, un stilou = 100 : 5 = <b>20 de lei</b>.</p>` },
+          { h: "Trei feluri de a elimina o necunoscută", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">1</span><span><b>Prin scădere</b>, când o mărime e la fel în ambele situații.</span></div>
+              <div class="rule"><span class="f">2</span><span><b>Aduci la același termen</b> (înmulțești un rând cu 2, 3…), apoi scazi.</span></div>
+              <div class="rule"><span class="f">3</span><span><b>Prin înlocuire</b>, când știi că un lucru „valorează cât” altele.</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "8 băieți și 5 fete culeg 55 kg de afine; 12 băieți și 5 fete culeg 75 kg. Cât culege fiecare?", pasi: [
+            "Fetele sunt la fel (5) în ambele zile",
+            "Diferența: 12 − 8 = 4 băieți culeg 75 − 55 = 20 kg",
+            "Un băiat: 20 : 4 = 5 kg",
+            "În prima zi: 8 · 5 = 40 kg băieții, deci 5 fete: 55 − 40 = 15 kg",
+            "O fată: 15 : 5 = 3 kg"
+          ] },
+          { titlu: "3 birouri și 4 scaune costă 1 080 lei; 5 birouri și 8 scaune costă 1 960 lei", pasi: [
+            "Dublăm primul rând: 6 birouri și 8 scaune costă 2 160 lei",
+            "Acum scaunele sunt la fel (8). Diferența: 1 birou = 2 160 − 1 960 = 200 lei",
+            "6 birouri = 1 200 lei, deci 8 scaune = 2 160 − 1 200 = 960 lei",
+            "1 scaun = 960 : 8 = 120 de lei"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "2 pixuri și 5 caiete costă 46 lei; 2 pixuri și 8 caiete costă 70 lei. Cât costă un caiet?", ok: 8, ex: "Diferența: 3 caiete costă 70 − 46 = 24 lei. Un caiet: 24 : 3 = 8 lei." },
+          { tip: "numar", q: "Din aceeași problemă (2 pixuri + 5 caiete = 46 lei, un caiet = 8 lei), cât costă un pix?", ok: 3, ex: "5 caiete = 40 lei, deci 2 pixuri = 46 − 40 = 6 lei. Un pix = 3 lei." },
+          { tip: "numar", q: "2 covrigi și 4 brioșe costă 16 lei; 5 covrigi și 4 brioșe costă 22 lei. Cât costă un covrig?", ok: 2, ex: "Brioșele sunt la fel. 3 covrigi costă 22 − 16 = 6 lei, deci un covrig = 2 lei." },
+          { tip: "numar", q: "4 păpuși și 7 mașinuțe costă 360 lei. O mașinuță costă cât 2 păpuși. Cât costă o păpușă?", ok: 20,
+            ex: "Înlocuim: 7 mașinuțe = 14 păpuși. 4 + 14 = 18 păpuși costă 360 lei, deci o păpușă = 20 lei (iar o mașinuță 40 lei)." },
+          { tip: "alege", q: "3 cărți și 4 caiete costă 42 lei; 9 cărți și 12 caiete costă 126 lei. Cât costă o carte?", opt: ["6 lei", "10 lei", "Nu se poate afla"], ok: 2,
+            ex: "Al doilea rând e exact primul de 3 ori (42 · 3 = 126). Nu aflăm nimic nou: datele sunt insuficiente." }
+        ],
+        recap: [
+          "Scrie cele două situații una sub alta, pe coloane.",
+          "Fă ca o mărime să fie egală în ambele rânduri, apoi scade rândurile.",
+          "Află prima necunoscută, apoi înlocuiește ca s-o afli pe a doua. La final, verifică."
+        ],
+        parinte: {
+          stie: [
+            "Să așeze datele pe coloane: obiect 1 · obiect 2 · total.",
+            "Când să înmulțească un rând ca să egaleze o coloană.",
+            "Metoda prin înlocuire („o mașinuță cât 2 păpuși”)."
+          ],
+          greseli: [
+            "Scade rândurile când nicio coloană nu e egală.",
+            "Uită să înmulțească și totalul când dublează un rând.",
+            "Se oprește după prima necunoscută."
+          ],
+          intrebari: [
+            "„Ce e la fel în cele două situații?”",
+            "„De unde vine diferența de bani?”",
+            "„Cum verifici că prețurile găsite sunt bune?”"
+          ]
+        }
+      },
+
+      { id: "m-II.3", cod: "II.3", titlu: "Metoda figurativă", pag: 56,
+        sub: "Desenezi segmente ca să vezi sume, diferențe și „de câte ori”",
+        invata: [
+          { h: "Ideea metodei", html: `
+            <p>Turnul lui Paul e cu <b>35 cm</b> mai înalt decât al lui Eduard. Puse unul peste altul au <b>71 cm</b>.</p>
+            <p>Desenăm două segmente: unul scurt (Eduard) și unul la fel + 35 cm (Paul). Scoatem diferența: 71 − 35 = 36 cm = <b>două părți egale</b>. O parte: 36 : 2 = <b>18 cm</b> (Eduard), iar Paul are 18 + 35 = <b>53 cm</b>.</p>` },
+          { h: "Cuvinte-cheie", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">sumă</span><span>în total, împreună, la un loc</span></div>
+              <div class="rule"><span class="f">diferență</span><span>cu … mai mult / mai puțin / mai mare</span></div>
+              <div class="rule"><span class="f">cât</span><span>de … ori mai mult / mai puțin, dublul, jumătatea, triplul, treimea</span></div>
+            </div>
+            <p>La final faci <b>proba</b>: verifici dacă numerele găsite respectă toate condițiile.</p>` },
+          { h: "Sumă și „de câte ori”", html: `
+            <p>Mihai are de 3 ori mai puțini ani decât tatăl; împreună au 44. Mihai = 1 parte, tata = 3 părți → 4 părți = 44, o parte = <b>11</b>. Mihai are 11 ani, tatăl 33.</p>` }
+        ],
+        exemple: [
+          { titlu: "57 de păsări, găini și rațe. Găini sunt cu 17 mai multe. Câte sunt din fiecare?", pasi: [
+            "Scoatem diferența: 57 − 17 = 40 = două părți egale",
+            "O parte (rațele): 40 : 2 = 20",
+            "Găinile: 20 + 17 = 37",
+            "Proba: 37 + 20 = 57 și 37 − 20 = 17 ✓"
+          ] },
+          { titlu: "Un melc a mers de 6 ori mai mult decât altul, adică cu 145 m mai mult. Cât a mers fiecare?", pasi: [
+            "Melcul mic = 1 segment, melcul mare = 6 segmente",
+            "Diferența = 6 − 1 = 5 segmente = 145 m",
+            "Un segment: 145 : 5 = 29 m (melcul mic)",
+            "Melcul mare: 29 · 6 = 174 m"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Două numere au suma 500 și diferența 80. Care e numărul mai mic?", ok: 210, ex: "500 − 80 = 420 = două părți egale, o parte = 210. Numărul mare: 290." },
+          { tip: "numar", q: "Într-o livadă sunt 45 de pomi, meri și pruni. Sunt cu 7 meri mai mulți decât pruni. Câți pruni sunt?", ok: 19, ex: "45 − 7 = 38, 38 : 2 = 19 pruni. Meri: 26." },
+          { tip: "numar", q: "Doi frați au economisit împreună 155 lei. Andrei are de 4 ori mai puțin decât Ina. Câți lei are Andrei?", ok: 31, ex: "Andrei = 1 parte, Ina = 4 părți: 5 părți = 155, o parte = 31 lei. Ina are 124 lei." },
+          { tip: "numar", q: "Trei numere naturale consecutive au suma 240. Care e cel mai mic?", ok: 79, ex: "n + (n+1) + (n+2) = 240 → 3n + 3 = 240 → 3n = 237 → n = 79. Numerele: 79, 80, 81." },
+          { tip: "numar", q: "O jucărie costă cât 3 stilouri. Ioana cumpără 1 stilou și 2 jucării și plătește 84 lei. Cât costă un stilou?", ok: 12, ex: "1 stilou + 2 · 3 stilouri = 7 stilouri = 84 lei, deci un stilou = 12 lei, iar o jucărie 36 lei." }
+        ],
+        recap: [
+          "Desenează segmente: cel mai mic = o parte.",
+          "Sumă și diferență: scoți diferența, împarți la 2. Sumă și cât: împarți la numărul de părți.",
+          "Diferență și cât: diferența = (de câte ori − 1) părți. Fă mereu proba."
+        ],
+        parinte: {
+          stie: [
+            "Să deseneze segmentele corect (cel mai mic e unitatea).",
+            "Să recunoască tipul: sumă și diferență / sumă și cât / diferență și cât.",
+            "Să facă proba la final."
+          ],
+          greseli: [
+            "La „de 4 ori mai mult” numără 4 părți în total în loc de 1 + 4 = 5.",
+            "La diferență și cât împarte la 6 în loc de 6 − 1 = 5.",
+            "Uită să adune diferența înapoi la final."
+          ],
+          intrebari: [
+            "„Desenează-mi problema. Care e segmentul cel mai mic?”",
+            "„Câte părți egale sunt în total?”",
+            "„Fă proba: se potrivesc numerele cu enunțul?”"
+          ]
+        }
+      },
+
+      { id: "m-II.4", cod: "II.4", titlu: "Metoda mersului invers", pag: 59,
+        sub: "Pornești de la final și faci operațiile inverse",
+        invata: [
+          { h: "Ideea metodei", html: `
+            <p>Când știi doar <b>rezultatul de la final</b>, mergi înapoi: fiecare operație se desface cu <b>inversa</b> ei.</p>
+            <div class="rules">
+              <div class="rule"><span class="f">+ ↔ −</span><span>x + 80 = 125 → x = 125 − 80 = 45</span></div>
+              <div class="rule"><span class="f">· ↔ :</span><span>x · 11 = 132 → x = 132 : 11 = 12</span></div>
+              <div class="rule"><span class="f">− / :</span><span>x − 55 = 88 → x = 88 + 55 = 143; x : 23 = 400 → x = 9 200</span></div>
+            </div>` },
+          { h: "Căpșunile Mariei și Alinei (din manual)", html: `
+            <p>Au mâncat jumătate, au dat bunicii o treime din rest și au rămas <b>8</b> căpșuni.</p>
+            <p>Înapoi: 8 sunt două treimi din rest → o treime = 4 → restul era 12. Cele 12 erau jumătate → au cules <b>24</b>.</p>
+            <p>Proba: 24 : 2 = 12; 12 : 3 = 4 date bunicii; 12 − 4 = 8 ✓</p>` }
+        ],
+        exemple: [
+          { titlu: "Mă gândesc la un număr. Îl dublez, scad 80 și obțin 300. Care e numărul?", pasi: [
+            "Scris ca exercițiu: x · 2 − 80 = 300",
+            "Desfacem scăderea: x · 2 = 300 + 80 = 380",
+            "Desfacem înmulțirea: x = 380 : 2 = 190",
+            "Proba: 190 · 2 − 80 = 300 ✓"
+          ] },
+          { titlu: "a : 5, apoi + 26, apoi · 13, apoi − 150 dă 500. Află a.", pasi: [
+            "Ultimul pas: d − 150 = 500 → d = 650",
+            "c · 13 = 650 → c = 50",
+            "b + 26 = 50 → b = 24",
+            "a : 5 = 24 → a = 120"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Un număr adunat cu 80 dă 125. Care e numărul?", ok: 45, ex: "x = 125 − 80 = 45." },
+          { tip: "numar", q: "La ce număr se împarte 576 ca să obții 64?", ok: 9, ex: "576 : x = 64 → x = 576 : 64 = 9." },
+          { tip: "numar", q: "(4x − 4) : 44 + 4 = 104. Află x.", ok: 1101, ex: "(4x − 4) : 44 = 100 → 4x − 4 = 4 400 → 4x = 4 404 → x = 1 101." },
+          { tip: "numar", q: "Cineva plătește facturile cu o cincime din salariu, apoi cumpără un aspirator cu o treime din rest și îi rămân 1 600 lei. Cât e salariul?", ok: 3000,
+            ex: "1 600 sunt două treimi din rest → o treime = 800, restul = 2 400. Restul e 4 cincimi din salariu → o cincime = 600, salariul = 3 000 lei." },
+          { tip: "numar", q: "Un număr + 10, apoi · 10, apoi − 10, apoi : 10 dă 10. Care e numărul?", ok: 1, ex: "Înapoi: 10 · 10 = 100; 100 + 10 = 110; 110 : 10 = 11; 11 − 10 = 1." }
+        ],
+        recap: [
+          "Pornești de la rezultat și mergi înapoi, pas cu pas.",
+          "Fiecare operație o desfaci cu inversa ei: + cu −, · cu :.",
+          "La final faci proba cu numărul găsit, mergând înainte."
+        ],
+        parinte: {
+          stie: [
+            "Operațiile inverse și cum se află un termen, un factor, un deîmpărțit.",
+            "Să transforme o problemă în exercițiu cu x.",
+            "La fracții de rest: dacă s-a luat o treime, au rămas două treimi."
+          ],
+          greseli: [
+            "Merge înapoi dar folosește aceeași operație, nu inversa.",
+            "La „o treime din rest” crede că rămâne o treime.",
+            "Nu face proba."
+          ],
+          intrebari: [
+            "„Care e ultima operație din problemă? Cum o desfaci?”",
+            "„Dacă au dat o cincime, cât a rămas?”",
+            "„Verifică: pune numărul tău în problemă. Iese?”"
+          ]
+        }
+      },
+
+      { id: "m-II.5", cod: "II.5", titlu: "Metoda falsei ipoteze", pag: 62,
+        sub: "Presupui că toate sunt la fel, apoi corectezi",
+        invata: [
+          { h: "Ideea metodei", html: `
+            <p>Un bloc are <b>30 de apartamente</b> cu 2 sau cu 3 camere, în total <b>70 de camere</b>.</p>
+            <p><b>Presupunem</b> (fals) că toate au 2 camere: 30 · 2 = 60 de camere. Lipsesc 70 − 60 = 10 camere.</p>
+            <p>Fiecare apartament de 2 camere schimbat cu unul de 3 aduce <b>1</b> cameră. Facem 10 : 1 = 10 schimbări → <b>10 apartamente cu 3 camere</b> și 20 cu 2 camere.</p>` },
+          { h: "Pașii", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">1</span><span>Presupui că toate sunt de un singur fel și calculezi totalul.</span></div>
+              <div class="rule"><span class="f">2</span><span>Afli diferența față de totalul real.</span></div>
+              <div class="rule"><span class="f">3</span><span>Afli cât schimbă <b>o</b> înlocuire.</span></div>
+              <div class="rule"><span class="f">4</span><span>Diferența : schimbarea = câte bucăți sunt de celălalt fel.</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Radu are 83 de bancnote de 1 leu și 5 lei, în total 215 lei. Câte are din fiecare?", pasi: [
+            "Presupunem că toate sunt de 1 leu: 83 lei",
+            "Lipsesc 215 − 83 = 132 lei",
+            "O bancnotă de 1 leu înlocuită cu una de 5 lei aduce 4 lei",
+            "132 : 4 = 33 de bancnote de 5 lei; 83 − 33 = 50 de bancnote de 1 leu",
+            "Proba: 33 · 5 + 50 = 215 ✓"
+          ] },
+          { titlu: "Andrei are porumbei și iepuri: 25 de capete și 76 de picioare", pasi: [
+            "Presupunem că toți sunt porumbei: 25 · 2 = 50 de picioare",
+            "Lipsesc 76 − 50 = 26 de picioare",
+            "Un iepure în loc de un porumbel aduce 2 picioare",
+            "26 : 2 = 13 iepuri; 25 − 13 = 12 porumbei"
+          ] }
+        ],
+        exercitii: [
+          { tip: "numar", q: "Un bloc are 25 de apartamente cu 2 sau 3 camere și 65 de camere. Câte apartamente au 3 camere?", ok: 15, ex: "Toate cu 2 camere: 50. Lipsesc 15 camere, fiecare schimb aduce 1 → 15 apartamente cu 3 camere și 10 cu 2." },
+          { tip: "numar", q: "Miruna are 14 pixuri și creioane și a plătit 66 lei. Pixul costă 6 lei, creionul 3 lei. Câte pixuri are?", ok: 8, ex: "Toate creioane: 42 lei. Lipsesc 24 lei, fiecare pix în loc de creion aduce 3 lei → 8 pixuri și 6 creioane." },
+          { tip: "numar", q: "În laborator sunt 13 mese cu 2 sau 3 scaune și 29 de locuri. Câte mese au 3 scaune?", ok: 3, ex: "Toate cu 2 scaune: 26. Lipsesc 3 locuri → 3 mese cu 3 scaune, 10 mese cu 2 scaune." },
+          { tip: "numar", q: "La un test cu 10 întrebări, Darius are 22 de puncte: +3 pentru corect, −1 pentru greșit. La câte întrebări a răspuns corect?", ok: 8,
+            ex: "Toate corecte: 30 de puncte. A pierdut 8. Fiecare greșeală costă 3 + 1 = 4 puncte → 2 greșeli, deci 8 corecte." },
+          { tip: "numar", q: "100 de copii stau în 28 de camere cu 3 sau 5 paturi, toate ocupate. Câte camere au 5 paturi?", ok: 8, ex: "Toate cu 3 paturi: 84. Lipsesc 16 locuri, fiecare cameră de 5 aduce 2 → 8 camere cu 5 paturi și 20 cu 3." }
+        ],
+        recap: [
+          "Presupui că toate lucrurile sunt de un singur fel.",
+          "Compari cu totalul real și afli cât aduce o singură înlocuire.",
+          "Diferența împărțită la ce aduce o înlocuire = câte sunt de celălalt fel. Fă proba."
+        ],
+        parinte: {
+          stie: [
+            "Cei 4 pași ai metodei.",
+            "Că poate presupune oricare dintre feluri; rezultatul final e același.",
+            "La punctaje cu penalizare, o greșeală „costă” punctele pierdute plus cele scăzute."
+          ],
+          greseli: [
+            "Uită să scadă din total ca să afle celălalt fel.",
+            "La teste cu penalizare împarte doar la 1 în loc de 3 + 1.",
+            "Încurcă ce fel a presupus cu ce fel a aflat."
+          ],
+          intrebari: [
+            "„Ce ai presupus? Și cât ți-a ieșit?”",
+            "„Cu cât se schimbă totalul dacă înlocuiești una?”",
+            "„Găini și iepuri: 10 capete, 28 de picioare. Câți iepuri?” (4)"
+          ]
+        }
+      },
+      { id: "m-II.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 2", pag: 65 }
+    ] },
+
+    { titlu: "Unitatea 3 · Divizibilitatea numerelor naturale", lectii: [
+      { id: "m-III.1", cod: "III.1", titlu: "Divizor. Multiplu", pag: 68 },
+      { id: "m-III.2", cod: "III.2", titlu: "Divizori comuni", pag: 70 },
+      { id: "m-III.3", cod: "III.3", titlu: "Multipli comuni", pag: 72 },
+      { id: "m-III.4", cod: "III.4", titlu: "Criterii de divizibilitate cu 2, 5, 10, 10ⁿ, 3 și 9", pag: 74 },
+      { id: "m-III.5", cod: "III.5", titlu: "Numere prime. Numere compuse", pag: 76 },
+      { id: "m-III.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 3", pag: 78 }
+    ] },
+
+    { titlu: "Unitatea 4 · Fracții ordinare", lectii: [
+      { id: "m-IV.1", cod: "IV.1", titlu: "Fracții ordinare. Subunitare, echiunitare, supraunitare. Procente. Fracții echivalente", pag: 80 },
+      { id: "m-IV.2", cod: "IV.2", titlu: "Compararea fracțiilor cu același numitor/numărător", pag: 85 },
+      { id: "m-IV.3", cod: "IV.3", titlu: "Reprezentarea pe axa numerelor a unei fracții", pag: 86 },
+      { id: "m-IV.4", cod: "IV.4", titlu: "Introducerea și scoaterea întregilor dintr-o fracție", pag: 89 },
+      { id: "m-IV.5", cod: "IV.5", titlu: "C.m.m.d.c. Amplificarea și simplificarea fracțiilor. Fracții ireductibile", pag: 91 },
+      { id: "m-IV.6", cod: "IV.6", titlu: "C.m.m.m.c. Aducerea fracțiilor la un numitor comun", pag: 96 },
+      { id: "m-IV.R1", cod: "R", titlu: "Recapitulare (IV.1–IV.6)", pag: 100 },
+      { id: "m-IV.7", cod: "IV.7", titlu: "Adunarea și scăderea fracțiilor", pag: 101 },
+      { id: "m-IV.8", cod: "IV.8", titlu: "Înmulțirea fracțiilor", pag: 105 },
+      { id: "m-IV.9", cod: "IV.9", titlu: "Împărțirea fracțiilor", pag: 108 },
+      { id: "m-IV.10", cod: "IV.10", titlu: "Puterea cu exponent natural a unei fracții", pag: 111 },
+      { id: "m-IV.11", cod: "IV.11", titlu: "Fracții și procente dintr-un număr sau dintr-o fracție", pag: 114 },
+      { id: "m-IV.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 4", pag: 117 }
+    ] },
+
+    { titlu: "Unitatea 5 · Fracții zecimale", lectii: [
+      { id: "m-V.1", cod: "V.1", titlu: "Fracții zecimale. Transformări între fracții ordinare și zecimale", pag: 120 },
+      { id: "m-V.2", cod: "V.2", titlu: "Aproximări. Compararea, ordonarea și reprezentarea pe axă", pag: 123 },
+      { id: "m-V.3", cod: "V.3", titlu: "Adunarea și scăderea fracțiilor zecimale", pag: 126 },
+      { id: "m-V.4", cod: "V.4", titlu: "Înmulțirea fracțiilor zecimale", pag: 128 },
+      { id: "m-V.5", cod: "V.5", titlu: "Împărțirea cu rezultat fracție zecimală. Periodicitate. Media aritmetică", pag: 131 },
+      { id: "m-V.6", cod: "V.6", titlu: "Împărțirea fracțiilor zecimale. Fracții periodice în fracții ordinare", pag: 134 },
+      { id: "m-V.7", cod: "V.7", titlu: "Număr rațional pozitiv. Ordinea operațiilor", pag: 137 },
+      { id: "m-V.8", cod: "V.8", titlu: "Probleme cu fracții și unități de măsură", pag: 140 },
+      { id: "m-V.9", cod: "V.9", titlu: "Organizarea datelor. Tabele și grafice. Media unui set de date", pag: 144 },
+      { id: "m-V.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 5", pag: 148 }
+    ] },
+
+    { titlu: "Unitatea 6 · Elemente de geometrie", lectii: [
+      { id: "m-VI.1", cod: "VI.1", titlu: "Punct, dreaptă, plan, semiplan, semidreaptă, segment", pag: 150 },
+      { id: "m-VI.2", cod: "VI.2", titlu: "Poziții relative: punct și dreaptă, două drepte", pag: 157 },
+      { id: "m-VI.3", cod: "VI.3", titlu: "Distanța dintre două puncte. Segmente congruente. Mijlocul unui segment", pag: 162 },
+      { id: "m-VI.4", cod: "VI.4", titlu: "Unghiul. Măsura unghiurilor. Clasificări. Calcule în grade și minute", pag: 171 },
+      { id: "m-VI.5", cod: "VI.5", titlu: "Figuri congruente. Axa de simetrie", pag: 179 },
+      { id: "m-VI.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 6", pag: 183 }
+    ] },
+
+    { titlu: "Unitatea 7 · Unități de măsură", lectii: [
+      { id: "m-VII.1", cod: "VII.1", titlu: "Unități de lungime. Transformări. Perimetre", pag: 186 },
+      { id: "m-VII.2", cod: "VII.2", titlu: "Unități de arie. Aria pătratului și a dreptunghiului", pag: 192 },
+      { id: "m-VII.3", cod: "VII.3", titlu: "Unități de volum. Volumul cubului și al paralelipipedului", pag: 198 },
+      { id: "m-VII.RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea 7", pag: 203 }
+    ] },
+
+    { titlu: "Final de an", lectii: [
+      { id: "m-RF", cod: "R", titlu: "Recapitulare și evaluare finală", pag: 205 }
+    ] }
+  ]
+};
+
+// Limba și literatura română, clasa a V-a — Editura Art Klett (Sâmihăian, Dobra, Halaszi, Davidoiu-Roman), 2022
+// Cuprinsul și paginile sunt luate din manual. Lecțiile interactive sunt scrise după manual.
+// Fragmentele citate sunt din „Vizită…” de I.L. Caragiale (operă din domeniul public).
+DATA["Română"] = {
+  manual: "https://catalog.manualedigitaleart.ro/art-romana-5-2022/v1/art-romana-5-2022.pdf",
+  unitati: [
+    { titlu: "Început de an", lectii: [
+      { id: "r-EI", cod: "EI", titlu: "Evaluare inițială", pag: 8 }
+    ] },
+    { titlu: "Unitatea I · Despre mine. Selfie", lectii: [
+      { id: "r-U1-L1", cod: "L1", titlu: "Textul literar. „Prietenul meu” de Ioana Pârvulescu", pag: 10 },
+      { id: "r-U1-L2", cod: "L2", titlu: "Trăsături ale textului literar", pag: 13 },
+      { id: "r-U1-L3", cod: "L3", titlu: "Cuvântul-cheie. Tema. Planul simplu de idei", pag: 15 },
+      { id: "r-U1-L4", cod: "L4", titlu: "Semnificațiile textului", pag: 16 },
+      { id: "r-U1-L5", cod: "L5", titlu: "Textul nonliterar", pag: 17 },
+      { id: "r-U1-L6", cod: "L6", titlu: "Noi pagini – alte idei", pag: 18 },
+      { id: "r-U1-L7", cod: "L7", titlu: "Identitatea personală. Emoțiile", pag: 20 },
+      { id: "r-U1-L8", cod: "L8", titlu: "Exprimarea adecvată a emoțiilor. Roluri în comunicare", pag: 22 },
+      { id: "r-U1-L9", cod: "L9", titlu: "Propoziția. Tipuri de propoziții", pag: 24 },
+      { id: "r-U1-L10", cod: "L10", titlu: "Cuvântul și dicționarul", pag: 26 },
+      { id: "r-U1-L11", cod: "L11", titlu: "Sinonimele. Antonimele", pag: 28 },
+      { id: "r-U1-L12", cod: "L12", titlu: "Câmpul lexical", pag: 30 },
+      { id: "r-U1-L13", cod: "L13", titlu: "Tipurile de sunete", pag: 32 },
+      { id: "r-U1-L14", cod: "L14", titlu: "Silaba. Accentul", pag: 34 },
+      { id: "r-U1-L15", cod: "L15", titlu: "Etapele scrierii. Relatarea unor experiențe personale", pag: 36 },
+      { id: "r-U1-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea I", pag: 38 }
+    ] },
+
+    { titlu: "Unitatea II · De-a ce mă joc", lectii: [
+      { id: "r-U2-L1", cod: "L1", titlu: "Textul narativ literar. „Vizită…” de I.L. Caragiale", pag: 42,
+        sub: "Ce este un text narativ și cum e construit",
+        invata: [
+          { h: "Despre text", html: `
+            <p><b>Vizită…</b> este o schiță scrisă de <b>I.L. Caragiale</b> (1852–1912), unul dintre cei mai importanți scriitori români, contemporan cu Eminescu și Creangă. Teatrul Național din București îi poartă numele.</p>
+            <p>Un domn merge în vizită la doamna Maria Popescu, de <b>Sf. Ion</b>, ca să-l felicite pe fiul ei, <b>Ionel</b>, de onomastică. Ionel, „de vreo opt anișori”, e îmbrăcat ca maior de roșiori și face o năzbâtie după alta.</p>` },
+          { h: "Textul narativ", html: `
+            <p>Un <b>text narativ</b> povestește întâmplări care se petrec una după alta, într-o ordine logică și în timp.</p>
+            <p>Textul narativ <b>literar</b> prezintă întâmplări <b>imaginate</b> de autor, la care participă <b>personaje</b>.</p>` },
+          { h: "Cele trei secvențe", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">Început</span><span><b>Situația inițială</b>: totul e în echilibru. Musafirul vine în vizită și stă de vorbă cu gazda.</span></div>
+              <div class="rule"><span class="f">Mijloc</span><span><b>Succesiunea de întâmplări</b>: complicație → acțiune → rezolvare. Năzbâtiile lui Ionel.</span></div>
+              <div class="rule"><span class="f">Final</span><span><b>Situația finală</b>: un nou echilibru. Musafirul pleacă acasă și descoperă dulceața din șoșoni.</span></div>
+            </div>` },
+          { h: "Cuvinte noi din text", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">onomastică</span><span>ziua numelui</span></div>
+              <div class="rule"><span class="f">roșior</span><span>soldat călăreț, cu haină roșie</span></div>
+              <div class="rule"><span class="f">spirtieră</span><span>„mașina” de făcut cafea, cu spirt</span></div>
+              <div class="rule"><span class="f">chesea</span><span>vas mic în care se ține dulceața</span></div>
+              <div class="rule"><span class="f">șoșoni</span><span>încălțăminte de cauciuc pusă peste pantofi, pentru zăpadă</span></div>
+            </div>` }
+        ],
+        exemple: [
+          { titlu: "Cum recunoști un text narativ literar?", pasi: [
+            "Se povestesc întâmplări una după alta: Ionel bate toba, atacă jupâneasa, fumează, aruncă mingea…",
+            "Au loc într-un timp și un loc: de Sf. Ion, în salonul doamnei Popescu",
+            "Participă personaje imaginate de autor: Ionel, mama, musafirul, jupâneasa",
+            "Deci este un text narativ literar"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Ce cadou îi aduce musafirul lui Ionel?", opt: ["O sabie", "O minge mare de cauciuc", "O tobă", "O trâmbiță"], ok: 1,
+            ex: "„i-am dus băiețelului o minge foarte mare de cauciuc și foarte elastică.” Sabia, toba și trâmbița erau deja jucăriile lui." },
+          { tip: "alege", q: "Cu ce ocazie are loc vizita?", opt: ["Ziua de naștere a lui Ionel", "Onomastica lui Ionel, de Sf. Ion", "Crăciunul", "Ziua doamnei Popescu"], ok: 1,
+            ex: "Musafirul vine „de Sf. Ion” ca s-o felicite pe doamna Popescu „pentru onomastica unicului său fiu”." },
+          { tip: "alege", q: "Ce descoperă musafirul când ajunge acasă?", opt: ["Că și-a uitat paltonul", "Dulceață în șoșoni", "Că mingea e spartă", "O țigară în buzunar"], ok: 1,
+            ex: "Ionel ieșise cu cheseaua în vestibul „ca să-mi toarne dulceață în șoșoni”." },
+          { tip: "ordine", q: "Așază secvențele textului narativ în ordine.", items: ["Situația inițială (echilibru)", "Succesiunea de întâmplări (complicații)", "Situația finală (nou echilibru)"],
+            ex: "Început: situația inițială; mijloc: întâmplările; final: noul echilibru." },
+          { tip: "alege", q: "De ce este „Vizită…” un text narativ <b>literar</b>?", opt: ["Pentru că e scris în proză", "Pentru că prezintă întâmplări imaginate, cu personaje", "Pentru că e lung", "Pentru că are dialog"], ok: 1,
+            ex: "Textul narativ literar prezintă întâmplări imaginare la care participă personaje." }
+        ],
+        recap: [
+          "Textul narativ povestește întâmplări în ordine logică și în timp.",
+          "Textul narativ literar are întâmplări imaginate și personaje.",
+          "Are trei secvențe: situația inițială → succesiunea de întâmplări → situația finală."
+        ],
+        parinte: {
+          stie: [
+            "Subiectul schiței pe scurt: vizita, năzbâtiile lui Ionel, dulceața din șoșoni.",
+            "Ce e un text narativ literar.",
+            "Cele trei secvențe ale narațiunii."
+          ],
+          greseli: [
+            "Confundă situația inițială cu prima năzbâtie.",
+            "Spune că textul e „real” pentru că pare o întâmplare obișnuită.",
+            "Nu cunoaște cuvintele de epocă (șoșoni, chesea, spirtieră)."
+          ],
+          intrebari: [
+            "„Povestește-mi în 3 propoziții ce se întâmplă în Vizită….”",
+            "„Care e cea mai tare năzbâtie a lui Ionel? De ce?”",
+            "„Ce faci tu când avem musafiri?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L2", cod: "L2", titlu: "Timp, spațiu și acțiune", pag: 45,
+        sub: "Când și unde se petrece întâmplarea",
+        invata: [
+          { h: "Acțiunea, timpul, spațiul", html: `
+            <p><b>Acțiunea</b> = întâmplările despre care se povestește. Ele au loc într-un anumit <b>timp</b> și într-un anumit <b>spațiu</b>.</p>
+            <p>Uneori timpul și locul sunt spuse direct. Alteori le <b>deduci</b> din indicii din text sau din ce știi despre o epocă.</p>` },
+          { h: "Indicii de timp în „Vizită…”", html: `
+            <p><b>„de Sf. Ion”</b> → ziua de 7 ianuarie, deci iarna. Musafirul spune și că „nu cred să mai ție mult <b>gerul</b> așa de aspru”, iar la plecare își pune <b>șoșonii și paltonul</b>.</p>
+            <p>Epoca: obiecte ca spirtiera, policandrul, șoșonii, jupâneasa și faptul că autorul a trăit între 1852 și 1912 ne duc la <b>sfârșitul secolului al XIX-lea</b>.</p>` },
+          { h: "Indicii de spațiu", html: `
+            <p>Acțiunea are loc în casa doamnei Popescu, în <b>salon</b>: jucării pe mese, pe canapea, pe foteluri și pe jos, un policandru cu ciucuri de cristal. Mai apar <b>odaia de alături</b> (unde jupâneasa face cafeaua) și <b>vestibulul</b> (unde sunt șoșonii).</p>` }
+        ],
+        exemple: [
+          { titlu: "Află anotimpul doar din text", pasi: [
+            "Indiciul 1: vizita are loc „de Sf. Ion” (7 ianuarie)",
+            "Indiciul 2: „nu cred să mai ție mult gerul așa de aspru”",
+            "Indiciul 3: musafirul are șoșoni și palton",
+            "Concluzie: întâmplarea se petrece iarna"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "În ce anotimp se petrece întâmplarea?", opt: ["Primăvara", "Vara", "Toamna", "Iarna"], ok: 3,
+            ex: "Sf. Ion e pe 7 ianuarie, e ger aspru, iar musafirul are șoșoni și palton." },
+          { tip: "alege", q: "Unde se petrece cea mai mare parte a acțiunii?", opt: ["În curte", "În salonul doamnei Popescu", "La școală", "În bucătărie"], ok: 1,
+            ex: "Totul se petrece în salon, unde sunt jucăriile lui Ionel." },
+          { tip: "alege", q: "Care obiect din text arată că întâmplarea e de demult?", opt: ["Mingea", "Spirtiera pentru cafea", "Sabia de jucărie", "Masa"], ok: 1,
+            ex: "Spirtiera (cafeaua făcută pe spirt) era folosită în secolul al XIX-lea. Azi folosim aragazul sau espressorul." },
+          { tip: "potrivire", q: "Potrivește indiciul cu ce ne arată.", perechi: [["„de Sf. Ion”", "ziua (7 ianuarie)"], ["„gerul așa de aspru”", "anotimpul"], ["salonul cu jucării", "locul"], ["policandru, jupâneasă", "epoca"]],
+            ex: "Sf. Ion arată ziua, gerul arată anotimpul, salonul e locul, iar obiectele și oamenii de altădată arată epoca." },
+          { tip: "alege", q: "Dacă vizita ar avea loc azi, ce ar înlocui spirtiera?", opt: ["Un policandru", "Un espressor de cafea", "O chesea", "Șoșonii"], ok: 1,
+            ex: "Azi cafeaua se face cu espressorul sau la ibric pe aragaz." }
+        ],
+        recap: [
+          "Acțiunea = întâmplările; au loc într-un timp și un spațiu.",
+          "Timpul și spațiul pot fi spuse direct sau deduse din indicii.",
+          "În „Vizită…”: iarna, de Sf. Ion, sfârșitul secolului al XIX-lea, în salonul doamnei Popescu."
+        ],
+        parinte: {
+          stie: [
+            "Ce sunt indiciile de timp și de spațiu.",
+            "Să citeze din text dovezile pentru anotimp și loc.",
+            "Să deducă epoca din obiectele descrise."
+          ],
+          greseli: [
+            "Spune anotimpul fără să citeze indiciul din text.",
+            "Confundă timpul acțiunii cu momentul în care a fost scris textul.",
+            "Uită de vestibul și de odaia de alături."
+          ],
+          intrebari: [
+            "„De unde știi că e iarnă? Arată-mi în text.”",
+            "„Ce obiecte din salon n-ar mai fi azi într-o casă?”",
+            "„Desenează-mi salonul doamnei Popescu.”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L3", cod: "L3", titlu: "Planul dezvoltat de idei", pag: 47,
+        sub: "Idei principale, idei secundare",
+        invata: [
+          { h: "Planul simplu și planul dezvoltat", html: `
+            <p><b>Planul simplu</b> are doar ideile principale, în ordinea din text.</p>
+            <p><b>Ideile secundare</b> adaugă amănunte la ideea principală.</p>
+            <p><b>Planul dezvoltat</b> = ideile principale + ideile secundare, în ordinea în care apar în text.</p>` },
+          { h: "Exemplu (din manual)", html: `
+            <p><b>Idee principală:</b> Un domn vine în vizită la doamna Popescu cu ocazia onomasticii fiului ei.</p>
+            <p><b>Idee secundară:</b> Musafirul îi oferă lui Ionel o minge și începe să discute cu gazda.</p>` },
+          { h: "Ordinea întâmplărilor", html: `
+            <p>Ca să faci planul, trebuie să știi exact <b>ordinea</b> întâmplărilor. Recitește textul și notează fiecare năzbâtie a lui Ionel pe rând.</p>` }
+        ],
+        exemple: [
+          { titlu: "Dezvoltă ideea „Lui Ionel i se face rău.”", pasi: [
+            "Ce s-a întâmplat înainte? Ionel fumase o țigaretă „până la carton”",
+            "Cum arată? „alb ca varul, cu ochii pierduți” și cade lat",
+            "Ce face mama? țipă după ajutor",
+            "Idee dezvoltată: După ce fumează, lui Ionel i se face rău și cade, iar mama strigă după ajutor."
+          ] }
+        ],
+        exercitii: [
+          { tip: "ordine", q: "Pune întâmplările din „Vizită…” în ordinea din text.", items: [
+              "Un domn vine în vizită la doamna Popescu.",
+              "Ionel vrea să răstoarne spirtiera.",
+              "Ionel bate toba și suflă în trâmbiță, călare pe calul de jucărie.",
+              "Ionel atacă jupâneasa și o lovește pe mama cu spada.",
+              "Ionel ia cheseaua de dulceață și iese în vestibul.",
+              "Ionel fumează.",
+              "Mingea lovește ceașca și cafeaua se varsă pe pantalonii musafirului.",
+              "Lui Ionel i se face rău, apoi își revine.",
+              "Acasă, musafirul găsește dulceață în șoșoni."
+            ], ex: "Aceasta e ordinea din text. Ea devine planul simplu de idei." },
+          { tip: "alege", q: "Ce este o idee secundară?", opt: ["Cea mai importantă idee din text", "O idee care adaugă amănunte la ideea principală", "Titlul textului", "Ultima propoziție"], ok: 1,
+            ex: "Ideile secundare completează ideea principală cu detalii." },
+          { tip: "alege", q: "Care e o idee secundară bună pentru „Ionel fumează”?", opt: ["Musafirul pleacă acasă.", "Ionel ia o țigaretă din tabachera musafirului și se plimbă grav prin salon, ca un militar.", "Mama strigă după ajutor.", "Jupâneasa aduce cafele."], ok: 1,
+            ex: "Detaliile despre cum fumează Ionel completează ideea principală." },
+          { tip: "alege", q: "Ce trebuie respectat în planul dezvoltat?", opt: ["Ordinea în care apar ideile în text", "Ordinea alfabetică", "Doar ideile despre mamă", "Să fie cât mai scurt"], ok: 0,
+            ex: "Ideile principale și secundare se scriu în ordinea din text." }
+        ],
+        recap: [
+          "Planul simplu = ideile principale, în ordine.",
+          "Ideile secundare = amănunte care completează ideea principală.",
+          "Planul dezvoltat = idei principale + idei secundare, în ordinea din text."
+        ],
+        parinte: {
+          stie: [
+            "Diferența dintre planul simplu și planul dezvoltat.",
+            "Ordinea întâmplărilor din „Vizită…”.",
+            "Să formuleze ideile ca propoziții complete, la timpul prezent."
+          ],
+          greseli: [
+            "Schimbă ordinea întâmplărilor (dulceața din vestibul vine înainte de fumat).",
+            "Copiază fraze întregi din text în loc să le spună pe scurt.",
+            "Ideea secundară nu are legătură cu ideea principală."
+          ],
+          intrebari: [
+            "„Ce face Ionel imediat după ce ia dulceața?”",
+            "„Spune-mi o idee principală și una secundară despre final.”",
+            "„De ce ieșise Ionel în vestibul?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L4", cod: "L4", titlu: "Personajele", pag: 48,
+        sub: "Principal, secundar, episodic. Trăsăturile lui Ionel",
+        invata: [
+          { h: "Ce este un personaj", html: `
+            <p><b>Personajul</b> este o ființă (om, animal sau obiect însuflețit) care participă la acțiunea dintr-un text narativ <b>literar</b>. E creat de autor și există doar în text.</p>
+            <p>În textele nonliterare nu avem personaje, ci <b>persoane reale</b>.</p>` },
+          { h: "După rolul în acțiune", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">principal</span><span>ocupă locul central: <b>Ionel</b></span></div>
+              <div class="rule"><span class="f">secundar</span><span>rol mai puțin important: <b>doamna Popescu</b>, <b>musafirul</b></span></div>
+              <div class="rule"><span class="f">episodic</span><span>apare doar în câteva momente: <b>jupâneasa</b></span></div>
+            </div>` },
+          { h: "Cum afli trăsăturile", html: `
+            <p>Trăsăturile pot fi <b>spuse direct</b> în text („un copilaș foarte drăguț”) sau <b>deduse</b> din ce face și ce spune personajul.</p>
+            <p>Ionel vrea să răstoarne spirtiera, atacă jupâneasa, fumează, toarnă dulceață în șoșoni → e <b>neastâmpărat, obraznic, răsfățat</b>. Mama îl iartă mereu și îl admiră → e <b>prea îngăduitoare</b>.</p>
+            <p>Mama repetă după fiecare năzbâtie: <b>„Vrei să moară mama?”</b></p>` },
+          { h: "Cine povestește?", html: `
+            <p>Povestește <b>musafirul</b>, la <b>persoana I</b> („M-am dus”, „i-am dus”). El e și <b>participant</b> la acțiune, nu doar martor.</p>` }
+        ],
+        exemple: [
+          { titlu: "Deduce o trăsătură a lui Ionel", pasi: [
+            "Fragment: „Da tu de ce tragi? mă-ntrerupe maiorul lucrând cu lingura în cheseaua de dulceață…”",
+            "Ionel îl întrerupe pe un adult și îi răspunde obraznic",
+            "Mănâncă dulceață chiar dacă mama îi spune să se oprească",
+            "Trăsături deduse: obraznic, neascultător"
+          ] }
+        ],
+        exercitii: [
+          { tip: "potrivire", q: "Potrivește personajul cu tipul lui.", perechi: [["Ionel", "principal"], ["doamna Popescu", "secundar"], ["jupâneasa", "episodic"]],
+            ex: "Ionel e în centrul acțiunii; mama și musafirul au rol secundar; jupâneasa apare doar în câteva momente." },
+          { tip: "alege", q: "Ce cuvinte repetă mama după aproape fiecare năzbâtie?", opt: ["„Bravo, Ionel!”", "„Vrei să moară mama?”", "„Du-te în camera ta!”", "„Cere-ți iertare!”"], ok: 1,
+            ex: "„Vrei să moară mama?” apare de mai multe ori, dar Ionel nu se schimbă." },
+          { tip: "alege", q: "La ce persoană povestește naratorul?", opt: ["Persoana I", "Persoana a II-a", "Persoana a III-a"], ok: 0,
+            ex: "„M-am dus”, „i-am dus”, „am ieșit”: musafirul povestește la persoana I." },
+          { tip: "alege", q: "Ce trăsătură a mamei reiese din text?", opt: ["Este severă", "Este prea îngăduitoare cu Ionel", "Este indiferentă", "Este glumeață cu musafirul"], ok: 1,
+            ex: "Îl iartă imediat, îl sărută și chiar îl admiră când fumează." },
+          { tip: "alege", q: "Ionel e îmbrăcat ca maior. Se poartă ca un ofițer adevărat?", opt: ["Da, e disciplinat și respectuos", "Nu, imită doar gesturile, dar e neascultător și obraznic"], ok: 1,
+            ex: "Salută militărește și comandă, dar nu ascultă de nimeni și face numai năzbâtii." }
+        ],
+        recap: [
+          "Personajul există doar în textul literar; poate fi principal, secundar sau episodic.",
+          "Trăsăturile se spun direct sau se deduc din fapte și vorbe.",
+          "Ionel: neastâmpărat, obraznic, răsfățat. Mama: prea îngăduitoare. Naratorul: musafirul, la persoana I."
+        ],
+        parinte: {
+          stie: [
+            "Clasificarea personajelor după rol.",
+            "Cum deduce o trăsătură dintr-o faptă și o susține cu un citat.",
+            "Cine e naratorul și la ce persoană povestește."
+          ],
+          greseli: [
+            "Spune trăsături fără să dea exemplu din text.",
+            "O consideră pe mamă personaj principal.",
+            "Confundă autorul (Caragiale) cu naratorul (musafirul)."
+          ],
+          intrebari: [
+            "„Ce i-ai spune lui Ionel dacă ai fi sora lui mai mare?”",
+            "„De ce crezi că mama nu-l pedepsește?”",
+            "„Cine povestește întâmplarea: Caragiale sau musafirul?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L5", cod: "L5", titlu: "Semnificațiile textului", pag: 50,
+        sub: "Tema, titlul, mesajul",
+        invata: [
+          { h: "Tema", html: `
+            <p>Tema este <b>subiectul general</b> despre care e textul. Pentru „Vizită…” se pot spune mai multe teme, de exemplu: <b>educația copiilor</b>, relația dintre copii și părinți, copilăria.</p>
+            <p>Mama vorbește despre „părerile ei sănătoase în privința educației copiilor”, dar Ionel arată exact contrariul. Asta e <b>ironia</b> textului.</p>` },
+          { h: "Titlul", html: `
+            <p><b>Punctele de suspensie</b> din titlu („Vizită…”) sugerează că nu a fost o vizită obișnuită. Spune mai mult decât un simplu cuvânt: o vizită plină de peripeții.</p>` },
+          { h: "Ce putem învăța", html: `
+            <p>Răsfățul nu e același lucru cu dragostea. Copiii au nevoie și de reguli. Textul e citit cu plăcere și după peste o sută de ani pentru că e <b>amuzant</b> și pentru că astfel de situații se întâmplă și azi.</p>` }
+        ],
+        exemple: [
+          { titlu: "Cum susții o temă cu dovezi", pasi: [
+            "Tema propusă: educația copiilor",
+            "Dovada 1: mama spune că trebuie „să-i fac educația”",
+            "Dovada 2: Ionel face numai năzbâtii, iar mama îl iartă mereu",
+            "Concluzie: textul arată, cu umor, o educație greșită"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care <b>nu</b> poate fi tema textului „Vizită…”?", opt: ["Educația copiilor", "Relația dintre copii și părinți", "Copilăria", "Agricultura"], ok: 3,
+            ex: "Agricultura e doar pomenită într-o discuție de politețe. Celelalte trei sunt teme potrivite." },
+          { tip: "alege", q: "Ce sugerează punctele de suspensie din titlu?", opt: ["Că textul nu e terminat", "Că vizita nu a fost una obișnuită", "Că autorul a uitat titlul"], ok: 1,
+            ex: "Punctele de suspensie lasă loc gândului: a fost o vizită plină de peripeții." },
+          { tip: "alege", q: "De ce e amuzant când mama vorbește despre „educația” lui Ionel?", opt: ["Pentru că Ionel e foarte bine crescut", "Pentru că Ionel face exact contrariul a ceea ce ar arăta o educație bună", "Pentru că mama glumește"], ok: 1,
+            ex: "Contrastul dintre vorbele mamei și faptele lui Ionel creează ironia." },
+          { tip: "alege", q: "Ce determină cel mai mult comportamentul lui Ionel, după text?", opt: ["Mama îl răsfață și e prea îngăduitoare", "Musafirul e rău cu el", "Jupâneasa îl ceartă"], ok: 0,
+            ex: "Mama îl iartă, îl sărută și chiar îl admiră când fumează." }
+        ],
+        recap: [
+          "Tema e subiectul general: aici, educația copiilor (și relația copii–părinți, copilăria).",
+          "Titlul „Vizită…” sugerează o vizită neobișnuită.",
+          "Textul e ironic: vorbele mamei despre educație nu se potrivesc cu faptele lui Ionel."
+        ],
+        parinte: {
+          stie: [
+            "Să propună o temă și s-o susțină cu două dovezi din text.",
+            "Rolul punctelor de suspensie din titlu.",
+            "Ce înseamnă ironia, pe exemplul mamei."
+          ],
+          greseli: [
+            "Confundă tema cu rezumatul.",
+            "Dă o singură temă ca fiind singura corectă.",
+            "Nu justifică cu exemple."
+          ],
+          intrebari: [
+            "„E răsfățul o dovadă că părintele își iubește copilul?”",
+            "„Ți-a plăcut textul? Ce te-a făcut să râzi?”",
+            "„Cum s-ar comporta azi un Ionel în vizită?”"
+          ]
+        }
+      },
+      { id: "r-U2-L6", cod: "L6", titlu: "Noi pagini – alte idei (fragment din „Exuvii” de Simona Popescu)", pag: 51 },
+      { id: "r-U2-L7", cod: "L7", titlu: "Diversitate culturală: jocuri de ieri și de azi", pag: 53 },
+      { id: "r-U2-L8", cod: "L8", titlu: "Schimburi de replici în dialog", pag: 56 },
+      { id: "r-U2-L9", cod: "L9", titlu: "Reguli de acces la cuvânt", pag: 58 },
+
+      { id: "r-U2-L10", cod: "L10", titlu: "Verbul. Predicatul verbal", pag: 60,
+        sub: "Timp, persoană, număr; infinitivul",
+        invata: [
+          { h: "Ce este verbul", html: `
+            <p><b>Verbul</b> arată o <b>acțiune</b> (aleargă, sare), o <b>stare</b> (stă) sau <b>existența</b> (sunt, există).</p>
+            <p>Își schimbă forma după <b>timp</b>, <b>persoană</b> și <b>număr</b>: e o parte de vorbire <b>flexibilă</b>.</p>` },
+          { h: "Timp, persoană, număr", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">timp</span><span><b>trecut</b> (a adus), <b>prezent</b> (trântește), <b>viitor</b> (va observa)</span></div>
+              <div class="rule"><span class="f">persoană</span><span><b>I</b> – cel care vorbește (eu, noi); <b>a II-a</b> – cel care ascultă (tu, voi); <b>a III-a</b> – cel despre care se vorbește (el, ea, ei, ele)</span></div>
+              <div class="rule"><span class="f">număr</span><span><b>singular</b> – o singură persoană; <b>plural</b> – mai multe</span></div>
+            </div>
+            <p>Forma negativă se face cu <b>nu</b>: Ionel <b>nu</b> vorbește frumos.</p>` },
+          { h: "Predicatul verbal și infinitivul", html: `
+            <p>Când predicatul e exprimat doar printr-un verb, se numește <b>predicat verbal</b>: Ionel <b>atacă</b> jupâneasa.</p>
+            <p><b>Infinitivul</b> e forma din dicționar: <b>a alerga</b>, <b>a putea</b>. Nu se schimbă după persoană și <b>nu e predicat</b>. După „a putea” se folosește fără „a”: <i>Pot cânta.</i> După alte verbe, cu „a”: <i>Doresc a desena.</i></p>` }
+        ],
+        exemple: [
+          { titlu: "Analizează verbul din „Vizitatorul i-a adus lui Ionel o minge.”", pasi: [
+            "Verbul: a adus (infinitiv: a aduce)",
+            "Timp: trecut (s-a întâmplat înainte de momentul vorbirii)",
+            "Persoana a III-a (vizitatorul), numărul singular",
+            "În propoziție: predicat verbal"
+          ] },
+          { titlu: "Găsește predicatele: „Copilul începe a alerga. Jupâneasa nu-l poate opri.”", pasi: [
+            "„începe” se schimbă după persoană → predicat verbal",
+            "„a alerga” e infinitiv → nu e predicat",
+            "„nu poate” → predicat verbal (forma negativă)",
+            "„opri” e infinitiv fără „a”, după a putea → nu e predicat"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care dintre cuvinte este verb?", opt: ["sabie", "roșu", "sună", "ea"], ok: 2,
+            ex: "„sună” arată o acțiune. Sabie e substantiv, roșu adjectiv, ea pronume." },
+          { tip: "potrivire", q: "Potrivește verbul cu timpul lui.", perechi: [["a adus", "trecut"], ["trântește", "prezent"], ["va observa", "viitor"]],
+            ex: "a adus – trecut; trântește – prezent; va observa – viitor." },
+          { tip: "alege", q: "La ce persoană și număr e verbul „vorbeau”?", opt: ["I, singular", "a II-a, plural", "a III-a, plural", "a III-a, singular"], ok: 2,
+            ex: "Ei/ele vorbeau: persoana a III-a, numărul plural." },
+          { tip: "alege", q: "În „Pot vorbi limba engleză.” care e verbul la infinitiv?", opt: ["Pot", "vorbi", "limba"], ok: 1,
+            ex: "„Pot” e predicat verbal; „vorbi” e infinitiv fără „a”, pentru că vine după a putea." },
+          { tip: "alege", q: "Care e forma negativă corectă pentru „El face gălăgie.”?", opt: ["El face nu gălăgie.", "El nu face gălăgie.", "Nu el face gălăgie."], ok: 1,
+            ex: "„nu” se pune înaintea verbului și se analizează împreună cu el." },
+          { tip: "alege", q: "Care cuvânt e intrusul: auzea, a mers, răspunde, <b>soldat</b>, strigă?", opt: ["auzea", "a mers", "soldat", "strigă"], ok: 2,
+            ex: "„soldat” e substantiv; celelalte sunt verbe." }
+        ],
+        recap: [
+          "Verbul arată acțiune, stare sau existență și se schimbă după timp, persoană și număr.",
+          "Predicatul verbal e exprimat printr-un verb la un mod personal.",
+          "Infinitivul (a alerga) e forma din dicționar și nu e predicat."
+        ],
+        parinte: {
+          stie: [
+            "Cele 3 timpuri de bază, 3 persoane, 2 numere.",
+            "Să identifice predicatul verbal într-o propoziție.",
+            "Ce e infinitivul și când se folosește fără „a”."
+          ],
+          greseli: [
+            "Ia infinitivul drept predicat.",
+            "Confundă persoana a III-a plural cu a II-a plural.",
+            "Ortograme: na/n-a, nai/n-ai (ex. „N-a venit.” – cu cratimă)."
+          ],
+          intrebari: [
+            "„Spune-mi 3 verbe din antrenamentul tău.”",
+            "„La ce timp e «voi alerga»? Dar «am alergat»?”",
+            "„Care e predicatul în «Mama gătește»?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L11", cod: "L11", titlu: "Modul indicativ. Prezentul", pag: 62,
+        sub: "Acțiuni sigure; formele corecte la prezent",
+        invata: [
+          { h: "Modul", html: `
+            <p><b>Modul</b> arată cum privește vorbitorul acțiunea: <b>sigură, reală</b> (Ionel <b>ia</b> trotineta) sau doar <b>posibilă</b> (<b>Stai!</b> <b>Ieși</b> în curte!).</p>
+            <p>Modul care arată o acțiune sigură și reală este <b>modul indicativ</b>.</p>` },
+          { h: "Prezentul", html: `
+            <p><b>Prezentul</b> arată o acțiune care se petrece în momentul vorbirii: <i>Acum <b>caut</b> pe internet.</i></p>
+            <p><b>A conjuga</b> un verb = a-l trece prin toate persoanele și numerele:</p>
+            <div class="ex-step">cânt · cânți · cântă · cântăm · cântați · cântă</div>
+            <p>Terminațiile care arată persoana și numărul se numesc <b>desinențe</b>.</p>` },
+          { h: "Prezentul poate arăta și altceva", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">trecut</span><span>Mihai Viteazul <b>câștigă</b> bătălia de la Călugăreni în 1595.</span></div>
+              <div class="rule"><span class="f">viitor</span><span>Mâine <b>plec</b> la munte.</span></div>
+              <div class="rule"><span class="f">adevăr general</span><span>Triunghiul <b>are</b> trei laturi.</span></div>
+            </div>` },
+          { h: "Forme corecte", html: `
+            <p>Eu <b>văd</b> (nu văz), eu <b>cred</b> (nu crez), eu <b>vin</b> (nu viu), eu <b>copiez</b> (nu copii).</p>
+            <p>El <b>aranjează</b> (nu aranjază), el <b>creează</b>, el <b>îndeamnă</b>.</p>` }
+        ],
+        exemple: [
+          { titlu: "Conjugă „a merge” la indicativ prezent", pasi: [
+            "eu merg · tu mergi · el/ea merge",
+            "noi mergem · voi mergeți · ei/ele merg",
+            "Partea comună cu infinitivul: merg-"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care serie are <b>numai</b> verbe la modul indicativ?", opt: ["Alergi. Cântăm. Discutați! Țip.", "Adaug. Expune. Răstoarnă. Strigați.", "Auzim. Iese. Îngrijiți. Suie!"], ok: 1,
+            ex: "„Discutați!” și „Suie!” sunt la imperativ (ordin). A doua serie are doar acțiuni sigure." },
+          { tip: "alege", q: "Forma corectă la persoana I, singular:", opt: ["eu văz", "eu văd"], ok: 1, ex: "Corect: eu văd." },
+          { tip: "alege", q: "Forma corectă la persoana a III-a, singular:", opt: ["aranjază", "aranjează"], ok: 1, ex: "Corect: el aranjează." },
+          { tip: "potrivire", q: "Ce valoare are prezentul?", perechi: [["Mâine plec la munte.", "viitor"], ["Triunghiul are trei laturi.", "adevăr general"], ["Mihai Viteazul câștigă bătălia în 1595.", "trecut"]],
+            ex: "Cuvintele „mâine”, „1595” și o regulă care e mereu adevărată schimbă sensul prezentului." },
+          { tip: "cuvant", q: "Completează la prezent (a crea, pers. a III-a, singular): „Scriitorul … un personaj interesant.”", ok: ["creează"],
+            ex: "El creează, cu doi de „e”: cre-ea-ză." }
+        ],
+        recap: [
+          "Modul indicativ arată acțiuni sigure, reale.",
+          "Prezentul arată acțiunea din momentul vorbirii; poate avea și valoare de trecut, viitor sau adevăr general.",
+          "Atenție la formele corecte: văd, cred, vin, copiez, aranjează, creează."
+        ],
+        parinte: {
+          stie: [
+            "Ce e modul și ce arată indicativul.",
+            "Să conjuge un verb la prezent.",
+            "Formele corecte frecvent greșite."
+          ],
+          greseli: [
+            "„văz”, „crez”, „viu” în loc de văd, cred, vin.",
+            "„aranjază” în loc de aranjează; „crează” în loc de creează.",
+            "Confundă imperativul (Stai!) cu indicativul (Stai acolo.)."
+          ],
+          intrebari: [
+            "„Conjugă-mi «a dormi» la prezent.”",
+            "„Cum spui corect: el crează sau el creează?”",
+            "„De ce «Pământul se învârte» e la prezent, deși era și ieri?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L12", cod: "L12", titlu: "Imperfectul", pag: 64,
+        sub: "Acțiuni trecute care durau sau se repetau",
+        invata: [
+          { h: "Ce arată imperfectul", html: `
+            <p><b>Imperfectul</b> este un timp trecut. Arată o acțiune trecută care <b>dura</b> în timp ce se petrecea altceva (<i><b>Alergam</b> și nu te-am văzut.</i>) sau care se <b>repeta</b> (<i>De câte ori <b>ieșeam</b> în parc, <b>întâlneam</b> un prieten.</i>).</p>
+            <p>În povestiri, imperfectul descrie de obicei <b>cadrul</b>, situația de la început.</p>` },
+          { h: "Cum îl recunoști", html: `
+            <p>Are sunetele <b>-a-</b> sau <b>-ea-</b>:</p>
+            <div class="ex-step">cântam · cântai · cânta · cântam · cântați · cântau</div>
+            <div class="ex-step">mergeam · mergeai · mergea · mergeam · mergeați · mergeau</div>` },
+          { h: "Greșeli de evitat", html: `
+            <p>Corect: <b>voiam</b>, voiai, voia (de la a voi). Greșit: <s>vroiam</s>.</p>
+            <p>Corect: o <b>iubea</b> (nu iubia), <b>înghesuia</b> (nu înghesuea).</p>` }
+        ],
+        exemple: [
+          { titlu: "Găsește imperfectul: „Alunecam pe role prin parc. Priveam frunzele. Deodată, a apărut un băiat pe bicicletă.”", pasi: [
+            "„Alunecam”, „Priveam” → imperfect: acțiuni care durau, descriu cadrul",
+            "„a apărut” → perfect compus: acțiune scurtă, terminată",
+            "Imperfectul pregătește scena, perfectul compus aduce întâmplarea"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care formă e corectă?", opt: ["Vroiam o tabletă nouă.", "Voiam o tabletă nouă."], ok: 1, ex: "De la a voi: voiam. „Vroiam” e greșit." },
+          { tip: "numar", q: "Câte verbe la imperfect sunt aici? „Bătea vântul și cădeau picături de ploaie. Mergeam grăbit spre școală, când am auzit un miorlăit. O pisicuță plângea lângă un bloc. Am luat-o acasă, deși presimțeam reproșul mamei.”", ok: 5,
+            ex: "bătea, cădeau, mergeam, plângea, presimțeam = 5. „am auzit” și „am luat” sunt la perfect compus." },
+          { tip: "alege", q: "Care e intrusul: dormeam, învăța, <b>laudă</b>, săreai, terminam?", opt: ["dormeam", "laudă", "săreai", "terminam"], ok: 1,
+            ex: "„laudă” e la prezent; celelalte sunt la imperfect." },
+          { tip: "cuvant", q: "Trece la imperfect: „Ea miorlăie la ușă.” → „Ea … la ușă.”", ok: ["miorlaia", "miorlăia"],
+            ex: "Ea miorlăia la ușă." },
+          { tip: "alege", q: "Scrie corect:", opt: ["Făt-Frumos o iubia pe Ileana.", "Făt-Frumos o iubea pe Ileana."], ok: 1, ex: "Corect: iubea (cu -ea-)." }
+        ],
+        recap: [
+          "Imperfectul = trecut care dura sau se repeta.",
+          "Se recunoaște după -a- sau -ea-: cântam, mergeam.",
+          "Corect: voiam (nu vroiam), iubea, înghesuia."
+        ],
+        parinte: {
+          stie: [
+            "Ce exprimă imperfectul și unde apare în povestiri.",
+            "Conjugarea la imperfect.",
+            "Formele corecte: voiam, iubea."
+          ],
+          greseli: [
+            "„vroiam”.",
+            "„iubia”, „înghesuea”.",
+            "Confundă imperfectul cu perfectul compus."
+          ],
+          intrebari: [
+            "„Povestește-mi ce făceai când erai la grădiniță (cu imperfect).”",
+            "„Ce e greșit în «vroiam»?”",
+            "„Care e diferența între «alergam» și «am alergat»?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L13", cod: "L13", titlu: "Verbul auxiliar a avea. Participiul. Perfectul compus", pag: 66,
+        sub: "am + participiu = acțiune trecută, terminată",
+        invata: [
+          { h: "Verb auxiliar și participiu", html: `
+            <p><b>Verbele auxiliare</b> ajută la formarea unor timpuri. <b>A avea</b> e auxiliar în <i><b>Am</b> învățat un joc nou.</i> și <b>predicativ</b> (singur predicat) în <i><b>Am</b> un joc nou.</i></p>
+            <p><b>Participiul</b> (învățat, ales, mers) e formă nepersonală. Lângă auxiliar are valoare <b>verbală</b> (<i>Am <b>terminat</b> romanul.</i>). Singur, devine <b>adjectiv</b> (<i>Caietul <b>terminat</b> e pe masă.</i>).</p>` },
+          { h: "Perfectul compus", html: `
+            <p>Arată o acțiune <b>trecută și terminată</b> în momentul vorbirii. E timpul pe care îl folosim cel mai des când povestim.</p>
+            <div class="big">a avea (am, ai, a…) + participiu</div>
+            <div class="ex-step">am cântat · ai cântat · a cântat · am cântat · ați cântat · au cântat</div>` }
+        ],
+        exemple: [
+          { titlu: "Analizează „am auzit” din „Ieri, am auzit un sunet ciudat.”", pasi: [
+            "„am” = auxiliarul a avea; „auzit” = participiul lui a auzi",
+            "Modul indicativ, timpul perfect compus",
+            "Persoana I, numărul singular",
+            "În propoziție: predicat verbal"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Din ce se formează perfectul compus?", opt: ["a vrea + infinitiv", "a avea + participiu", "a fi + infinitiv"], ok: 1, ex: "am + cântat = am cântat." },
+          { tip: "alege", q: "În „Dorin are o tabletă nouă.” verbul a avea este:", opt: ["auxiliar", "predicativ"], ok: 1,
+            ex: "E singur predicat, deci predicativ. În „au jucat” ar fi auxiliar." },
+          { tip: "alege", q: "În „Caietul luat ieri are 100 de file.” cuvântul „luat” are valoare:", opt: ["verbală", "de adjectiv"], ok: 1,
+            ex: "Fără auxiliar, participiul arată o însușire a caietului: e adjectiv." },
+          { tip: "alege", q: "Intrusul: ați colaborat, am schimbat, ai șoptit, a venit, <b>a zâmbi</b>", opt: ["ai șoptit", "a venit", "a zâmbi", "ați colaborat"], ok: 2,
+            ex: "„a zâmbi” e infinitiv; celelalte sunt la perfect compus." },
+          { tip: "cuvant", q: "Trece la perfect compus: „Sora mea primește o trusă.” → „Sora mea … o trusă.”", ok: ["a primit"],
+            ex: "Sora mea a primit o trusă." }
+        ],
+        recap: [
+          "A avea poate fi auxiliar (ajută la formarea timpului) sau predicativ (singur predicat).",
+          "Participiul: cu auxiliar e verb, singur e adjectiv.",
+          "Perfectul compus = a avea + participiu: acțiune trecută și terminată."
+        ],
+        parinte: {
+          stie: [
+            "Formarea perfectului compus.",
+            "Diferența dintre a avea auxiliar și predicativ.",
+            "Ortograme: ia/i-a, iau/i-au, la/l-a, mai/m-ai, ne-am/neam."
+          ],
+          greseli: [
+            "„I-a” scris „ia” (și invers): „Mama i-a dat” vs „Ea ia mingea”.",
+            "Ia participiul-adjectiv drept verb.",
+            "Confundă „a venit” (perfect compus) cu „a veni” (infinitiv)."
+          ],
+          intrebari: [
+            "„Ce ai făcut azi la antrenament? Spune-mi cu 3 verbe la perfect compus.”",
+            "„Cum scrii «Mama ? dat o carte»: ia sau i-a?”",
+            "„În «Am o minge», am e auxiliar?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L14", cod: "L14", titlu: "Perfectul simplu și mai-mult-ca-perfectul", pag: 68,
+        sub: "Timpurile poveștilor",
+        invata: [
+          { h: "Perfectul simplu", html: `
+            <p>Arată o acțiune trecută și terminată. În limba literară e <b>timpul poveștilor</b>, mai ales la persoana a III-a: <i>Scufița <b>plecă</b> și îl <b>întâlni</b> pe lup.</i></p>
+            <div class="ex-step">cântai · cântași · cântă · cântarăm · cântarăți · cântară</div>
+            <p>În <b>Oltenia</b>, unde locuiești, oamenii folosesc perfectul simplu în vorbire pentru ce s-a întâmplat în ultimele 24 de ore: <i>„Mersei la școală.”</i></p>` },
+          { h: "Atenție la „i”", html: `
+            <p>La verbele terminate în <b>-i</b>, persoana I singular are <b>doi i</b>: eu <b>dormii</b>, eu <b>dorii</b>. Persoana a III-a are unul: el <b>dormi</b>.</p>` },
+          { h: "Mai-mult-ca-perfectul", html: `
+            <p>Arată o acțiune trecută, terminată <b>înaintea altei acțiuni trecute</b>: <i>Scufița, după ce <b>pregătise</b> coșul, plecă.</i></p>
+            <p>Are grupul <b>-se-</b>: cântasem, cântaseși, cântase, cântaserăm, cântaserăți, cântaseră.</p>
+            <p>Greșeală frecventă: <s>plecasei</s> → corect <b>plecaseși</b>; <s>plecasem</s> (noi) → corect <b>plecaserăm</b>.</p>` }
+        ],
+        exemple: [
+          { titlu: "Ce s-a întâmplat mai întâi?", pasi: [
+            "„Când a sosit mama, eu terminasem tema.”",
+            "„terminasem” = mai-mult-ca-perfect",
+            "Deci tema a fost terminată ÎNAINTE să sosească mama"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Care verb e la perfect simplu?", opt: ["ascultară", "învățaseși", "ascultau", "au ascultat"], ok: 0,
+            ex: "ascultară = perfect simplu (ei). învățaseși = mai-mult-ca-perfect, ascultau = imperfect, au ascultat = perfect compus." },
+          { tip: "alege", q: "Forma corectă (tu, mai-mult-ca-perfect):", opt: ["plecasei", "plecaseși"], ok: 1, ex: "La persoana a II-a singular: plecaseși, cu -și." },
+          { tip: "alege", q: "Forma corectă (eu, perfect simplu, a dori):", opt: ["eu dori", "eu dorii"], ok: 1, ex: "Eu dorii: un i arată timpul, al doilea e desinența." },
+          { tip: "alege", q: "Ce exprimă mai-mult-ca-perfectul?", opt: ["O acțiune viitoare", "O acțiune trecută terminată înaintea altei acțiuni trecute", "Un ordin"], ok: 1,
+            ex: "E „trecutul dinaintea trecutului”." },
+          { tip: "cuvant", q: "Scrie mai-mult-ca-perfectul, pers. a II-a singular, de la „a primi”: „Când ne-am întâlnit, (tu) … deja jocul.”", ok: ["primiseși"],
+            ex: "primiseși: primi + se + și." }
+        ],
+        recap: [
+          "Perfectul simplu = timpul poveștilor (plecă, întâlni); în Oltenia se folosește și în vorbire.",
+          "Mai-mult-ca-perfectul = acțiune petrecută înaintea altei acțiuni trecute (-se-).",
+          "Corect: dormii (eu), plecaseși (tu), plecaserăm (noi)."
+        ],
+        parinte: {
+          stie: [
+            "Recunoașterea perfectului simplu și a mai-mult-ca-perfectului.",
+            "Scrierea cu doi i la persoana I.",
+            "Formele corecte la persoana a II-a singular și la plural."
+          ],
+          greseli: [
+            "„plecasei” în loc de plecaseși.",
+            "„noi plecasem” în loc de plecaserăm (DOOM3).",
+            "Un singur i la persoana I: „eu dormi”."
+          ],
+          intrebari: [
+            "„Spune-mi o propoziție ca în Oltenia, cu perfect simplu.”",
+            "„Ce s-a întâmplat mai întâi în «Când am ajuns, filmul începuse»?”",
+            "„Cum se scrie: eu citi sau eu citii?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L15", cod: "L15", titlu: "Viitorul. Verbele auxiliare a vrea și a fi", pag: 70,
+        sub: "Viitor standard, viitor de limbă vorbită, viitor anterior",
+        invata: [
+          { h: "Viitorul standard", html: `
+            <p>Arată o acțiune care se va petrece <b>după</b> momentul vorbirii.</p>
+            <div class="big">a vrea (voi, vei, va…) + infinitiv</div>
+            <div class="ex-step">voi cânta · vei cânta · va cânta · vom cânta · veți cânta · vor cânta</div>` },
+          { h: "Alte forme de viitor", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">standard</span><span><b>voi merge</b>, mai ales în scris</span></div>
+              <div class="rule"><span class="f">limbă vorbită</span><span><b>o să merg</b>, <b>am să merg</b></span></div>
+              <div class="rule"><span class="f">popular</span><span><b>oi merge</b>, o merge, or merge</span></div>
+            </div>` },
+          { h: "Viitorul anterior", html: `
+            <p>O acțiune viitoare terminată <b>înaintea altei acțiuni viitoare</b>: <i>Când vei sosi, <b>voi fi terminat</b> compunerea.</i></p>
+            <p>Se formează: <b>a vrea + a fi + participiu</b>. Azi se folosește rar.</p>` },
+          { h: "Greșeli frecvente", html: `
+            <p>Corect: va <b>apărea</b> (nu va apare), vor <b>plăcea</b> (nu vor place), vor <b>scădea</b>, va <b>crede</b> (nu va credea), va <b>face</b> (nu va făcea).</p>` }
+        ],
+        exemple: [
+          { titlu: "Corectează: „Cartea va apare luna viitoare.”", pasi: [
+            "Viitorul = va + infinitiv",
+            "Infinitivul verbului este „a apărea”",
+            "Corect: Cartea va apărea luna viitoare."
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Din ce se formează viitorul standard?", opt: ["a avea + participiu", "a vrea + infinitiv", "a fi + participiu"], ok: 1, ex: "voi + cânta = voi cânta." },
+          { tip: "alege", q: "Forma corectă:", opt: ["Copiilor le vor place prăjiturile.", "Copiilor le vor plăcea prăjiturile."], ok: 1, ex: "Infinitivul e „a plăcea”, deci vor plăcea." },
+          { tip: "alege", q: "Forma corectă:", opt: ["El va făcea tema.", "El va face tema."], ok: 1, ex: "Infinitivul e „a face”, deci va face." },
+          { tip: "potrivire", q: "Potrivește forma de viitor cu felul ei.", perechi: [["voi merge", "standard"], ["o să merg", "limbă vorbită"], ["oi merge", "popular"]],
+            ex: "voi merge – standard; o să merg – limbă vorbită; oi merge – popular." },
+          { tip: "alege", q: "În „Când vei sosi, voi fi terminat compunerea.”, „voi fi terminat” este:", opt: ["viitor standard", "viitor anterior", "perfect compus"], ok: 1,
+            ex: "a vrea + a fi + participiu = viitor anterior." }
+        ],
+        recap: [
+          "Viitorul standard: a vrea + infinitiv (voi cânta).",
+          "În vorbire: o să cânt, am să cânt; popular: oi cânta.",
+          "Viitorul anterior: voi fi cântat. Atenție: va apărea, vor plăcea, va face."
+        ],
+        parinte: {
+          stie: [
+            "Formarea viitorului standard și a celui anterior.",
+            "Formele de viitor din vorbire.",
+            "Ortograme: voi/v-oi, va/v-a, vom/v-om, vor/v-or."
+          ],
+          greseli: [
+            "„va apare”, „vor place”, „va făcea”.",
+            "„v-a” în loc de „va” la viitor („El v-a merge” e greșit).",
+            "Confundă viitorul anterior cu perfectul compus."
+          ],
+          intrebari: [
+            "„Ce vei face în vacanță? Spune-mi 3 verbe la viitor.”",
+            "„Cum se spune corect: va scade sau va scădea?”",
+            "„Unde se scrie cu cratimă: va sau v-a?”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L16", cod: "L16", titlu: "Modul imperativ", pag: 72,
+        sub: "Ordin, îndemn, sfat, rugăminte",
+        invata: [
+          { h: "Ce arată imperativul", html: `
+            <p>Modul <b>imperativ</b> exprimă un <b>ordin</b>, un <b>îndemn</b>, un <b>sfat</b> sau o <b>rugăminte</b>. Are forme doar pentru <b>persoana a II-a</b> (singular și plural) și nu are timpuri.</p>
+            <div class="ex-step">Cântă! Cântați! · Mergi! Mergeți! · Dormi! Dormiți!</div>` },
+          { h: "Forma negativă", html: `
+            <p>Singular: <b>nu + infinitiv</b> → <i>Nu cânta!</i> · Plural: <b>nu + imperativ</b> → <i>Nu cântați!</i></p>
+            <p><i>Vino!</i> → <i>Nu veni!</i> · <i>Du câinele!</i> → <i>Nu duce câinele!</i></p>` },
+          { h: "Forme speciale", html: `
+            <p>Unele verbe au forme scurte: <b>Vino! Fă! Du! Zi! Refă! Adu!</b></p>
+            <p><b>A fi</b>: <b>Fii</b> la timp la antrenament! (doi i) · <b>Nu fi</b> trist! (un i)</p>
+            <p><i>Scrieți tema!</i> (voi, imperativ) ≠ <i>Scrie-ți tema!</i> (tu, scrie tema ta).</p>` }
+        ],
+        exemple: [
+          { titlu: "Trece la negativ: „Fă o prăjitură!”", pasi: [
+            "E persoana a II-a singular",
+            "Negativ singular = nu + infinitiv (a face)",
+            "Nu face o prăjitură!"
+          ] }
+        ],
+        exercitii: [
+          { tip: "alege", q: "Forma corectă:", opt: ["Fi acasă la ora stabilită!", "Fii acasă la ora stabilită!"], ok: 1, ex: "Imperativ afirmativ: Fii! (doi i)." },
+          { tip: "alege", q: "Forma corectă:", opt: ["Duci rufele la spălat!", "Du rufele la spălat!"], ok: 1, ex: "Imperativul lui a duce: Du!" },
+          { tip: "alege", q: "Forma negativă pentru „Vino la noi!”:", opt: ["Nu vino la noi!", "Nu veni la noi!"], ok: 1, ex: "Negativ singular = nu + infinitiv: Nu veni!" },
+          { tip: "alege", q: "Scrie corect:", opt: ["Veni-ți la joacă!", "Veniți la joacă!"], ok: 1, ex: "Imperativ plural: Veniți!, fără cratimă." },
+          { tip: "alege", q: "Pentru ce persoană are imperativul forme?", opt: ["Toate persoanele", "Doar persoana a II-a", "Doar persoana a III-a"], ok: 1, ex: "Imperativul se adresează celui cu care vorbim: tu, voi." },
+          { tip: "alege", q: "Ce înseamnă „Scrie-ți tema!”?", opt: ["Voi, scrieți tema!", "Tu, scrie tema ta!"], ok: 1, ex: "„-ți” e pronume (ție/a ta). „Scrieți!” e imperativ plural." }
+        ],
+        recap: [
+          "Imperativul = ordin, îndemn, sfat, rugăminte; doar persoana a II-a.",
+          "Negativ: singular nu + infinitiv (Nu cânta!), plural nu + imperativ (Nu cântați!).",
+          "Forme speciale: Vino! Fă! Du! Zi! Fii! (doi i) / Nu fi! (un i)."
+        ],
+        parinte: {
+          stie: [
+            "Formele afirmative și negative.",
+            "Formele scurte: vino, fă, du, zi, adu, refă.",
+            "Fii / nu fi; Scrieți / Scrie-ți."
+          ],
+          greseli: [
+            "„Fi atent!” în loc de „Fii atent!”.",
+            "„Nu vino!” în loc de „Nu veni!”.",
+            "Cratimă greșită: „Veni-ți!”."
+          ],
+          intrebari: [
+            "„Spune-mi regulile jocului tău preferat, cu verbe la imperativ.”",
+            "„Cum spui corect: Fi cuminte sau Fii cuminte?”",
+            "„Transformă «Adu mingea!» în negativ.”"
+          ]
+        }
+      },
+
+      { id: "r-U2-L17", cod: "L17", titlu: "Textul narativ ficțional", pag: 74,
+        sub: "Cum scrii o povestire imaginară",
+        invata: [
+          { h: "Ce este", html: `
+            <p>Un <b>text narativ ficțional</b> povestește o întâmplare <b>imaginată</b>, cu aceleași trei secvențe: situația inițială de echilibru → întâmplările (complicațiile) → un nou echilibru.</p>
+            <p>Exemplu din manual: Hannes își dorește să zboare pe un dragon. Dragonul vine noaptea, zboară cu el printre stele, apoi îl aduce acasă la răsărit.</p>` },
+          { h: "Cei 4 pași ai scrierii", html: `
+            <div class="rules">
+              <div class="rule"><span class="f">1</span><span><b>Planul</b>: situația inițială, ce o schimbă, cum se desfășoară, cum se încheie.</span></div>
+              <div class="rule"><span class="f">2</span><span><b>Prima variantă</b>: dezvolți ideile din plan.</span></div>
+              <div class="rule"><span class="f">3</span><span><b>Revizuirea</b>: verifici logica și detaliile.</span></div>
+              <div class="rule"><span class="f">4</span><span><b>Editarea</b>: rescrii varianta finală, îngrijit.</span></div>
+            </div>` },
+          { h: "Timpurile verbelor", html: `
+            <p>Situația inițială → <b>imperfect</b> (Era o seară liniștită…). Întâmplarea → <b>perfect compus</b> sau <b>prezent</b>; pentru ce s-a petrecut înainte, <b>mai-mult-ca-perfect</b>. Schimbarea o poți anunța cu <b>Deodată…</b>, <b>Brusc…</b></p>` },
+          { h: "Așezarea în pagină", html: `
+            <p>Titlul sus, la mijloc. Fiecare paragraf începe cu <b>alineat</b>. Scris lizibil, fără ștersături.</p>` }
+        ],
+        exemple: [
+          { titlu: "Plan pentru „Ce s-ar întâmpla dacă mi s-ar îndeplini cea mai mare dorință?”", pasi: [
+            "Situația inițială (imperfect): Era o seară obișnuită; mă antrenam în sala de sport.",
+            "Schimbarea: Deodată, pe banca din vestiar, am găsit o medalie strălucitoare.",
+            "Întâmplările (perfect compus): Am pus-o la gât și am ajuns la un concurs mare…",
+            "Situația finală: M-am trezit acasă, cu medalia în mână."
+          ] }
+        ],
+        exercitii: [
+          { tip: "ordine", q: "Pune în ordine pașii scrierii.", items: ["Planul lucrării", "Prima variantă", "Revizuirea", "Editarea (varianta finală)"],
+            ex: "Plan → prima variantă → revizuire → editare." },
+          { tip: "alege", q: "Zborul lui Hannes pe dragon este o întâmplare:", opt: ["reală", "imaginară"], ok: 1, ex: "Dragonii nu există: e o întâmplare imaginară, deci text ficțional." },
+          { tip: "alege", q: "Ce timp folosești de obicei în situația inițială?", opt: ["Imperfectul", "Viitorul", "Imperativul"], ok: 0, ex: "Imperfectul descrie cadrul: Era o seară… Bătea vântul…" },
+          { tip: "alege", q: "Unde se scrie titlul?", opt: ["Sus, la mijloc", "Jos, la dreapta", "Lângă primul paragraf"], ok: 0, ex: "Titlul se scrie în partea de sus a paginii, la mijloc." },
+          { tip: "alege", q: "Ce cuvânt anunță bine ruperea echilibrului?", opt: ["Deodată", "Apoi", "La sfârșit"], ok: 0, ex: "Deodată, Brusc anunță schimbarea." }
+        ],
+        recap: [
+          "Textul narativ ficțional povestește o întâmplare imaginată, în trei secvențe.",
+          "Pașii: plan → prima variantă → revizuire → editare.",
+          "Imperfect la început, perfect compus/prezent pentru întâmplări; titlu la mijloc, alineat la fiecare paragraf."
+        ],
+        parinte: {
+          stie: [
+            "Cele trei secvențe și cei patru pași ai scrierii.",
+            "Ce timp se potrivește fiecărei secvențe.",
+            "Regulile de așezare în pagină."
+          ],
+          greseli: [
+            "Sare peste plan și scrie direct.",
+            "Nu are o situație finală clară („și atunci m-am trezit” fără legătură).",
+            "Uită alineatul și titlul."
+          ],
+          intrebari: [
+            "„Care e cea mai mare dorință a ta? Fă-mi un plan în 4 propoziții.”",
+            "„Cu ce cuvânt anunți că s-a schimbat ceva?”",
+            "„Citește-mi compunerea. Are început, mijloc și final?”"
+          ]
+        }
+      },
+      { id: "r-U2-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea II", pag: 76 }
+    ] },
+
+    { titlu: "Unitatea III · Pe strada mea", lectii: [
+      { id: "r-U3-L1", cod: "L1", titlu: "Textul descriptiv literar. „O stradă cu sentimente” de Ana Blandiana", pag: 80 },
+      { id: "r-U3-L2", cod: "L2", titlu: "Textul descriptiv literar. Personificarea", pag: 82 },
+      { id: "r-U3-L3", cod: "L3", titlu: "Semnificațiile textului", pag: 84 },
+      { id: "r-U3-L4", cod: "L4", titlu: "Noi pagini – alte idei", pag: 85 },
+      { id: "r-U3-L5", cod: "L5", titlu: "Textul descriptiv nonliterar", pag: 87 },
+      { id: "r-U3-L6", cod: "L6", titlu: "Tradiții: sărbătorile de iarnă", pag: 90 },
+      { id: "r-U3-L7", cod: "L7", titlu: "Ascultarea activă", pag: 92 },
+      { id: "r-U3-L8", cod: "L8", titlu: "Substantivul", pag: 94 },
+      { id: "r-U3-L9", cod: "L9", titlu: "Articolul", pag: 96 },
+      { id: "r-U3-L10", cod: "L10", titlu: "Posibilități combinatorii ale substantivului. Prepoziția", pag: 98 },
+      { id: "r-U3-L11", cod: "L11", titlu: "Substantivul subiect. Acordul predicatului cu subiectul", pag: 100 },
+      { id: "r-U3-L12", cod: "L12", titlu: "Descrierea unui obiect", pag: 102 },
+      { id: "r-U3-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea III", pag: 104 }
+    ] },
+
+    { titlu: "Unitatea IV · Vreau să salvez lumea", lectii: [
+      { id: "r-U4-L1", cod: "L1", titlu: "Textul narativ literar. „Tezeu și Minotaurul” de Florin Bican", pag: 108 },
+      { id: "r-U4-L2", cod: "L2", titlu: "Timp, spațiu și acțiune", pag: 110 },
+      { id: "r-U4-L3", cod: "L3", titlu: "Personajele", pag: 112 },
+      { id: "r-U4-L4", cod: "L4", titlu: "Semnificațiile textului", pag: 114 },
+      { id: "r-U4-L5", cod: "L5", titlu: "Comparația", pag: 115 },
+      { id: "r-U4-L6", cod: "L6", titlu: "Textul multimodal. Banda desenată", pag: 116 },
+      { id: "r-U4-L7", cod: "L7", titlu: "Textul explicativ (aplicativ)", pag: 119 },
+      { id: "r-U4-L8", cod: "L8", titlu: "Noi pagini – alte idei", pag: 120 },
+      { id: "r-U4-L9", cod: "L9", titlu: "Modele comportamentale eroice de-a lungul timpului", pag: 122 },
+      { id: "r-U4-L10", cod: "L10", titlu: "Acte de limbaj: a întreba, a solicita, a felicita", pag: 124 },
+      { id: "r-U4-L11", cod: "L11", titlu: "Pronumele. Pronumele personal", pag: 126 },
+      { id: "r-U4-L12", cod: "L12", titlu: "Pronumele personal de politețe", pag: 128 },
+      { id: "r-U4-L13", cod: "L13", titlu: "Adjectivul. Articolul demonstrativ", pag: 130 },
+      { id: "r-U4-L14", cod: "L14", titlu: "Gradele de comparație ale adjectivului", pag: 132 },
+      { id: "r-U4-L15", cod: "L15", titlu: "Descrierea unei persoane. Autoportretul", pag: 134 },
+      { id: "r-U4-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea IV", pag: 136 }
+    ] },
+
+    { titlu: "Unitatea V · Călătoresc prin basme", lectii: [
+      { id: "r-U5-L1", cod: "L1", titlu: "Textul narativ literar. „Zâna Munților”, basm cules de Petre Ispirescu", pag: 140 },
+      { id: "r-U5-L2", cod: "L2", titlu: "Acțiunea. Timpul și spațiul", pag: 144 },
+      { id: "r-U5-L3", cod: "L3", titlu: "Personajele", pag: 146 },
+      { id: "r-U5-L4", cod: "L4", titlu: "Semnificațiile textului", pag: 148 },
+      { id: "r-U5-L5", cod: "L5", titlu: "Noi pagini – alte idei", pag: 149 },
+      { id: "r-U5-L6", cod: "L6", titlu: "Diversitate culturală și lingvistică", pag: 151 },
+      { id: "r-U5-L7", cod: "L7", titlu: "Elemente paraverbale și nonverbale în prezentarea orală", pag: 155 },
+      { id: "r-U5-L8", cod: "L8", titlu: "Acte de limbaj: a promite, a declara", pag: 157 },
+      { id: "r-U5-L9", cod: "L9", titlu: "Numeralul. Numeralul cardinal", pag: 158 },
+      { id: "r-U5-L10", cod: "L10", titlu: "Numeralul ordinal. Aspecte normative", pag: 160 },
+      { id: "r-U5-L11", cod: "L11", titlu: "Descrierea unei ființe imaginare", pag: 162 },
+      { id: "r-U5-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea V", pag: 164 }
+    ] },
+
+    { titlu: "Unitatea VI · Din carte spre departe", lectii: [
+      { id: "r-U6-L1", cod: "L1", titlu: "Textul narativ nonliterar. Jurnal de călătorie", pag: 168 },
+      { id: "r-U6-L2", cod: "L2", titlu: "Trăsături ale textului narativ nonliterar", pag: 171 },
+      { id: "r-U6-L3", cod: "L3", titlu: "Semnificațiile textului", pag: 172 },
+      { id: "r-U6-L4", cod: "L4", titlu: "Noi pagini – alte idei", pag: 174 },
+      { id: "r-U6-L5", cod: "L5", titlu: "Carte românească de învățătură: de la prima carte tipărită la cartea digitală", pag: 176 },
+      { id: "r-U6-L6", cod: "L6", titlu: "Identitate națională", pag: 178 },
+      { id: "r-U6-L7", cod: "L7", titlu: "Acte de limbaj: a explica, a recomanda, a afirma", pag: 183 },
+      { id: "r-U6-L8", cod: "L8", titlu: "Enunțul. Tipuri de enunț", pag: 185 },
+      { id: "r-U6-L9", cod: "L9", titlu: "Prezentarea textului: desene, grafice, fotografii, scheme", pag: 187 },
+      { id: "r-U6-RE", cod: "R", titlu: "Recapitulare și evaluare · Unitatea VI", pag: 189 }
+    ] }
+  ]
+};
+
+
+  const MANUALE = {}, LECTII = {}, CUPRINS = {};
+  Object.keys(DATA).forEach(m => {
+    const d = DATA[m];
+    if (d.manual) MANUALE[m] = d.manual;
+    CUPRINS[m] = d.unitati;
+    LECTII[m] = [];
+    d.unitati.forEach(u => u.lectii.forEach(l => { l.unitate = u.titlu; if (l.invata) LECTII[m].push(l); }));
+  });
   MAIN.forEach(m => { if (!LECTII[m]) LECTII[m] = []; });
   const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
   const START = "2026-09-07", END = "2027-06-18";
@@ -726,6 +2360,136 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
   const getProg = id => { try { return JSON.parse(localStorage.getItem(progKey(id)) || "null"); } catch { return null; } };
   const setProg = (id, v) => { try { localStorage.setItem(progKey(id), JSON.stringify(v)); } catch {} };
 
+  // ---------- Unde e clasa (bifa zilnică) ----------
+  const clasaKey = m => "clasa:" + m;
+  const getClasa = m => { try { return JSON.parse(localStorage.getItem(clasaKey(m)) || "null"); } catch { return null; } };
+  const setClasa = (m, v) => { try { localStorage.setItem(clasaKey(m), JSON.stringify(v)); } catch {} };
+  const flat = m => (CUPRINS[m] || []).flatMap(u => u.lectii);
+  const lessonById = (m, id) => flat(m).find(l => l.id === id) || null;
+  const label = l => (l.cod ? l.cod + " · " : "") + l.titlu;
+  function saveClasa(m, id, tip) {
+    const today = todayIso();
+    const c = getClasa(m) || { istoric: [] };
+    c.istoric = (c.istoric || []).filter(h => h.data !== today);
+    if (id) c.id = id;
+    c.data = today;
+    c.istoric.push({ data: today, id: id || c.id || null, tip });
+    if (c.istoric.length > 200) c.istoric = c.istoric.slice(-200);
+    setClasa(m, c);
+  }
+  function lessonSelect(m, selId, idAttr) {
+    const sel = document.createElement("select");
+    if (idAttr) sel.id = idAttr;
+    const o0 = document.createElement("option");
+    o0.value = ""; o0.textContent = "Alege lecția…";
+    sel.append(o0);
+    (CUPRINS[m] || []).forEach(u => {
+      const g = document.createElement("optgroup");
+      g.label = u.titlu;
+      u.lectii.forEach(l => { const o = document.createElement("option"); o.value = l.id; o.textContent = label(l); if (l.id === selId) o.selected = true; g.append(o); });
+      sel.append(g);
+    });
+    return sel;
+  }
+
+  function renderCheckins(today) {
+    const box = $("checkins");
+    box.replaceChildren();
+    if (view !== "teme" || !isSchoolDay(today)) { box.hidden = true; return; }
+    const subs = [...new Set(ORAR[parse(today).getDay()] || [])].filter(m => CUPRINS[m]);
+    let shown = 0;
+    subs.forEach(m => {
+      const c = getClasa(m);
+      if (c && c.data === today) return;
+      shown++;
+      const k = el("div", "card checkin");
+      k.append(el("h3", null, `Azi ai avut ${m}. Ce ați făcut la clasă?`));
+      const cur = c && c.id ? lessonById(m, c.id) : null;
+      const list = flat(m);
+      const nxt = cur ? list[list.indexOf(cur) + 1] : null;
+      const opts = el("div", "opts");
+      const add = (title, small, fn) => {
+        const b = el("button", "opt"); b.type = "button";
+        b.append(el("span", null, title));
+        if (small) b.append(el("small", null, small));
+        b.addEventListener("click", fn);
+        opts.append(b);
+      };
+      const pick = el("div", "pick");
+      pick.hidden = true;
+      const sel = lessonSelect(m, null, "ci-" + slug(m));
+      sel.setAttribute("aria-label", "Lecția de azi la " + m);
+      const ok = el("button", "btn primary", "Salvează"); ok.type = "button";
+      ok.addEventListener("click", () => { if (!sel.value) return; saveClasa(m, sel.value, "lectie"); render(); });
+      pick.append(sel, ok);
+      if (cur) {
+        add("Am continuat aceeași lecție", label(cur), () => { saveClasa(m, cur.id, "continuare"); render(); });
+        if (nxt) add("Am început lecția următoare", label(nxt), () => { saveClasa(m, nxt.id, "lectie"); render(); });
+        add("Recapitulare sau test", null, () => { saveClasa(m, null, "recapitulare"); render(); });
+        add("Altă lecție…", "Alege din cuprins", () => { pick.hidden = false; sel.focus(); });
+        add("Nu s-a ținut ora", null, () => { saveClasa(m, null, "fara-ora"); render(); });
+        k.append(opts, pick);
+      } else {
+        k.append(el("p", null, "Alege din cuprins lecția la care sunteți acum. O dată aleasă, de mâine e nevoie doar de o apăsare."));
+        pick.hidden = false;
+        k.append(pick);
+      }
+      box.append(k);
+    });
+    box.hidden = !shown;
+  }
+
+  function renderRecap(today) {
+    const next = nextSchoolDay(today);
+    const box = $("listRecap");
+    box.replaceChildren();
+    if (!next) { $("secRecap").hidden = true; return; }
+    const w = next === addDays(today, 1) ? "mâine" : ZILE[parse(next).getDay()];
+    $("hRecap").textContent = "Recapitulare pentru " + w;
+    const subs = [...new Set(ORAR[parse(next).getDay()] || [])].filter(m => CUPRINS[m]);
+    let n = 0;
+    subs.forEach(m => {
+      const c = getClasa(m);
+      const l = c && c.id ? lessonById(m, c.id) : null;
+      if (!l) return;
+      n++;
+      const b = el("button", "recap-row" + (l.invata ? "" : " nolx")); b.type = "button";
+      b.append(chip(m));
+      const t = el("div", "t");
+      t.append(el("span", null, label(l)));
+      if (l.pag) t.append(el("small", null, "Manual, pagina " + l.pag));
+      b.append(t, el("span", "go", l.invata ? "Recapitulează →" : "Citește din manual"));
+      if (l.invata) b.addEventListener("click", () => go("lectie", m, l));
+      box.append(b);
+    });
+    $("secRecap").hidden = !n;
+  }
+
+  // ---------- Raport pentru tata ----------
+  function raportText(today) {
+    const lines = ["Raport Viki – " + longDate(today), ""];
+    Object.keys(CUPRINS).forEach(m => {
+      const c = getClasa(m);
+      const l = c && c.id ? lessonById(m, c.id) : null;
+      lines.push(`${m}: la clasă – ${l ? label(l) : "nebifat încă"}${c && c.data ? " (bifat " + shortDate(c.data) + ")" : ""}`);
+      const done = LECTII[m].map(x => [x, getProg(x.id)]).filter(([, p]) => p);
+      if (done.length) lines.push("  exersat: " + done.map(([x, p]) => `${x.cod || x.titlu} ${p.best}/${p.total}`).join(", "));
+      const last = (c && c.istoric || []).slice(-5).map(h => `${shortDate(h.data)} ${h.tip === "recapitulare" ? "recapitulare" : h.tip === "fara-ora" ? "fără oră" : (lessonById(m, h.id) || {}).cod || ""}`);
+      if (last.length) lines.push("  ultimele ore: " + last.join("; "));
+    });
+    const open = items.filter(i => !i.done);
+    lines.push("", `Teme nefăcute: ${open.length}` + (open.length ? " (" + [...new Set(open.map(i => i.subj))].join(", ") + ")" : ""));
+    return lines.join("\n");
+  }
+  $("raportBtn").addEventListener("click", () => {
+    const txt = raportText(todayIso());
+    const ta = $("raportTxt");
+    ta.value = txt; ta.hidden = false;
+    const done = () => { $("raportMsg").textContent = "Copiat. Lipește-l în chat la Claude."; };
+    const fail = () => { ta.focus(); ta.select(); $("raportMsg").textContent = "Selectează textul de mai jos și copiază-l."; };
+    try { navigator.clipboard.writeText(txt).then(done, fail); } catch { fail(); }
+  });
+
   // ---------- Lecția interactivă ----------
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
@@ -741,7 +2505,8 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
     back.addEventListener("click", () => go("materie", m));
     const head = el("div", "detail-head");
     head.style.setProperty("--h", SUBJ[m]);
-    head.append(el("h2", null, L.titlu), el("div", "info", L.sub));
+    head.append(el("h2", null, L.titlu), el("div", "info", L.sub || ""));
+    if (L.cod || L.pag) head.append(el("div", "info", [L.cod, L.unitate].filter(Boolean).join(" · ") + (L.pag ? ` · manual, pagina ${L.pag}` : "")));
 
     const STEPS = ["Învață", "Exemple", "Exersează", "Recapitulare"];
     const nav = el("nav", "lx-steps");
@@ -835,7 +2600,7 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
       if (X.tip === "alege") {
         const opts = el("div", "opts");
         const btns = X.opt.map((o, i) => {
-          const b = el("button", "opt", o); b.type = "button";
+          const b = el("button", "opt" + (o.replace(/<[^>]+>/g, "").length > 14 ? " long" : ""), o); b.type = "button";
           b.addEventListener("click", () => {
             tries++;
             if (i === X.ok) { b.classList.add("good"); btns.forEach(x => x.disabled = true); feedback(fb, true, "Corect!", X.ex); finish(true); }
@@ -864,15 +2629,58 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
         k.append(row);
         setTimeout(() => inp.focus(), 50);
       }
+      if (X.tip === "cuvant") {
+        const norm = v => v.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+        const oks = (Array.isArray(X.ok) ? X.ok : [X.ok]).map(norm);
+        const row = el("div", "numrow wordrow");
+        const inp = document.createElement("input");
+        inp.type = "text"; inp.id = "ans-" + L.id + "-" + st.ex; inp.autocomplete = "off"; inp.autocapitalize = "off"; inp.spellcheck = false;
+        inp.setAttribute("aria-label", "Răspunsul tău");
+        const chk = el("button", "btn primary", "Verifică"); chk.type = "button";
+        const check = () => {
+          const v = norm(inp.value);
+          if (!v) return;
+          tries++;
+          if (oks.includes(v)) { inp.disabled = true; chk.disabled = true; feedback(fb, true, "Corect!", X.ex); finish(true); }
+          else miss(() => { inp.value = Array.isArray(X.ok) ? X.ok[0] : X.ok; inp.disabled = true; chk.disabled = true; });
+        };
+        chk.addEventListener("click", check);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter") check(); });
+        row.append(inp, chk);
+        k.append(row);
+        setTimeout(() => inp.focus(), 50);
+      }
+      if (X.tip === "ordine") {
+        const done = el("ol", "recap ord-done");
+        const pool = el("div", "opts ord-pool");
+        let nextI = 0, mistakes = 0;
+        const bs = shuffle(X.items.map((t, i) => [t, i])).map(([t, i]) => {
+          const b = el("button", "opt ord", t); b.type = "button";
+          b.addEventListener("click", () => {
+            if (i === nextI) {
+              b.remove(); done.append(el("li", null, t)); nextI++;
+              fb.replaceChildren();
+              if (nextI === X.items.length) { tries = mistakes ? 2 : 1; feedback(fb, true, mistakes ? "Gata, ordinea e corectă!" : "Corect, totul din prima!", X.ex); finish(!mistakes); }
+            } else {
+              mistakes++;
+              b.classList.add("bad"); setTimeout(() => b.classList.remove("bad"), 600);
+              feedback(fb, false, "Nu urmează asta. Gândește-te ce se întâmplă mai întâi.", "");
+            }
+          });
+          pool.append(b); return b;
+        });
+        k.append(el("div", "sub", "Apasă pe rând, în ordinea corectă:"), done, pool);
+      }
       if (X.tip === "potrivire") {
         const wrap = el("div", "match");
         const cl = el("div", "colm"), cr = el("div", "colm");
         let sel = null, left = X.perechi.length, mistakes = 0;
-        const lb = X.perechi.map((p, i) => { const b = el("button", "opt", p[0]); b.type = "button"; b.dataset.i = i; cl.append(b); return b; });
-        const rb = shuffle(X.perechi.map((p, i) => [p[1], i])).map(([t, i]) => { const b = el("button", "opt", t); b.type = "button"; b.dataset.i = i; cr.append(b); return b; });
+        const isLong = X.perechi.some(p => (p[0] + p[1]).replace(/<[^>]+>/g, "").length > 20);
+        const lb = X.perechi.map((p, i) => { const b = el("button", "opt" + (isLong ? " long" : ""), p[0]); b.type = "button"; b.dataset.i = i; cl.append(b); return b; });
+        const rb = shuffle(X.perechi.map((p, i) => [p[1], i])).map(([t, i]) => { const b = el("button", "opt" + (isLong ? " long" : ""), t); b.type = "button"; b.dataset.i = i; cr.append(b); return b; });
         lb.forEach(b => b.addEventListener("click", () => { lb.forEach(x => x.classList.remove("sel")); sel = b; b.classList.add("sel"); }));
         rb.forEach(b => b.addEventListener("click", () => {
-          if (!sel) { feedback(fb, false, "Alege întâi o putere din stânga.", ""); return; }
+          if (!sel) { feedback(fb, false, "Alege întâi ceva din coloana din stânga.", ""); return; }
           if (sel.dataset.i === b.dataset.i) {
             sel.classList.remove("sel"); sel.classList.add("good"); b.classList.add("good"); sel.disabled = b.disabled = true; sel = null; left--;
             fb.replaceChildren();
@@ -880,7 +2688,7 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
           } else {
             mistakes++;
             b.classList.add("bad"); setTimeout(() => b.classList.remove("bad"), 600);
-            feedback(fb, false, "Nu se potrivesc. Calculează puterea și mai încearcă.", "");
+            feedback(fb, false, "Nu se potrivesc. Mai încearcă.", "");
           }
         }));
         wrap.append(cl, cr);
@@ -955,7 +2763,8 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
       l1.textContent = nx ? "Următoarea oră: " + nx : "";
       const n = LECTII[m].length;
       const l2 = document.createElement("span");
-      l2.textContent = n ? `${n} ${n === 1 ? "lecție" : "lecții"}` : "Lecțiile vin în curând";
+      const cc = getClasa(m), cl = cc && cc.id ? lessonById(m, cc.id) : null;
+      l2.textContent = cl ? "La clasă: " + (cl.cod || cl.titlu) : n ? `${n} ${n === 1 ? "lecție" : "lecții"} interactive` : CUPRINS[m] ? "Cuprins gata, lecții în curând" : "Lecțiile vin în curând";
       info.append(l1, l2);
       b.append(name, info);
       const open = items.filter(i => i.subj === m && !i.done).length;
@@ -980,35 +2789,56 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
 
     const lb = $("dLessons");
     lb.replaceChildren();
-    if (!LECTII[m].length) {
-      const p = document.createElement("div");
-      p.className = "empty";
-      p.textContent = "Lecțiile apar aici în curând, pe măsură ce le pregătim după caietul și manualul tău.";
-      lb.append(p);
-    }
     const man = $("dManual");
     if (MANUALE[m]) { man.href = MANUALE[m]; man.hidden = false; } else man.hidden = true;
 
-    LECTII[m].forEach((l, i) => {
-      const r = document.createElement("button");
-      r.type = "button";
-      r.className = "lesson";
-      r.style.textAlign = "left"; r.style.font = "inherit"; r.style.color = "inherit";
-      const n = document.createElement("span");
-      n.className = "n";
-      n.textContent = i + 1;
-      const t = document.createElement("div");
-      t.style.fontWeight = "700";
-      t.textContent = l.titlu;
-      const s = document.createElement("span");
-      s.className = "st";
-      const p = getProg(l.id);
-      s.textContent = p ? `✓ ${p.best}/${p.total}` : "Începe →";
-      if (!p) s.style.color = "var(--pen)";
-      r.append(n, t, s);
-      r.addEventListener("click", () => go("lectie", m, l));
-      lb.append(r);
-    });
+    const units = CUPRINS[m];
+    $("dClasaBox").hidden = !units;
+    if (!units) {
+      const p = document.createElement("div");
+      p.className = "empty";
+      p.textContent = "Lecțiile apar aici în curând, după manual.";
+      lb.append(p);
+    } else {
+      const c = getClasa(m);
+      const sel = lessonSelect(m, c && c.id, "dClasa");
+      $("dClasa").replaceWith(sel);
+      sel.addEventListener("change", () => { if (sel.value) { const cc = getClasa(m) || { istoric: [] }; cc.id = sel.value; setClasa(m, cc); render(); } });
+      const all = flat(m);
+      const hereIdx = c && c.id ? all.findIndex(l => l.id === c.id) : -1;
+      units.forEach((u, ui) => {
+        const d = document.createElement("details");
+        d.className = "unit";
+        const inUnit = u.lectii.some(l => l.id === (c && c.id));
+        d.open = inUnit || (hereIdx < 0 && ui === 0);
+        const sm = document.createElement("summary");
+        const ready = u.lectii.filter(l => l.invata).length;
+        sm.append(el("span", null, u.titlu), el("span", "cnt", ready ? `${ready}/${u.lectii.length} interactive` : (u.lectii.length === 1 ? "1 lecție" : `${u.lectii.length} lecții`)));
+        d.append(sm);
+        const box = el("div", "lessons");
+        u.lectii.forEach(l => {
+          const idx = all.indexOf(l);
+          const r = document.createElement("button");
+          r.type = "button";
+          r.className = "lesson" + (idx === hereIdx ? " here" : idx < hereIdx ? " past" : "") + (l.invata ? "" : " nolx");
+          r.style.textAlign = "left"; r.style.font = "inherit"; r.style.color = "inherit";
+          const n = el("span", "n", l.cod || String(idx + 1));
+          const t = el("div", "t");
+          t.append(el("span", null, l.titlu));
+          if (l.pag) t.append(el("small", null, (idx === hereIdx ? "📍 Aici sunteți la clasă · " : "") + "pagina " + l.pag));
+          const stt = el("span", "st");
+          const p = l.invata ? getProg(l.id) : null;
+          if (p) stt.textContent = `✓ ${p.best}/${p.total}`;
+          else if (l.invata) { stt.textContent = "Începe →"; stt.style.color = "var(--pen)"; }
+          else { stt.textContent = "în pregătire"; stt.style.color = "var(--muted)"; stt.style.fontWeight = "600"; }
+          r.append(n, t, stt);
+          if (l.invata) r.addEventListener("click", () => go("lectie", m, l));
+          box.append(r);
+        });
+        d.append(box);
+        lb.append(d);
+      });
+    }
 
     const tb = $("dTeme");
     tb.replaceChildren();
@@ -1039,6 +2869,8 @@ details.parent ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
     if (view === "materii") renderMaterii(today);
     if (view === "materie") renderMaterie(today);
     renderTeme(today);
+    renderCheckins(today);
+    renderRecap(today);
   }
 
   function renderTeme(today) {
